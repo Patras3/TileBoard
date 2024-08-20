@@ -45,7 +45,7 @@ jobs:
           ref: main
           inputs: |
             version: ${{ steps.get-version.outputs.version }}
-            release_url: https://github.com/resoai/TileBoard/releases/tag/v${{ steps.get-version.outputs.version }}
+            release_url: https://github.com/patras3/TileBoard/releases/tag/v${{ steps.get-version.outputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.REPO_WORKFLOW_TOKEN }}
 
