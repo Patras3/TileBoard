@@ -24,17 +24,23 @@ App.provider('Api', function () {
 
       function $Api (url, token) {
          this._id = 1;
-
          this._url = url;
-
          this._listeners = {
             error: [],
             message: [],
             ready: [],
             unready: [],
          };
-
          this._callbacks = {};
+
+         // Nowe właściwości dla ulepszonego reconnect
+         this._reconnectAttempts = 0;
+         this._maxReconnectAttempts = 10;
+         this._baseReconnectDelay = 1000; // 1 sekunda
+         this._maxReconnectDelay = 30000; // 30 sekund
+         this._connectionTimeout = 10000; // 10 sekund timeout dla połączenia
+         this._isReconnecting = false;
+         this._connectionTimeoutId = null;
 
          if (token) {
             this._configToken = token;
@@ -64,8 +70,8 @@ App.provider('Api', function () {
 
                if (token.expires_in) {
                   setTimeout(
-                     self._refreshToken.bind(self),
-                     token.expires_in * 900);
+                      self._refreshToken.bind(self),
+                      token.expires_in * 900);
                }
             } else {
                Noty.addObject({
@@ -127,7 +133,19 @@ App.provider('Api', function () {
             this._callbacks[data.id] = callback;
          }
 
-         return this.socket.send(wsData);
+         // Sprawdź czy socket jest gotowy do wysyłania
+         if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
+            console.warn('WebSocket is not ready for sending data. Current state:', this.socket?.readyState);
+            return false;
+         }
+
+         try {
+            return this.socket.send(wsData);
+         } catch (error) {
+            console.error('Error sending WebSocket message:', error);
+            this._handleConnectionError('Failed to send message');
+            return false;
+         }
       };
 
       $Api.prototype.callService = function (domain, service, data, callback) {
@@ -151,19 +169,19 @@ App.provider('Api', function () {
          request.headers = request.headers || {};
          request.headers.Authorization = 'Bearer ' + this._token;
          return $http(request)
-            .then(function (response) {
-               return response.data;
-            })
-            .catch(function (response) {
-               switch (response.status) {
-                  case 401:
-                     redirectOAuth();
-                     return;
-                  default:
-                     window.Noty.add(window.Noty.ERROR, 'Error in REST api', 'Code ' + response.status + ' retrieved for ' + request.url + '.');
-                     return null;
-               }
-            });
+             .then(function (response) {
+                return response.data;
+             })
+             .catch(function (response) {
+                switch (response.status) {
+                   case 401:
+                      redirectOAuth();
+                      return;
+                   default:
+                      window.Noty.add(window.Noty.ERROR, 'Error in REST api', 'Code ' + response.status + ' retrieved for ' + request.url + '.');
+                      return null;
+                }
+             });
       };
 
       $Api.prototype.getHistory = function (startDate, filterEntityId, endDate) {
@@ -231,62 +249,186 @@ App.provider('Api', function () {
          return this.send({ type: 'ping' }, callback);
       };
 
+      // Ulepszona metoda _connect z timeout i lepszym error handling
       $Api.prototype._connect = function () {
          const self = this;
 
          if (this.socket && this.socket.readyState < WebSocket.CLOSING) {
             return;
-         } // opened or connecting
+         }
+
+         console.log(`Attempting to connect to WebSocket (attempt ${this._reconnectAttempts + 1}/${this._maxReconnectAttempts})`);
 
          this.status = STATUS_LOADING;
-         this.socket = new WebSocket(this._url);
+         this._clearConnectionTimeout();
+
+         try {
+            this.socket = new WebSocket(this._url);
+         } catch (error) {
+            console.error('Failed to create WebSocket:', error);
+            this._handleConnectionError('Failed to create WebSocket connection');
+            return;
+         }
+
+         // Ustawienie timeout dla połączenia
+         this._connectionTimeoutId = setTimeout(() => {
+            if (this.socket && this.socket.readyState === WebSocket.CONNECTING) {
+               console.warn('WebSocket connection timeout');
+               this.socket.close();
+               this._handleConnectionError('Connection timeout');
+            }
+         }, this._connectionTimeout);
 
          this.socket.addEventListener('open', function (e) {
+            console.log('WebSocket connection established');
+            self._clearConnectionTimeout();
+            self._reconnectAttempts = 0; // Reset counter po udanym połączeniu
             self._setStatus(STATUS_OPENED);
          });
 
          this.socket.addEventListener('close', function (e) {
+            console.log('WebSocket connection closed', e.code, e.reason);
+            self._clearConnectionTimeout();
             self._setStatus(STATUS_CLOSED);
-            self._reconnect.call(self);
+
+            // Nie próbuj reconnect jeśli zamknięcie było celowe (kod 1000)
+            if (e.code !== 1000) {
+               self._handleConnectionError('Connection closed unexpectedly');
+            }
          });
 
          this.socket.addEventListener('error', function (e) {
+            console.error('WebSocket error:', e);
+            self._clearConnectionTimeout();
             self._setStatus(STATUS_ERROR);
-            self._sendError.call(self, 'System error', e);
-            self._reconnect.call(self, 1000);
+            self._handleConnectionError('WebSocket error occurred');
          });
 
          this.socket.addEventListener('message', function (e) {
-            const data = JSON.parse(e.data);
-
-            self._handleMessage.call(self, data);
+            try {
+               const data = JSON.parse(e.data);
+               self._handleMessage.call(self, data);
+            } catch (error) {
+               console.error('Failed to parse WebSocket message:', error);
+               self._sendError('Failed to parse message', { originalMessage: e.data, error: error.message });
+            }
          });
       };
 
-      $Api.prototype.forceReconnect = function () {
-         if (this.socket && this.socket.readyState < WebSocket.CLOSING) {
-            this.socket.close();
-         } else {
-            this._reconnect();
+      // Nowa metoda do zarządzania błędami połączenia
+      $Api.prototype._handleConnectionError = function (reason) {
+         if (this._isReconnecting) {
+            return; // Już próbujemy się połączyć
          }
+
+         console.warn('Connection error:', reason);
+         this._sendError('Connection error', { reason: reason, attempts: this._reconnectAttempts });
+
+         if (this._reconnectAttempts >= this._maxReconnectAttempts) {
+            console.error('Max reconnection attempts reached. Giving up.');
+            Noty.addObject({
+               type: Noty.ERROR,
+               title: 'CONNECTION FAILED',
+               message: `Unable to connect to server after ${this._maxReconnectAttempts} attempts. Please refresh the page.`,
+            });
+            return;
+         }
+
+         this._scheduleReconnect();
       };
 
-      $Api.prototype._reconnect = function (delayBeforeConnect) {
-         delayBeforeConnect = delayBeforeConnect || 0;
+      // Nowa metoda do planowania reconnect z wykładniczym opóźnieniem
+      $Api.prototype._scheduleReconnect = function () {
+         if (this._isReconnecting) {
+            return;
+         }
 
-         this._fire('unready', { status: this.status });
+         this._isReconnecting = true;
+         this._reconnectAttempts++;
+
+         // Wykładnicze opóźnienie: baseDelay * 2^attempts, ale nie więcej niż maxDelay
+         const delay = Math.min(
+             this._baseReconnectDelay * Math.pow(2, this._reconnectAttempts - 1),
+             this._maxReconnectDelay
+         );
+
+         console.log(`Scheduling reconnection in ${delay}ms (attempt ${this._reconnectAttempts}/${this._maxReconnectAttempts})`);
+
+         this._fire('unready', {
+            status: this.status,
+            reconnecting: true,
+            attempt: this._reconnectAttempts,
+            nextAttemptIn: delay
+         });
 
          if (reconnectTimeout) {
             clearTimeout(reconnectTimeout);
          }
 
-         reconnectTimeout = setTimeout(this._connect.bind(this), delayBeforeConnect);
+         reconnectTimeout = setTimeout(() => {
+            this._isReconnecting = false;
+            this._connect();
+         }, delay);
+      };
+
+      // Ulepszona metoda forceReconnect
+      $Api.prototype.forceReconnect = function () {
+         console.log('Force reconnect requested');
+         this._reconnectAttempts = 0; // Reset counter
+         this._isReconnecting = false;
+
+         if (reconnectTimeout) {
+            clearTimeout(reconnectTimeout);
+            reconnectTimeout = null;
+         }
+
+         if (this.socket && this.socket.readyState < WebSocket.CLOSING) {
+            this.socket.close();
+         } else {
+            this._connect();
+         }
+      };
+
+      // Metoda usuwająca starą _reconnect (zastąpiona przez _scheduleReconnect)
+      $Api.prototype._reconnect = function (delayBeforeConnect) {
+         // Backward compatibility - przekieruj do nowej implementacji
+         if (delayBeforeConnect) {
+            this._baseReconnectDelay = delayBeforeConnect;
+         }
+         this._handleConnectionError('Legacy reconnect called');
+      };
+
+      // Nowa metoda do czyszczenia timeout połączenia
+      $Api.prototype._clearConnectionTimeout = function () {
+         if (this._connectionTimeoutId) {
+            clearTimeout(this._connectionTimeoutId);
+            this._connectionTimeoutId = null;
+         }
+      };
+
+      // Metoda do resetowania stanu połączenia (użyteczna do debugowania)
+      $Api.prototype.resetConnection = function () {
+         console.log('Resetting connection state');
+         this._reconnectAttempts = 0;
+         this._isReconnecting = false;
+         this._clearConnectionTimeout();
+
+         if (reconnectTimeout) {
+            clearTimeout(reconnectTimeout);
+            reconnectTimeout = null;
+         }
+
+         this.forceReconnect();
       };
 
       $Api.prototype._fire = function (key, data) {
          this._listeners[key].forEach(function (cb) {
             setTimeout(function () {
-               cb(data);
+               try {
+                  cb(data);
+               } catch (error) {
+                  console.error('Error in event listener:', error);
+               }
             }, 0);
          });
       };
@@ -310,7 +452,11 @@ App.provider('Api', function () {
          if (data.type === 'result' && data.id) {
             if (this._callbacks[data.id]) {
                setTimeout(function () {
-                  self._callbacks[data.id](data);
+                  try {
+                     self._callbacks[data.id](data);
+                  } catch (error) {
+                     console.error('Error in callback:', error);
+                  }
                }, 0);
             }
          }
@@ -318,7 +464,11 @@ App.provider('Api', function () {
          if (data.type === 'pong' && data.id) {
             if (this._callbacks[data.id]) {
                setTimeout(function () {
-                  self._callbacks[data.id](data);
+                  try {
+                     self._callbacks[data.id](data);
+                  } catch (error) {
+                     console.error('Error in pong callback:', error);
+                  }
                }, 0);
             }
          }
@@ -352,6 +502,7 @@ App.provider('Api', function () {
       };
 
       $Api.prototype._ready = function () {
+         console.log('WebSocket connection ready');
          this._setStatus(STATUS_READY);
          this._fire('ready', { status: STATUS_READY });
       };
@@ -371,16 +522,16 @@ App.provider('Api', function () {
          };
 
          return $http(request)
-            .then(function (response) {
-               return response.data;
-            })
-            .catch(function (response) {
-               if (response.status >= 400 && response.status <= 499) {  // authentication error
-                  redirectOAuth();
-               } else {
-                  return null;
-               }
-            });
+             .then(function (response) {
+                return response.data;
+             })
+             .catch(function (response) {
+                if (response.status >= 400 && response.status <= 499) {  // authentication error
+                   redirectOAuth();
+                } else {
+                   return null;
+                }
+             });
       };
 
       $Api.prototype._refreshToken = function () {
@@ -392,8 +543,8 @@ App.provider('Api', function () {
 
                if (token.expires_in) {
                   setTimeout(
-                     self._refreshToken.bind(self),
-                     token.expires_in * 900);
+                      self._refreshToken.bind(self),
+                      token.expires_in * 900);
                }
             }
          });
@@ -491,8 +642,8 @@ App.provider('Api', function () {
          removeToken();
 
          window.location.href = toAbsoluteServerURL(
-            '/auth/authorize?client_id=' + getOAuthClientId()
-            + '&redirect_uri=' + getOAuthRedirectUrl(),
+             '/auth/authorize?client_id=' + getOAuthClientId()
+             + '&redirect_uri=' + getOAuthRedirectUrl(),
          );
       }
 
