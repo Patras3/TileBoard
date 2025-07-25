@@ -41,6 +41,7 @@ App.provider('Api', function () {
          this._connectionTimeout = 10000; // 10 sekund timeout dla połączenia
          this._isReconnecting = false;
          this._connectionTimeoutId = null;
+         this._heartbeatInterval = null; // Dodaj tę linię
 
          if (token) {
             this._configToken = token;
@@ -261,6 +262,7 @@ App.provider('Api', function () {
 
          this.status = STATUS_LOADING;
          this._clearConnectionTimeout();
+         this._clearHeartbeat(); // Dodaj tę linię
 
          try {
             this.socket = new WebSocket(this._url);
@@ -289,6 +291,7 @@ App.provider('Api', function () {
          this.socket.addEventListener('close', function (e) {
             console.log('WebSocket connection closed', e.code, e.reason);
             self._clearConnectionTimeout();
+            self._clearHeartbeat(); // Dodaj tę linię
             self._setStatus(STATUS_CLOSED);
 
             // Dla kodu 1000 (normalne zamknięcie) również rozpoczynamy reconnect
@@ -307,6 +310,7 @@ App.provider('Api', function () {
          this.socket.addEventListener('error', function (e) {
             console.error('WebSocket error:', e);
             self._clearConnectionTimeout();
+            self._clearHeartbeat(); // Dodaj tę linię
             self._setStatus(STATUS_ERROR);
             self._handleConnectionError('WebSocket error occurred');
          });
@@ -320,6 +324,70 @@ App.provider('Api', function () {
                self._sendError('Failed to parse message', { originalMessage: e.data, error: error.message });
             }
          });
+      };
+
+      //heatbeat
+      // Mechanizm heartbeat do monitorowania połączenia
+      $Api.prototype._startHeartbeat = function () {
+         const self = this;
+
+         // Wyczyść poprzedni heartbeat jeśli istnieje
+         this._clearHeartbeat();
+
+         console.log('Starting heartbeat monitoring');
+
+         this._heartbeatInterval = setInterval(() => {
+            if (self.socket && self.socket.readyState === WebSocket.OPEN) {
+               const pingId = self._id++;
+               const pingMessage = {
+                  type: 'ping',
+                  id: pingId
+               };
+
+               // Ustaw timeout na odpowiedź pong
+               const pongTimeout = setTimeout(() => {
+                  console.warn('Heartbeat: No pong response received, forcing reconnect');
+                  self._forceReconnectDueToHeartbeat();
+               }, 5000); // 5 sekund na odpowiedź
+
+               // Zapisz callback dla pong
+               self._callbacks[pingId] = function(response) {
+                  clearTimeout(pongTimeout);
+                  console.log('Heartbeat: Pong received');
+               };
+
+               try {
+                  self.socket.send(JSON.stringify(pingMessage));
+                  console.log('Heartbeat: Ping sent');
+               } catch (error) {
+                  console.error('Heartbeat: Failed to send ping', error);
+                  clearTimeout(pongTimeout);
+                  self._forceReconnectDueToHeartbeat();
+               }
+            } else {
+               console.warn('Heartbeat: Socket not ready, forcing reconnect');
+               self._forceReconnectDueToHeartbeat();
+            }
+         }, 15000); // Ping co 15 sekund
+      };
+
+      $Api.prototype._clearHeartbeat = function () {
+         if (this._heartbeatInterval) {
+            clearInterval(this._heartbeatInterval);
+            this._heartbeatInterval = null;
+            console.log('Heartbeat monitoring stopped');
+         }
+      };
+
+      $Api.prototype._forceReconnectDueToHeartbeat = function () {
+         console.log('Heartbeat: Forcing reconnect due to connection issues');
+         this._clearHeartbeat();
+
+         if (this.socket && this.socket.readyState < WebSocket.CLOSING) {
+            this.socket.close(1006, 'Heartbeat failed');
+         } else {
+            this._handleConnectionError('Heartbeat failed - connection lost');
+         }
       };
 
       // Nowa metoda do zarządzania błędami połączenia
@@ -521,6 +589,7 @@ App.provider('Api', function () {
       $Api.prototype._ready = function () {
          console.log('WebSocket connection ready');
          this._setStatus(STATUS_READY);
+         this._startHeartbeat(); // Dodaj tę linię
          this._fire('ready', { status: STATUS_READY });
       };
 
