@@ -291,11 +291,18 @@ App.provider('Api', function () {
             self._clearConnectionTimeout();
             self._setStatus(STATUS_CLOSED);
 
-            // Nie próbuj reconnect jeśli zamknięcie było celowe (kod 1000)
-            if (e.code !== 1000) {
+            // Dla kodu 1000 (normalne zamknięcie) również rozpoczynamy reconnect
+            if (e.code === 1000) {
+               console.log('Normal close detected - attempting to resurrect connection');
+               // Reset attempts counter dla normalnego zamknięcia
+               self._reconnectAttempts = 0;
+               self._scheduleReconnect();
+            } else {
+               // Dla innych kodów błędów
                self._handleConnectionError('Connection closed unexpectedly');
             }
          });
+
 
          this.socket.addEventListener('error', function (e) {
             console.error('WebSocket error:', e);
@@ -346,11 +353,20 @@ App.provider('Api', function () {
          this._isReconnecting = true;
          this._reconnectAttempts++;
 
-         // Wykładnicze opóźnienie: baseDelay * 2^attempts, ale nie więcej niż maxDelay
-         const delay = Math.min(
-             this._baseReconnectDelay * Math.pow(2, this._reconnectAttempts - 1),
-             this._maxReconnectDelay
-         );
+         // Dla normalnego zamknięcia (kod 1000) używamy krótszego opóźnienia
+         let delay;
+         if (this._reconnectAttempts === 1) {
+            // Pierwszy reconnect po normalnym zamknięciu - krótsze opóźnienie
+            delay = Math.min(this._baseReconnectDelay, 2000);
+         } else {
+            // Wykładnicze opóźnienie: baseDelay * 2^attempts, ale nie więcej niż maxDelay
+            delay = Math.min(
+                this._baseReconnectDelay * Math.pow(2, this._reconnectAttempts - 1),
+                this._maxReconnectDelay
+            );
+         }
+
+
 
          console.log(`Scheduling reconnection in ${delay}ms (attempt ${this._reconnectAttempts}/${this._maxReconnectAttempts})`);
 
@@ -383,10 +399,11 @@ App.provider('Api', function () {
          }
 
          if (this.socket && this.socket.readyState < WebSocket.CLOSING) {
-            this.socket.close();
+            this.socket.close(1000, 'Force reconnect requested');
          } else {
             this._connect();
          }
+
       };
 
       // Metoda usuwająca starą _reconnect (zastąpiona przez _scheduleReconnect)
