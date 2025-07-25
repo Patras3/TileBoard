@@ -353,12 +353,10 @@ App.provider('Api', function () {
                // Zapisz callback dla pong
                self._callbacks[pingId] = function(response) {
                   clearTimeout(pongTimeout);
-                  console.log('Heartbeat: Pong received');
                };
 
                try {
                   self.socket.send(JSON.stringify(pingMessage));
-                  console.log('Heartbeat: Ping sent');
                } catch (error) {
                   console.error('Heartbeat: Failed to send ping', error);
                   clearTimeout(pongTimeout);
