@@ -301,3 +301,9 @@ export function updateFontSize (size) {
       document.head.appendChild(style);
    }
 }
+
+/* ------------------------------------------------------------------ */
+/*                         PIN PROTECTION                             */
+/* ------------------------------------------------------------------ */
+
+export { pinProtectedTile, clearPinLockout, getPinLockoutStatus } from './pinProtection';
