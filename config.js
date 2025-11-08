@@ -400,8 +400,7 @@ var CONFIG = {
                            stateText = 'Jutro';
                         } else {
                            // Get the day of the week in Polish
-                           var daysOfWeek = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
-                           stateText = daysOfWeek[eventDate.getDay()];
+                           stateText = window.dzienTygodnia(eventDate);
                         }
                         return stateText;
                      },
@@ -473,7 +472,6 @@ var CONFIG = {
                      width: 2,
                      height: 2,
                      refresh: 600000, // 10 seconds
-                     //          url: 'https://embed.windy.com/embed2.html?lat=54.296&lon=18.610&detailLat=54.296&detailLon=18.610&width=650&height=450&zoom=9&level=surface&overlay=rain&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1'
                      url: 'https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=default&metricTemp=default&metricWind=default&zoom=10&overlay=rain&product=ecmwf&level=surface&lat=54.296&lon=18.610&detailLat=54.296&detailLon=18.610&detail=false&message=true&lang=pl',
                   },
 
@@ -505,29 +503,6 @@ var CONFIG = {
                   Object.assign({ position: [2, 2] }, window.createHONClimatePopup({ id: 'climate.trzeci_pokoj_klimatyzator', title: 'Trzeci pokój', floorHeatingId: 'switch.ogrzewanie_trzeci_pokoj_wlacznik', realTempSensorId: 'sensor.temperatura_govee_trzeci_pokoj', deviceId: '4bb4d0f69283c7a6bc7346ac8a55ded6' })),
 
 
-                  /*  pinProtectedAction({
-                              id: 'climate.trzeci_pokoj_klimatyzator',
-                              title: 'Turn Off Climate',
-                              icon: 'mdi-thermometer-off',
-                              pin: '4321',
-                              x: 0,
-                              y: 2,
-                              attemptsAllowed: 3,
-                              timeoutSeconds: 10,
-                              lockTimeMultiplier: 2,
-                              action: function() {
-                                  this.apiRequest({
-                                      type: "call_service",
-                                      domain: "climate",
-                                      service: "set_hvac_mode",
-                                      service_data: {
-                                          entity_id: 'climate.trzeci_pokoj_klimatyzator',
-                                          hvac_mode: 'off'
-                                      }
-                                  });
-                              }
-                          }),
-                        */
                   {
                      position: [2, 3], // Adjust the position as needed
                      title: 'Rekuperacja',
@@ -727,9 +702,7 @@ var CONFIG = {
                      customStyles: function (item, entity) {
                         const watts = entity.state;
                         const color = window.calculateColor(watts);
-                        updateFlowingIndicator(watts, color);
                         const boxShadowValue = `0px 0px 16px 8px ${color}`;
-                        //   updateAnimatedLine(watts);
                         return {
                            boxShadow: boxShadowValue,
                         };
@@ -1416,7 +1389,7 @@ var CONFIG = {
                      },
                      customHtml: function () {
                         var progress = parseFloat(this.states['sensor.x1c_print_progress'].state) || 0;
-                        var remainingTime = relativeTimeFromMinutes(parseInt(this.states['sensor.x1c_remaining_time'].state) || 0);
+                        var remainingTime = window.relativeTimeFromMinutes(parseInt(this.states['sensor.x1c_remaining_time'].state) || 0);
                         remainingTime = remainingTime === '0m' ? '' : ('Pozostało: <br/>' + remainingTime);
                         var endTime = this.states['sensor.x1c_end_time'].state;
                         endTime = endTime === 'unavailable' ? '' : endTime;
@@ -1505,17 +1478,6 @@ var CONFIG = {
                         var today = new Date();
                         tomorrow.setDate(tomorrow.getDate() + 1);
 
-                        // Polish day names, matching JavaScript's getDay() = 0..6 (Sun..Sat)
-                        var daysOfWeek = [
-                           'Niedziela',
-                           'Poniedziałek',
-                           'Wtorek',
-                           'Środa',
-                           'Czwartek',
-                           'Piątek',
-                           'Sobota',
-                        ];
-
                         // Build HTML lines for each event
                         var lines = eventList.map(function (event) {
                            // Convert event start string to Date
@@ -1524,11 +1486,11 @@ var CONFIG = {
                            // Decide label: "Jutro" if it's exactly tomorrow, else day-of-week
                            var label =
           eventDate.toDateString() === tomorrow.toDateString()
-             ? 'Jutro (' + daysOfWeek[eventDate.getDay()].slice(0, 2) + '.)'
-             : daysOfWeek[eventDate.getDay()].slice(0, 3) + '.';
+             ? 'Jutro (' + window.dzienTygodnia(eventDate).slice(0, 2) + '.)'
+             : window.dzienTygodnia(eventDate).slice(0, 3) + '.';
 
                            if (eventDate.toDateString() === today.toDateString()) {
-                              label = 'Dziś (' + daysOfWeek[eventDate.getDay()].slice(0, 2) + '.)';
+                              label = 'Dziś (' + window.dzienTygodnia(eventDate).slice(0, 2) + '.)';
                            }
                            return label + ': ' + event.summary;
                         });
