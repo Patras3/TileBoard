@@ -307,3 +307,13 @@ export function updateFontSize (size) {
 /* ------------------------------------------------------------------ */
 
 export { pinProtectedTile, clearPinLockout, getPinLockoutStatus } from './pinProtection';
+
+/* ------------------------------------------------------------------ */
+/*                       CLIMATE TILE HELPERS                         */
+/* ------------------------------------------------------------------ */
+
+export {
+   createClimatePopup,
+   createHONClimatePopup,
+   createFloorHeatingSensor,
+} from './climateHelpers';
