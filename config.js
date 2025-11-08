@@ -669,7 +669,7 @@ var CONFIG = {
                      // Energia - zuzycie dzisiaj
                      title: 'Zużycie',
                      value: function () {
-                        const pobrana = roundToTwoDecimalPlaces(this.$scope.states['sensor.energia_pobrana_z_sieci_dzisiaj'].state);
+                        const pobrana = window.roundToTwoDecimalPlaces(this.$scope.states['sensor.energia_pobrana_z_sieci_dzisiaj'].state);
                         return pobrana;
                      },
                      type: TYPES.SENSOR,
@@ -677,7 +677,7 @@ var CONFIG = {
                         const wyprodukowana = parseFloat(this.$scope.states['sensor.inverter_dzienna_produkcja'].state || '0') || 0;
                         const wyslana = parseFloat(this.$scope.states['sensor.energia_wyslana_do_sieci_dzisiaj_calkowita'].state || '0') || 0;
                         const pobrana = parseFloat(this.$scope.states['sensor.energia_pobrana_z_sieci_dzisiaj_calkowita'].state || '0') || 0;
-                        return 'Całkowita: ' + roundToTwoDecimalPlaces(pobrana + (wyprodukowana - wyslana)) + 'kWh';
+                        return 'Całkowita: ' + window.roundToTwoDecimalPlaces(pobrana + (wyprodukowana - wyslana)) + 'kWh';
                      },
                      id: 'sensor.energia_zuzycie_dzisiaj',
                      unit: 'kWh',
@@ -713,7 +713,7 @@ var CONFIG = {
                         return 'Teraz: +' + window.formatWatts(this.$scope.states['sensor.inverter_moc_czynna'].state, false, false) + '';
                      },
                      state: function () {
-                        const sprzedana = roundToTwoDecimalPlaces(this.$scope.states['sensor.energia_oddana_do_sieci_dzisiaj'].state);
+                        const sprzedana = window.roundToTwoDecimalPlaces(this.$scope.states['sensor.energia_oddana_do_sieci_dzisiaj'].state);
                         return 'Sprzedana: ' + sprzedana + 'kWh';
                      },
                      type: TYPES.SENSOR,
@@ -735,7 +735,7 @@ var CONFIG = {
                         };
                      },
                      state: function () {
-                        const current = roundToTwoDecimalPlaces(this.$scope.states['sensor.energia_bilans_netto'].state);
+                        const current = window.roundToTwoDecimalPlaces(this.$scope.states['sensor.energia_bilans_netto'].state);
                         return '[1h]: ' + current + 'kWh';
                      },
                      filter: function (value) { // optional
@@ -854,14 +854,12 @@ var CONFIG = {
                      },
                   },
 
-                  //    const { title, icon, pin, attemptsAllowed, timeoutSeconds, lockTimeMultiplier, action, position, id, states, icons  } = tileConfig;
-
-                  pinProtectedAction({
+                  window.pinProtectedTile({
                      title: 'Garaż',
                      id: 'binary_sensor.brama_garage_door_contact',
                      position: isDownstairsLocation() ? [5, 2] : [5, 3],
-                     action: function (_this) {
-                        _this.apiRequest({
+                     action: function (item, entity) {
+                        this.apiRequest({
                            type: 'call_service',
                            domain: 'automation',
                            service: 'trigger',
@@ -877,11 +875,11 @@ var CONFIG = {
                         opening: '...',
                      },
                      icons: { off: 'mdi-garage-variant', on: 'mdi-garage-open-variant', opening: 'mdi-timer-sand' },
-                     pin: ['7283', '3006'],
+                  }, {
+                     pins: ['7283', '3006'],
                      attemptsAllowed: 3,
                      timeoutSeconds: 60,
                      lockTimeMultiplier: 1,
-
                   }),
                   {
                      position: isDownstairsLocation() ? [5, 3] : [5, 4],
