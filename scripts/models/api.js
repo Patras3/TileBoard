@@ -71,8 +71,8 @@ App.provider('Api', function () {
 
                if (token.expires_in) {
                   setTimeout(
-                      self._refreshToken.bind(self),
-                      token.expires_in * 900);
+                     self._refreshToken.bind(self),
+                     token.expires_in * 900);
                }
             } else {
                Noty.addObject({
@@ -170,19 +170,19 @@ App.provider('Api', function () {
          request.headers = request.headers || {};
          request.headers.Authorization = 'Bearer ' + this._token;
          return $http(request)
-             .then(function (response) {
-                return response.data;
-             })
-             .catch(function (response) {
-                switch (response.status) {
-                   case 401:
-                      redirectOAuth();
-                      return;
-                   default:
-                      window.Noty.add(window.Noty.ERROR, 'Error in REST api', 'Code ' + response.status + ' retrieved for ' + request.url + '.');
-                      return null;
-                }
-             });
+            .then(function (response) {
+               return response.data;
+            })
+            .catch(function (response) {
+               switch (response.status) {
+                  case 401:
+                     redirectOAuth();
+                     return;
+                  default:
+                     window.Noty.add(window.Noty.ERROR, 'Error in REST api', 'Code ' + response.status + ' retrieved for ' + request.url + '.');
+                     return null;
+               }
+            });
       };
 
       $Api.prototype.getHistory = function (startDate, filterEntityId, endDate) {
@@ -326,7 +326,7 @@ App.provider('Api', function () {
          });
       };
 
-      //heatbeat
+      // heatbeat
       // Mechanizm heartbeat do monitorowania połączenia
       $Api.prototype._startHeartbeat = function () {
          const self = this;
@@ -341,7 +341,7 @@ App.provider('Api', function () {
                const pingId = self._id++;
                const pingMessage = {
                   type: 'ping',
-                  id: pingId
+                  id: pingId,
                };
 
                // Ustaw timeout na odpowiedź pong
@@ -351,7 +351,7 @@ App.provider('Api', function () {
                }, 5000); // 5 sekund na odpowiedź
 
                // Zapisz callback dla pong
-               self._callbacks[pingId] = function(response) {
+               self._callbacks[pingId] = function (response) {
                   clearTimeout(pongTimeout);
                };
 
@@ -427,11 +427,10 @@ App.provider('Api', function () {
          } else {
             // Wykładnicze opóźnienie: baseDelay * 2^attempts, ale nie więcej niż maxDelay
             delay = Math.min(
-                this._baseReconnectDelay * Math.pow(2, this._reconnectAttempts - 1),
-                this._maxReconnectDelay
+               this._baseReconnectDelay * Math.pow(2, this._reconnectAttempts - 1),
+               this._maxReconnectDelay,
             );
          }
-
 
 
          console.log(`Scheduling reconnection in ${delay}ms (attempt ${this._reconnectAttempts}/${this._maxReconnectAttempts})`);
@@ -440,7 +439,7 @@ App.provider('Api', function () {
             status: this.status,
             reconnecting: true,
             attempt: this._reconnectAttempts,
-            nextAttemptIn: delay
+            nextAttemptIn: delay,
          });
 
          if (reconnectTimeout) {
@@ -469,7 +468,6 @@ App.provider('Api', function () {
          } else {
             this._connect();
          }
-
       };
 
       // Metoda usuwająca starą _reconnect (zastąpiona przez _scheduleReconnect)
@@ -606,16 +604,16 @@ App.provider('Api', function () {
          };
 
          return $http(request)
-             .then(function (response) {
-                return response.data;
-             })
-             .catch(function (response) {
-                if (response.status >= 400 && response.status <= 499) {  // authentication error
-                   redirectOAuth();
-                } else {
-                   return null;
-                }
-             });
+            .then(function (response) {
+               return response.data;
+            })
+            .catch(function (response) {
+               if (response.status >= 400 && response.status <= 499) {  // authentication error
+                  redirectOAuth();
+               } else {
+                  return null;
+               }
+            });
       };
 
       $Api.prototype._refreshToken = function () {
@@ -627,8 +625,8 @@ App.provider('Api', function () {
 
                if (token.expires_in) {
                   setTimeout(
-                      self._refreshToken.bind(self),
-                      token.expires_in * 900);
+                     self._refreshToken.bind(self),
+                     token.expires_in * 900);
                }
             }
          });
@@ -726,7 +724,7 @@ App.provider('Api', function () {
          removeToken();
 
          window.location.href = toAbsoluteServerURL(
-             '/auth/authorize?client_id=' + getOAuthClientId()
+            '/auth/authorize?client_id=' + getOAuthClientId()
              + '&redirect_uri=' + getOAuthRedirectUrl(),
          );
       }
