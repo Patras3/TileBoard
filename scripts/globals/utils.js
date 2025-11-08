@@ -317,3 +317,16 @@ export {
    createHONClimatePopup,
    createFloorHeatingSensor,
 } from './climateHelpers';
+
+/* ------------------------------------------------------------------ */
+/*                     LIGHT TRACK TILE HELPERS                       */
+/* ------------------------------------------------------------------ */
+
+export {
+   createLightTrackTile,
+   createDualAreaLights,
+   createDualAreaLightTrack,
+   createLightPoint,
+   createHorizontalLayout,
+   createVerticalLayout,
+} from './lightTrackHelpers';
