@@ -1681,16 +1681,19 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
          console.log('[getPopupLayout] Flattening 2D array for popup');
          const flatItems = [];
          // Flatten and add position properties based on row/column
+         // IMPORTANT: Don't mutate original items - create copies when needed
          layout.items.forEach((row, rowIndex) => {
             row.forEach((item, colIndex) => {
-               if (!item.position) {
-                  item.position = [colIndex, rowIndex];
+               // If item already has position, use as-is to avoid creating new object
+               if (item.position) {
+                  flatItems.push(item);
+               } else {
+                  // Create new object with position to avoid mutating original
+                  const itemWithPosition = Object.assign({}, item, {
+                     position: [colIndex, rowIndex],
+                  });
+                  flatItems.push(itemWithPosition);
                }
-               // Mark virtual tiles to prevent entity lookup
-               if (!item.state) {
-                  item.state = false;
-               }
-               flatItems.push(item);
             });
          });
          const flattenedLayout = Object.assign({}, layout, { items: flatItems });

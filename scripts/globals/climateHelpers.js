@@ -243,10 +243,14 @@ export function createHONClimatePopup (config) {
          type: window.TYPES.SCRIPT,
          id: id + '_mode_' + mode,
          state: false, // Virtual tile - no real entity
-         icon,
          customHtml: function (item, entity) {
             const isActive = entity.state === mode ? 'active' : '';
-            return `<div class="item-title ${isActive}">${label}</div>`;
+            return `
+               <div class="item-entity-container">
+                  <i class="mdi ${icon}" style="font-size: 48px;"></i>
+                  <div class="item-title ${isActive}">${label}</div>
+               </div>
+            `;
          },
          action: function (item, entity) {
             contextRef = this;
