@@ -329,7 +329,8 @@ export function createHONClimatePopup (config) {
             updateTemperature(newTemp);
          };
 
-         this.$scope.openPopup(popup);
+         // Pass the climate entity so virtual tiles can access it
+         this.$scope.openPopup(popup, entity);
       },
    };
 }
