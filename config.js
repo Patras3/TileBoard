@@ -699,83 +699,22 @@ var CONFIG = {
                      unit: 'kW', // assuming the unit is kWh, change if needed
                   },
 
-                  {
-                     position: [5, 0],
-                     type: TYPES.CUSTOM,
-                     title: 'Salon - Ogród',
+                  window.createCoverTile({
                      id: 'cover.roleta_ogrod',
-                     //  customHtml: '<b>Hi</b>',  // Can also be a function that will be passed item and entity.
-                     action: function (item, entity) {
-                        this.apiRequest({
-                           type: 'call_service',
-                           domain: 'cover',
-                           service: entity.state === 'closed' ? 'open_cover' : 'close_cover',
-                           service_data: {
-                              entity_id: item.id,
-                           },
-                        });
-                     },
-                     states: {
-                        open: 'Otwarte',
-                        closed: 'Zamknięte',
-                     },
-                     icons: { closed: 'mdi-curtains-closed', open: 'mdi-curtains' },
-                     secondaryAction: function (item, entity) {
-                        return this.$scope.openPopupIframe(item, entity);
-                     },
-                  },
-                  {
-                     position: [5, 1],
-                     type: TYPES.CUSTOM,
-                     title: 'Salon - Bok',
+                     title: 'Salon - Ogród',
+                     position: [5, 0],
+                  }),
+                  window.createCoverTile({
                      id: 'cover.salon_bok',
-                     //  customHtml: '<b>Hi</b>',  // Can also be a function that will be passed item and entity.
-                     action: function (item, entity) {
-                        this.apiRequest({
-                           type: 'call_service',
-                           domain: 'cover',
-                           service: entity.state === 'closed' ? 'open_cover' : 'close_cover',
-                           service_data: {
-                              entity_id: item.id,
-                           },
-                        });
-                     },
-                     states: {
-                        open: 'Otwarte',
-                        closed: 'Zamknięte',
-                     },
-                     icons: { closed: 'mdi-curtains-closed', open: 'mdi-curtains' },
-                     secondaryAction: function (item, entity) {
-                        return this.$scope.openPopupIframe(item, entity);
-                     },
-                  },
-                  {
-                     position: [5, 2],
-                     type: TYPES.CUSTOM,
-                     title: 'Sypialnia',
+                     title: 'Salon - Bok',
+                     position: [5, 1],
+                  }),
+                  window.createCoverTile({
                      id: 'cover.zaslony_sypialnia',
+                     title: 'Sypialnia',
+                     position: [5, 2],
                      hidden: isDownstairsLocation(),
-                     //  customHtml: '<b>Hi</b>',  // Can also be a function that will be passed item and entity.
-                     action: function (item, entity) {
-                        this.apiRequest({
-                           type: 'call_service',
-                           domain: 'cover',
-                           service: entity.state === 'closed' ? 'open_cover' : 'close_cover',
-                           service_data: {
-                              entity_id: item.id,
-                           },
-                        });
-                     },
-                     states: {
-                        open: 'Otwarte',
-                        closed: 'Zamknięte',
-                        opening: '...',
-                     },
-                     icons: { closed: 'mdi-curtains-closed', open: 'mdi-curtains', opening: 'mdi-timer-sand' },
-                     secondaryAction: function (item, entity) {
-                        return this.$scope.openPopupIframe(item, entity);
-                     },
-                  },
+                  }),
 
                   window.pinProtectedTile({
                      title: 'Garaż',
@@ -901,346 +840,117 @@ var CONFIG = {
                         });
                      },
                   },
-                  {
-                     position: [7, 0],
-                     title: 'Salon',
+                  window.createLightTile({
                      id: 'light.salon_plafon',
-                     type: TYPES.LIGHT,
+                     title: 'Salon',
+                     position: [7, 0],
+                     icon: 'mdi-ceiling-light',
                      hidden: isUpstairsLocation(),
-                     states: {
-                        on: 'Wł.',
-                        off: 'Wył.',
-                     },
-                     icons: {
-                        on: 'mdi-ceiling-light',
-                        off: 'mdi-ceiling-light-outline',
-                     },
-                     sliders: [
-                        {
-                           title: 'Brightness',
-                           field: 'brightness',
-                           max: 255,
-                           min: 0,
-                           step: 5,
-                           request: {
-                              type: 'call_service',
-                              domain: 'light',
-                              service: 'turn_on',
-                              field: 'brightness',
-                           },
-                        },
-                     ],
-                  },
+                  }),
 
                   window.createDualAreaLightTrack({ id: 'light.szyna_cala', title: 'Szyna - cała', x: 7, y: 1, hidden: isUpstairsLocation() }),
 
-                  {
-                     position: [7, 2],
-                     title: 'Kuchnia',
+                  window.createLightTile({
                      id: 'light.kuchnia',
-                     type: TYPES.LIGHT,
-                     hidden: isUpstairsLocation(),
-                     states: {
-                        on: 'Wł.',
-                        off: 'Wył.',
-                     },
-                     icons: {
-                        on: 'mdi-ceiling-light',
-                        off: 'mdi-ceiling-light-outline',
-                     },
-                  },
-                  {
-                     position: [7, 3],
-                     title: 'TV',
-                     id: 'light.tv_lampy',
-                     type: TYPES.LIGHT,
-                     hidden: isUpstairsLocation(),
-                     states: {
-                        on: 'Wł.',
-                        off: 'Wył.',
-                     },
-                     icons: {
-                        on: 'mdi-ceiling-light-multiple',
-                        off: 'mdi-ceiling-light-multiple-outline',
-                        unknown: 'mdi-ceiling-light-multiple-outline',
-                     },
-                     sliders: [
-                        {
-                           title: 'Brightness',
-                           field: 'brightness',
-                           max: 255,
-                           min: 0,
-                           step: 5,
-                           request: {
-                              type: 'call_service',
-                              domain: 'light',
-                              service: 'turn_on',
-                              field: 'brightness',
-                           },
-                        },
-                     ],
-                  },
-                  {
-                     position: [7, 4],
-                     title: 'Lampa stojąca',
-                     id: 'light.salon',
-                     type: TYPES.LIGHT,
-                     hidden: isUpstairsLocation(),
-                     states: {
-                        on: 'Wł.',
-                        off: 'Wył.',
-                     },
-                     icons: {
-                        on: 'mdi-floor-lamp-torchiere-variant',
-                        off: 'mdi-floor-lamp-torchiere-variant-outline',
-                        unknown: 'mdi-floor-lamp-torchiere-variant-outline',
-                     },
-                     sliders: [
-                        {
-                           title: 'Brightness',
-                           field: 'brightness',
-                           max: 255,
-                           min: 0,
-                           step: 5,
-                           request: {
-                              type: 'call_service',
-                              domain: 'light',
-                              service: 'turn_on',
-                              field: 'brightness',
-                           },
-                        },
-                     ],
-                  },
-                  {
-                     position: [7, 0],
-                     title: 'Sypialnia',
-                     id: 'light.sypialnia_glowne',
-                     hidden: isDownstairsLocation(),
-                     type: TYPES.LIGHT,
-                     states: {
-                        on: 'Wł.',
-                        off: 'Wył.',
-                     },
-                     icons: {
-                        on: 'mdi-bed',
-                        off: 'mdi-bed',
-                     },
-                     sliders: [
-                        {
-                           title: 'Brightness',
-                           field: 'brightness',
-                           max: 255,
-                           min: 0,
-                           step: 5,
-                           request: {
-                              type: 'call_service',
-                              domain: 'light',
-                              service: 'turn_on',
-                              field: 'brightness',
-                           },
-                        },
-                     ],
-                  },
-                  {
-                     position: [7, 1],
-                     title: 'Dziecięcy - główne',
-                     id: 'light.dzieciecy_glowne',
-                     type: TYPES.LIGHT,
-                     hidden: isDownstairsLocation(),
-                     states: {
-                        on: 'Wł.',
-                        off: 'Wył.',
-                     },
-                     icons: {
-                        on: 'mdi-baby-bottle',
-                        off: 'mdi-baby-bottle',
-                     },
-                     sliders: [
-                        {
-                           title: 'Brightness',
-                           field: 'brightness',
-                           max: 255,
-                           min: 0,
-                           step: 5,
-                           request: {
-                              type: 'call_service',
-                              domain: 'light',
-                              service: 'turn_on',
-                              field: 'brightness',
-                           },
-                        },
-                     ],
-                  },
-                  {
+                     title: 'Kuchnia',
                      position: [7, 2],
-                     title: 'Dziecięcy - lampka',
-                     id: 'light.dzieciecy_lampka_nocna',
-                     type: TYPES.LIGHT,
+                     icon: 'mdi-ceiling-light',
+                     hidden: isUpstairsLocation(),
+                     hasBrightness: false,
+                  }),
+                  window.createLightTile({
+                     id: 'light.tv_lampy',
+                     title: 'TV',
+                     position: [7, 3],
+                     icon: 'mdi-ceiling-light-multiple',
+                     hidden: isUpstairsLocation(),
+                  }),
+                  window.createLightTile({
+                     id: 'light.salon',
+                     title: 'Lampa stojąca',
+                     position: [7, 4],
+                     icon: 'mdi-floor-lamp-torchiere-variant',
+                     hidden: isUpstairsLocation(),
+                  }),
+                  window.createLightTile({
+                     id: 'light.sypialnia_glowne',
+                     title: 'Sypialnia',
+                     position: [7, 0],
+                     icon: 'mdi-bed',
+                     iconOff: 'mdi-bed',
                      hidden: isDownstairsLocation(),
-                     states: {
-                        on: 'Wł.',
-                        off: 'Wył.',
-                     },
-                     icons: {
-                        on: 'mdi-lightbulb-night',
-                        off: 'mdi-lightbulb-night-outline',
-                     },
-                     sliders: [
-                        {
-                           title: 'Brightness',
-                           field: 'brightness',
-                           max: 255,
-                           min: 0,
-                           step: 5,
-                           request: {
-                              type: 'call_service',
-                              domain: 'light',
-                              service: 'turn_on',
-                              field: 'brightness',
-                           },
-                        },
-                     ],
-                  },
+                  }),
+                  window.createLightTile({
+                     id: 'light.dzieciecy_glowne',
+                     title: 'Dziecięcy - główne',
+                     position: [7, 1],
+                     icon: 'mdi-baby-bottle',
+                     iconOff: 'mdi-baby-bottle',
+                     hidden: isDownstairsLocation(),
+                  }),
+                  window.createLightTile({
+                     id: 'light.dzieciecy_lampka_nocna',
+                     title: 'Dziecięcy - lampka',
+                     position: [7, 2],
+                     icon: 'mdi-lightbulb-night',
+                     hidden: isDownstairsLocation(),
+                  }),
 
 
                   // Tutajwklej
                   // Kamery
-                  {
-                     position: [0, 3],
+                  window.createCameraTile({
                      id: 'camera.drzwi',
-                     type: TYPES.CAMERA,
-                     bgSize: 'cover',
                      title: 'Drzwi',
+                     position: [0, 3],
                      width: 2,
                      height: 2,
                      customStyles: { 'border-radius': '8px;' },
-                     state: '',
-                     action: function (item, entity) {
-                        this.$scope.openPopupIframe({
-                           title: 'Drzwi',
-                           url: 'http://192.168.50.164:8021/web/single-cam.html?media=video+audio&camera=drzwi&showInitialImageEvenTooOld=true',
-                           iframeStyles: {
-                              width: '100%',  // Set width as needed
-                              height: '100%', // Set height as needed
-                              border: 'none',  // Optional: remove border
-                           },
-                        });
-                     },
-                     refresh: 10000,  // can be number in milliseconds
-                  },
-                  {
-                     position: [0, 5],
+                     refresh: 10000,
+                  }),
+                  window.createCameraTile({
                      id: 'camera.podjazd',
-                     type: TYPES.CAMERA,
-                     bgSize: 'cover',
                      title: 'Podjazd',
+                     position: [0, 5],
                      width: 2,
                      height: 1,
                      customStyles: { 'border-radius': '8px;' },
-                     state: false,
-                     action: function (item, entity) {
-                        this.$scope.openPopupIframe({
-                           title: 'Podjazd',
-                           url: 'http://192.168.50.164:8021/web/single-cam.html?media=video+audio&camera=podjazd&showInitialImageEvenTooOld=true',
-                           iframeStyles: {
-                              width: '100%',  // Set width as needed
-                              height: '100%', // Set height as needed
-                              border: 'none',  // Optional: remove border
-                           },
-                        });
-                     },
-                     refresh: 11200,  // can be number in milliseconds
-                  },
-                  {
-                     position: [2, 4],
+                     refresh: 11200,
+                  }),
+                  window.createCameraTile({
                      id: 'camera.ogrod',
-                     type: TYPES.CAMERA,
-                     bgSize: 'cover',
                      title: 'Ogród',
+                     position: [2, 4],
                      width: 2,
                      height: 1,
-                     state: false,
-                     action: function (item, entity) {
-                        this.$scope.openPopupIframe({
-                           title: 'Ogród',
-                           url: 'http://192.168.50.164:8021/web/single-cam.html?media=video+audio&camera=ogrod&showInitialImageEvenTooOld=true',
-                           iframeStyles: {
-                              width: '100%',  // Set width as needed
-                              height: '100%', // Set height as needed
-                              border: 'none',  // Optional: remove border
-                           },
-                        });
-                     },
-                     refresh: 13600,  // can be number in milliseconds
-                  },
-                  {
-                     position: [4, 4],
+                     refresh: 13600,
+                  }),
+                  window.createCameraTile({
                      id: 'camera.garaz',
-                     type: TYPES.CAMERA,
-                     bgSize: 'cover',
                      title: 'Garaż',
+                     position: [4, 4],
                      width: 2,
                      height: 1,
-                     state: false,
-                     action: function (item, entity) {
-                        this.$scope.openPopupIframe({
-                           title: 'Garaż',
-                           url: 'http://192.168.50.164:8021/web/single-cam.html?media=video+audio&camera=garaz&showInitialImageEvenTooOld=true',
-                           iframeStyles: {
-                              width: '100%',  // Set width as needed
-                              height: '100%', // Set height as needed
-                              border: 'none',  // Optional: remove border
-                           },
-                        });
-                     },
-                     refresh: 12400,  // can be number in milliseconds
-                  },
-                  {
-                     position: [4, 5],
+                     refresh: 12400,
+                  }),
+                  window.createCameraTile({
                      id: 'camera.bok',
-                     type: TYPES.CAMERA,
-                     bgSize: 'cover',
                      title: 'Bok',
+                     position: [4, 5],
                      width: 4,
                      height: 1,
                      customStyles: { 'border-radius': '8px;' },
-                     state: false,
-                     action: function (item, entity) {
-                        this.$scope.openPopupIframe({
-                           title: 'Bok',
-                           url: 'http://192.168.50.164:8021/web/single-cam.html?media=video+audio&camera=bok&showInitialImageEvenTooOld=true',
-                           iframeStyles: {
-                              width: '100%',  // Set width as needed
-                              height: '100%', // Set height as needed
-                              border: 'none',  // Optional: remove border
-                           },
-                        });
-                     },
-                     refresh: 12700,  // can be number in milliseconds
-                  },
-                  {
-                     position: [2, 5],
+                     refresh: 12700,
+                  }),
+                  window.createCameraTile({
                      id: 'camera.przed_domem_duo',
-                     type: TYPES.CAMERA,
-                     bgSize: 'cover',
                      title: 'Przed domem',
+                     position: [2, 5],
                      width: 2,
                      height: 1,
                      customStyles: { 'border-radius': '8px;' },
-                     state: false,
-                     action: function (item, entity) {
-                        this.$scope.openPopupIframe({
-                           title: 'Przed domem',
-                           url: 'http://192.168.50.164:8021/web/single-cam.html?media=video+audio&camera=przed_domem_duo&showInitialImageEvenTooOld=true',
-                           iframeStyles: {
-                              width: '100%',  // Set width as needed
-                              height: '100%', // Set height as needed
-                              border: 'none',  // Optional: remove border
-                           },
-                        });
-                     },
-                     refresh: 12700,  // can be number in milliseconds
-                  },
+                     refresh: 12700,
+                  }),
                   {
                      position: [7, 5],
                      id: 'camera.drukarka',
@@ -1505,48 +1215,12 @@ var CONFIG = {
                      id: 'automation.kapanie',
                      icon: 'mdi-shower',
                   },
-                  {
-                     position: [8, 3], // Adjust the position as needed
-                     title: 'Pralka',
+                  window.createApplianceTile({
                      id: 'sensor.pralka_washer_job_state',
-                     hiddenNo: function () {
-                        const hiddenStates = ['finished', 'none', 'unavailable'];
-                        const pralkaState = this.$scope.states['sensor.pralka_washer_job_state'].state;
-                        return hiddenStates.includes(pralkaState);
-                     },
+                     title: 'Pralka',
+                     position: [8, 3],
                      icon: 'mdi-washing-machine',
-                     type: TYPES.CUSTOM,
-                     customHtml: function (item, entity) {
-                        // Check if the job state is other than 'none'
-                        if (entity.state !== 'none') {
-                           // Get the completion time from the separate sensor
-                           var completionTimeEntity = this.$scope.states['sensor.pralka_washer_completion_time'];
-                           var completionTime = new Date(completionTimeEntity ? completionTimeEntity.state : '');
-
-                           // Calculate the time difference
-                           var currentTime = new Date();
-                           var timeDifference = new Date(completionTime - currentTime);
-
-                           // Format the time difference as "X hours, Y minutes"
-                           var hours = timeDifference.getUTCHours();
-                           var minutes = timeDifference.getUTCMinutes();
-
-                           var timeString = '';
-                           if (hours > 0) {
-                              timeString += hours + ' godziny ';
-                           }
-                           if (minutes > 0 || hours === 0) {
-                              timeString += minutes + ' minut';
-                           }
-
-                           // Create and return the custom HTML content
-                           return '<div class="item-entity">\n' + '  <span class="item-entity--icon mdi  mdi-washing-machine" ng-class="entityIcon(item, entity)"></span>' + '  </div><br/><div>' + timeString + '</div>';
-                        } else {
-                           // If the job state is 'none', return an empty string
-                           return '<div class="item-entity">\n' + '  <span class="item-entity--icon mdi  mdi-washing-machine" ng-class="entityIcon(item, entity)"></span>' + '  </div>';
-                        }
-                     },
-
+                     completionSensor: 'sensor.pralka_washer_completion_time',
                      states: {
                         finish: 'Zakończona',
                         none: 'Wył.',
@@ -1555,55 +1229,13 @@ var CONFIG = {
                         wash: 'Pranie',
                         weightSensing: 'Wykrywanie wagi',
                      },
-                     icons: {
-                        finish: 'mdi-checkbox-marked-circle-outline',
-                        none: 'mdi-checkbox-blank-circle-outline',
-                        rinse: 'mdi-checkbox-blank-circle-outline',
-                        spin: 'mdi-checkbox-blank-circle-outline',
-                        wash: 'mdi-checkbox-blank-circle-outline',
-                        weightSensing: 'mdi-checkbox-blank-circle-outline',
-                     },
-                  },
-                  {
-                     position: [8, 4], // Adjust the position as needed
-                     title: 'Suszarka',
+                  }),
+                  window.createApplianceTile({
                      id: 'sensor.suszarka_dryer_job_state',
-                     type: TYPES.CUSTOM,
-                     hiddenNo: function () {
-                        const hiddenStates = ['finished', 'none', 'unavailable'];
-                        const suszarkaState = this.$scope.states['sensor.suszarka_dryer_job_state'].state;
-                        return hiddenStates.includes(suszarkaState);
-                     },
-                     customHtml: function (item, entity) {
-                        // Check if the job state is other than 'none'
-                        if (entity.state !== 'none') {
-                           // Get the completion time from the separate sensor // this.$scope.states['sensor.temperatura_c_w_u'];
-                           const completionTimeEntity = this.$scope.states['sensor.suszarka_dryer_completion_time'];
-                           const completionTime = new Date(completionTimeEntity ? completionTimeEntity.state : '');
-
-                           // Calculate the time difference
-                           var currentTime = new Date();
-                           var timeDifference = new Date(completionTime - currentTime);
-
-                           // Format the time difference as "X hours, Y minutes"
-                           var hours = timeDifference.getUTCHours();
-                           var minutes = timeDifference.getUTCMinutes();
-
-                           var timeString = '';
-                           if (hours > 0) {
-                              timeString += hours + ' godziny ';
-                           }
-                           if (minutes > 0 || hours === 0) {
-                              timeString += minutes + ' minut';
-                           }
-
-                           // Create and return the custom HTML content
-                           return '<div class="item-entity">\n' + '  <span class="item-entity--icon mdi  mdi-tumble-dryer" ng-class="entityIcon(item, entity)"></span>' + '  </div><br/><div>' + timeString + '</div>';
-                        } else {
-                           // If the job state is 'none', return an empty string
-                           return '<div class="item-entity">\n' + '  <span class="item-entity--icon mdi  mdi-tumble-dryer" ng-class="entityIcon(item, entity)"></span>' + '  </div>';
-                        }
-                     },
+                     title: 'Suszarka',
+                     position: [8, 4],
+                     icon: 'mdi-tumble-dryer',
+                     completionSensor: 'sensor.suszarka_dryer_completion_time',
                      states: {
                         none: 'Wył.',
                         finished: 'Zakończona',
@@ -1611,15 +1243,7 @@ var CONFIG = {
                         drying: 'Suszenie',
                         weightSensing: 'Ważenie',
                      },
-                     unit: '',
-                     icons: {
-                        none: 'mdi-checkbox-blank-circle-outline',
-                        finished: 'mdi-checkbox-marked-circle-outline',
-                        cooling: 'mdi-checkbox-blank-circle-outline',
-                        drying: 'mdi-checkbox-blank-circle-outline',
-                        weightSensing: 'mdi-checkbox-blank-circle-outline',
-                     },
-                  },
+                  }),
                   {
                      position: [8, 5],
                      width: 1,
