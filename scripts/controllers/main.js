@@ -214,13 +214,18 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
 
 
    $scope.getItemEntity = function (item) {
-      // Virtual tiles don't have real entities - return a mock or parent entity
-      if (item.state === false || item.virtual === true) {
+      // Virtual tiles are ONLY those with state: false AND in popup context
+      // OR explicitly marked with virtual: true flag
+      // This prevents false positives where normal tiles might have state: false
+      const isVirtualInPopup = item.state === false && $scope.activePopup;
+      const hasVirtualFlag = item.virtual === true;
+
+      if (isVirtualInPopup || hasVirtualFlag) {
          // For popup virtual tiles, use the popup's parent entity
          if ($scope.activePopup && $scope.activePopup.entity) {
             return $scope.activePopup.entity;
          }
-         // For other virtual tiles or when no parent entity, return cached mock
+         // For standalone virtual tiles with virtual flag, return cached mock
          return MOCK_ENTITY;
       }
 
@@ -540,16 +545,21 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    };
 
    $scope.itemStyles = function (page, item, entity) {
-      const prevSize = item._prevTileSize || page.tileSize || CONFIG.tileSize;
-      const currentSize = page.tileSize || CONFIG.tileSize;
+      // For popup tiles, page might be undefined - use popup layout or CONFIG defaults
+      if (!page && $scope.activePopup && $scope.activePopup.layout) {
+         page = $scope.activePopup.layout;
+      }
+
+      const prevSize = item._prevTileSize || (page ? page.tileSize : null) || CONFIG.tileSize;
+      const currentSize = (page ? page.tileSize : null) || CONFIG.tileSize;
       const hasChanged = prevSize !== currentSize;
 
       if (!item.styles || hasChanged) {
          const width = item.width || 1;
          const height = item.height || 1;
          const pos = item.position;
-         const tileSize = page.tileSize || CONFIG.tileSize;
-         const tileMargin = page.tileMargin || CONFIG.tileMargin;
+         const tileSize = (page ? page.tileSize : null) || CONFIG.tileSize;
+         const tileMargin = (page ? page.tileMargin : null) || CONFIG.tileMargin;
 
          item._prevTileSize = tileSize;
 
