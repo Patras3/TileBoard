@@ -1435,9 +1435,9 @@
         .modal-grid {
             display: grid;
             grid-template-columns: repeat(4, 140px);
-            gap: 5px;
+            gap: 6px;
             justify-content: center;
-            background: rgba(0, 0, 0, 0.3);
+            background: url('http://192.168.50.164:9000/images/dark-polygonal-background.jpg') center/cover;
             padding: 20px;
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -2314,24 +2314,24 @@
             body.classList.toggle('no-artifacts');
         });
 
-        // Sample tile data for the 4x4 grid
+        // Realistic tile data based on actual config.js
         const sampleTiles = [
-            { icon: '💡', title: 'Living Room', state: 'ON', hasStatus: true },
-            { icon: '💡', title: 'Kitchen', state: 'OFF', hasStatus: false },
-            { icon: '🌡️', title: 'Bedroom', state: '22°C', hasStatus: false },
-            { icon: '🚪', title: 'Front Door', state: 'Locked', hasStatus: true },
-            { icon: '💡', title: 'Bathroom', state: 'OFF', hasStatus: false },
-            { icon: '🎵', title: 'Speaker', state: 'Playing', hasStatus: true },
-            { icon: '☀️', title: 'Blinds', state: 'Open', hasStatus: false },
-            { icon: '🌡️', title: 'Office', state: '21°C', hasStatus: false },
-            { icon: '💡', title: 'Hallway', state: 'ON', hasStatus: true },
-            { icon: '🔒', title: 'Garage', state: 'Closed', hasStatus: true },
-            { icon: '💡', title: 'Garden', state: 'OFF', hasStatus: false },
-            { icon: '📺', title: 'TV Room', state: 'OFF', hasStatus: false },
-            { icon: '💡', title: 'Patio', state: 'ON', hasStatus: true },
-            { icon: '🌡️', title: 'Basement', state: '19°C', hasStatus: false },
-            { icon: '💨', title: 'Fan', state: 'Auto', hasStatus: true },
-            { icon: '💡', title: 'Attic', state: 'OFF', hasStatus: false }
+            { icon: '💡', title: 'Salon Plafon', state: 'ON', hasStatus: true },
+            { icon: '❄️', title: 'Salon', state: '22°C', hasStatus: false },
+            { icon: '💡', title: 'Kuchnia', state: 'OFF', hasStatus: false },
+            { icon: '❄️', title: 'Sypialnia', state: '21°C', hasStatus: false },
+            { icon: '⚡', title: 'Zużycie', state: '1.2kW', hasStatus: true },
+            { icon: '☀️', title: 'Produkcja', state: '+2.5kW', hasStatus: true },
+            { icon: '🪟', title: 'Roleta Ogród', state: 'Otwarta', hasStatus: false },
+            { icon: '🌡️', title: 'Rekuperacja', state: '18°C → 20°C', hasStatus: false },
+            { icon: '💡', title: 'Szyna Cała', state: 'ON', hasStatus: true },
+            { icon: '📺', title: 'TV', state: 'Playing', hasStatus: true },
+            { icon: '🔊', title: 'Denon', state: 'OFF', hasStatus: false },
+            { icon: '🤖', title: 'Odkurzacz', state: 'Bezczynny', hasStatus: false },
+            { icon: '🌀', title: 'Wietrzenie', state: '15 min temu', hasStatus: false },
+            { icon: '💧', title: 'Cyrkulacja', state: '45°C', hasStatus: false },
+            { icon: '😴', title: 'Usypianie', state: 'Gotowe', hasStatus: false },
+            { icon: '🚿', title: 'Kąpanie', state: '2h temu', hasStatus: false }
         ];
 
         // Open modal with specific style
