@@ -214,16 +214,18 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
 
 
    $scope.getItemEntity = function (item) {
-      // Virtual tiles don't have real entities - only match explicitly marked virtual tiles
-      // Check state === false (not just falsy) to avoid matching undefined/null
-      const isVirtual = item.state === false || item.virtual === true;
+      // Virtual tiles are ONLY those with state: false AND in popup context
+      // OR explicitly marked with virtual: true flag
+      // This prevents false positives where normal tiles might have state: false
+      const isVirtualInPopup = item.state === false && $scope.activePopup;
+      const hasVirtualFlag = item.virtual === true;
 
-      if (isVirtual) {
+      if (isVirtualInPopup || hasVirtualFlag) {
          // For popup virtual tiles, use the popup's parent entity
          if ($scope.activePopup && $scope.activePopup.entity) {
             return $scope.activePopup.entity;
          }
-         // For other virtual tiles or when no parent entity, return cached mock
+         // For standalone virtual tiles with virtual flag, return cached mock
          return MOCK_ENTITY;
       }
 
