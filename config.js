@@ -253,13 +253,6 @@ var CONFIG = {
             type: HEADER_ITEMS.DATETIME,
             dateFormat: 'EEEE, dd LLLL', // https://docs.angularjs.org/api/ng/filter/date
          },
-         /*            {
-                type: HEADER_ITEMS.CUSTOM_HTML,
-                html: 'Hello moto! <b>TileBoard</b>',
-                styles: {
-                    margin: '40px 0 0'
-                }
-            }*/
       ],
    },
 
@@ -587,19 +580,6 @@ var CONFIG = {
                      },
                   },
 
-                  /*                        {
-                                                    position: [0, 3],
-                                                    id: "climate.pompa_ciepla_dom",
-                                                    width: 1,
-                                                    type: TYPES.CLIMATE,
-                                                    unit: 'C',
-                                                    title: 'Pompa Ciepła',
-                                                    useHvacMode: false,  // Optional: enables HVAC mode (by default uses PRESET mode)
-                                                    state: function (item, entity) {
-                                                        return 'Aktualnie  '
-                                                            + entity.attributes.current_temperature + 'C';
-                                                    },
-                                                },*/
                   {
                      position: [3, 3],
                      type: TYPES.AUTOMATION,
@@ -718,36 +698,6 @@ var CONFIG = {
                      id: 'sensor.glowny_total_system_power',
                      unit: 'kW', // assuming the unit is kWh, change if needed
                   },
-                  // {
-                  //     position: [0, 4],
-                  //     width: 1,
-                  //     height: 1,
-                  //     title: 'Energy Production',
-                  //     subtitle: '',
-                  //     type: TYPES.GAUGE,
-                  //     id: 'sensor.glowny_total_system_power', // Assign the sensor you want to display on the gauge
-                  //     value: function(item, entity){
-                  //         return entity.state;
-                  //     },
-                  //     settings: {
-                  //         size: 140, // Defaults to 50% of either height or width, whichever is smaller
-                  //         type: 'semi', // Options are: 'full', 'semi', and 'arch'. Defaults to 'full'
-                  //         min: -6000, // Defaults to 0
-                  //         max: 6000, // Defaults to 100
-                  //         cap: 'butt', // Options are: 'round', 'butt'. Defaults to 'butt'
-                  //         thick: 6, // Defaults to 6
-                  //         label: 'My Gauge', // Defaults to undefined
-                  //         append: '@attributes.unit_of_measurement', // Defaults to undefined
-                  //         prepend: '', // Defaults to undefined
-                  //         duration: 1500, // Defaults to 1500ms
-                  //         thresholds: { 0: { color: 'green'}, 80: { color: 'red' } },  // Defaults to undefined
-                  //         labelOnly: false, // Defaults to false
-                  //         foregroundColor: 'rgba(0, 150, 136, 1)', // Defaults to rgba(0, 150, 136, 1)
-                  //         backgroundColor: 'rgba(0, 0, 0, 0.1)', // Defaults to rgba(0, 0, 0, 0.1)
-                  //         fractionSize: 0, // Number of decimal places to round the number to. Defaults to current locale formatting
-                  //     },
-                  // }
-
 
                   {
                      position: [5, 0],
@@ -983,66 +933,7 @@ var CONFIG = {
                   },
 
                   window.createDualAreaLightTrack({ id: 'light.szyna_cala', title: 'Szyna - cała', x: 7, y: 1, hidden: isUpstairsLocation() }),
-                  // window.createDualAreaLightTrack({ id: 'light.szyna_dodatkowe', title: 'Szyna - dodatkowe', x: 7, y: 2, hidden: isUpstairsLocation() }),
 
-                  /*     {
-                             position: [0, 1],
-                             title: 'Szyna - główne',
-                             id: 'light.szyna_glowne',
-                             type: TYPES.LIGHT,
-                             states: {
-                                 on: 'Wł.',
-                                 off: 'Wył.',
-                             },
-                             icons: {
-                                 on: 'mdi-track-light',
-                                 off: 'mdi-track-light-off',
-                             },
-                             sliders: [
-                                 {
-                                     title: 'Brightness',
-                                     field: 'brightness',
-                                     max: 255,
-                                     min: 0,
-                                     step: 5,
-                                     request: {
-                                         type: 'call_service',
-                                         domain: 'light',
-                                         service: 'turn_on',
-                                         field: 'brightness',
-                                     },
-                                 },
-                             ],
-                         },*/
-                  /*     {
-                             position: [0, 2],
-                             title: 'Szyna - dodatkowe',
-                             id: 'light.szyna_dodatkowe',
-                             type: TYPES.LIGHT,
-                             states: {
-                                 on: 'Wł.',
-                                 off: 'Wył.',
-                             },
-                             icons: {
-                                 on: 'mdi-track-light',
-                                 off: 'mdi-track-light-off',
-                             },
-                             sliders: [
-                                 {
-                                     title: 'Brightness',
-                                     field: 'brightness',
-                                     max: 255,
-                                     min: 0,
-                                     step: 5,
-                                     request: {
-                                         type: 'call_service',
-                                         domain: 'light',
-                                         service: 'turn_on',
-                                         field: 'brightness',
-                                     },
-                                 },
-                             ],
-                         },*/
                   {
                      position: [7, 2],
                      title: 'Kuchnia',
