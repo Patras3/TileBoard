@@ -3057,7 +3057,7 @@
       to { transform: rotate(360deg); }
    }
 
-   /* Climate/Thermostat - Orange/Red gradient */
+   /* Climate/Thermostat - Temperature-based colors */
    .item.-climate {
       .item-entity--icon {
          color: rgba(249, 115, 22, 0.7) !important;
@@ -3066,6 +3066,117 @@
       &.-on .item-entity--icon {
          color: #f97316 !important;
          filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.6));
+      }
+
+      /* Climate icon colors based on mode */
+      .item-climate--icon {
+         transition: all 0.3s ease;
+
+         &.mdi-snowflake {
+            color: #3b82f6 !important; /* Blue for cooling */
+            filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6));
+         }
+
+         &.mdi-fire,
+         &.mdi-radiator {
+            color: #f97316 !important; /* Orange for heating */
+            filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.6));
+         }
+
+         &.mdi-fan {
+            color: #22d3ee !important; /* Cyan for fan */
+            filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.6));
+         }
+
+         &.mdi-power-off {
+            color: rgba(148, 163, 184, 0.5) !important; /* Gray for off */
+         }
+      }
+
+      /* Temperature target display */
+      .item-climate--target {
+         text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+         font-weight: 600;
+      }
+
+      /* Plus/Minus buttons */
+      .item-button {
+         background: rgba(34, 211, 238, 0.15);
+         border: 1px solid rgba(34, 211, 238, 0.3);
+         border-radius: 8px;
+         transition: all 0.2s ease;
+
+         i {
+            color: #22d3ee !important;
+            filter: drop-shadow(0 0 4px rgba(34, 211, 238, 0.4));
+         }
+
+         &:hover {
+            background: rgba(34, 211, 238, 0.25);
+            border-color: rgba(34, 211, 238, 0.5);
+            transform: scale(1.05);
+         }
+
+         &:active {
+            transform: scale(0.95);
+         }
+      }
+
+      /* Mode selector */
+      .item-climate--mode {
+         background: rgba(34, 211, 238, 0.1);
+         border: 1px solid rgba(34, 211, 238, 0.2);
+         border-radius: 6px;
+         padding: 4px 8px;
+         color: rgba(255, 255, 255, 0.9);
+         transition: all 0.2s ease;
+
+         &:hover {
+            background: rgba(34, 211, 238, 0.2);
+            border-color: rgba(34, 211, 238, 0.4);
+         }
+      }
+
+      /* State-based colors */
+      &.-heat {
+         .item-climate--icon {
+            color: #f97316 !important;
+            filter: drop-shadow(0 0 10px rgba(249, 115, 22, 0.7));
+            animation: heat-pulse 2s ease-in-out infinite;
+         }
+      }
+
+      &.-cool {
+         .item-climate--icon {
+            color: #3b82f6 !important;
+            filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.7));
+            animation: cool-pulse 2s ease-in-out infinite;
+         }
+      }
+
+      &.-fan_only {
+         .item-climate--icon {
+            color: #22d3ee !important;
+            filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.6));
+         }
+      }
+   }
+
+   @keyframes heat-pulse {
+      0%, 100% {
+         filter: drop-shadow(0 0 10px rgba(249, 115, 22, 0.7));
+      }
+      50% {
+         filter: drop-shadow(0 0 16px rgba(249, 115, 22, 0.9));
+      }
+   }
+
+   @keyframes cool-pulse {
+      0%, 100% {
+         filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.7));
+      }
+      50% {
+         filter: drop-shadow(0 0 16px rgba(59, 130, 246, 0.9));
       }
    }
 
