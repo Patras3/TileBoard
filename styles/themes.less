@@ -2514,3 +2514,276 @@
       background: rgba(255, 107, 157, 0.08);
    }
 }
+
+/* ========================================
+   NAVY CYAN THEME
+   Clean navy backgrounds with cyan accents and bright borders
+   5D-2e: Bright Accent style from mockups
+   ======================================== */
+
+.-theme-navy-cyan {
+   @pageMenuBottomTopBorderWidth: 2px;
+   @pageMenuIconSize: 70px;
+   @pageMenuIconVerticalMargin: 5px;
+   @pageBottomPadding: @pageMenuBottomTopBorderWidth
+         + @pageMenuIconSize + 2 * @pageMenuIconVerticalMargin;
+
+   /* Core theme colors */
+   color: #ffffff;
+   background: #0a1929 !important;
+
+   /* Tile/Card color definitions */
+   @TILE_COLOR_ON: #ffffff;
+   @TILE_BACKGROUND_ON: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+   @TILE_BORDER_ON: rgba(59, 130, 246, 0.6);
+   @TILE_SHADOW_ON: 0 8px 32px rgba(30, 64, 175, 0.6);
+
+   @TILE_COLOR_OFF: rgba(255, 255, 255, 0.85);
+   @TILE_BACKGROUND_OFF: linear-gradient(135deg, #1e3a5f 0%, #0a1929 100%);
+   @TILE_BORDER_OFF: rgba(34, 211, 238, 0.4);
+   @TILE_SHADOW_OFF: 0 8px 32px rgba(30, 58, 95, 0.5);
+
+   /* Header styling */
+   .header {
+      color: #ffffff;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+   }
+
+   /* Tile/Card styling */
+   .item {
+      color: @TILE_COLOR_OFF;
+      border-radius: 8px;
+      background: @TILE_BACKGROUND_OFF;
+      border: 2px solid @TILE_BORDER_OFF;
+      box-shadow: @TILE_SHADOW_OFF;
+
+      &-state {
+         background: rgba(0, 0, 0, 0.25);
+         font-weight: 500;
+         color: rgba(255, 255, 255, 0.9);
+         padding: 3px 6px 2px;
+         border-radius: 4px;
+      }
+
+      &-entity {
+         color: rgba(255, 255, 255, 0.95);
+
+         &--icon {
+            color: rgba(34, 211, 238, 0.7);
+         }
+
+         &-sliders {
+            border-radius: 8px;
+            background: @TILE_BACKGROUND_OFF;
+            border: 2px solid @TILE_BORDER_OFF;
+         }
+
+         &-colorpicker input {
+            border-color: rgba(34, 211, 238, 0.3);
+            border-radius: 18px;
+            height: 18px;
+            width: 18px;
+         }
+      }
+
+      &-clickable {
+         border: 0 !important;
+         height: 7px !important;
+         width: 7px !important;
+         left: 7px !important;
+         top: 7px !important;
+         border-radius: 7px !important;
+         background: rgba(34, 211, 238, 0.8);
+      }
+
+      &-subtitle {
+         font-size: 14px;
+         bottom: 21px;
+         color: rgba(255, 255, 255, 0.75);
+      }
+
+      &-title {
+         height: 22px;
+         line-height: 22px;
+         padding-bottom: 1px;
+         color: rgba(255, 255, 255, 0.95);
+      }
+
+      &-title, &-subtitle {
+         padding-left: 7px;
+      }
+
+      /* Special handling for camera and device tracker */
+      &.-device_tracker {
+         background: #1e3a5f !important;
+      }
+
+      &.-device_tracker,
+      &.-camera,
+      &.-camera_thumbnail {
+         .item-title, .item-state {
+            color: @TILE_COLOR_ON;
+         }
+      }
+
+      /* ON state styling */
+      &.-on, &.-armed, &.-locked {
+         background: @TILE_BACKGROUND_ON;
+         border-color: @TILE_BORDER_ON;
+         box-shadow: @TILE_SHADOW_ON;
+         color: @TILE_COLOR_ON;
+
+         .item-state {
+            background: rgba(0, 0, 0, 0.3);
+            color: rgba(255, 255, 255, 1);
+         }
+
+         .item-entity--icon {
+            color: rgba(59, 130, 246, 0.9);
+         }
+
+         .item-subtitle {
+            color: rgba(255, 255, 255, 0.85);
+         }
+      }
+
+      /* OFF state styling */
+      &.-off, &.-disarmed, &.-arming, &.-loading {
+         color: @TILE_COLOR_OFF;
+         background: @TILE_BACKGROUND_OFF;
+         border-color: @TILE_BORDER_OFF;
+         box-shadow: @TILE_SHADOW_OFF;
+
+         .item-state {
+            color: rgba(255, 255, 255, 0.8);
+         }
+
+         .item-entity--icon {
+            color: rgba(34, 211, 238, 0.6);
+         }
+      }
+
+      /* Unlocked state */
+      &.-unlocked {
+         background: @TILE_BACKGROUND_OFF;
+         border-color: rgba(239, 68, 68, 0.5);
+         box-shadow: 0 8px 32px rgba(239, 68, 68, 0.4);
+
+         .item-entity--icon {
+            color: rgba(239, 68, 68, 0.8);
+         }
+      }
+   }
+
+   /* Page menu (bottom navigation) styling */
+   .pages-menu.-bottom {
+      background: rgba(10, 25, 41, 0.95);
+      border-top: @pageMenuBottomTopBorderWidth solid rgba(34, 211, 238, 0.4);
+      padding: 0;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.5);
+
+      .pages-menu--scroll-indicator {
+         display: none;
+      }
+
+      .pages-menu {
+         &--item {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 26px;
+            margin: @pageMenuIconVerticalMargin 8px;
+
+            &.-active {
+               background: none;
+               color: rgba(34, 211, 238, 0.9);
+               font-weight: 600;
+            }
+         }
+      }
+   }
+
+   &.-menu-bottom {
+      .page {
+         padding-bottom: @pageBottomPadding;
+      }
+      .footer {
+         bottom: @pageBottomPadding;
+      }
+   }
+
+   /* Slider styling */
+   input[type=range] {
+      background: rgba(30, 58, 95, 0.4);
+      border: 1px solid rgba(34, 211, 238, 0.3);
+      border-radius: 8px;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+   }
+
+   input[type=range]::-webkit-slider-thumb {
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.9), rgba(59, 130, 246, 0.9));
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 8px rgba(34, 211, 238, 0.5);
+      width: 20px;
+      height: 20px;
+   }
+
+   input[type=range]::-moz-range-thumb {
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.9), rgba(59, 130, 246, 0.9));
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 8px rgba(34, 211, 238, 0.5);
+      width: 20px;
+      height: 20px;
+   }
+
+   .slider-inner {
+      .range-holder {
+         & input[type="range"] {
+            border-radius: 8px;
+            border: 1px solid rgba(34, 211, 238, 0.3);
+         }
+      }
+   }
+
+   /* Select dropdown styling */
+   .item-select {
+      background: linear-gradient(135deg, #1e3a5f, #0a1929);
+      border: 2px solid rgba(34, 211, 238, 0.4);
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+
+      &--option {
+         color: rgba(255, 255, 255, 0.9);
+         font-weight: 500;
+
+         &:active, &.-active {
+            background: rgba(34, 211, 238, 0.2);
+            color: rgba(59, 130, 246, 1);
+         }
+      }
+   }
+
+   /* Notification styling */
+   .noty {
+      background: linear-gradient(135deg, #1e3a5f, #0a1929);
+      border: 2px solid rgba(34, 211, 238, 0.5);
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      color: #ffffff;
+   }
+
+   /* Weather underground icon opacity */
+   .wu {
+      opacity: 0.85;
+   }
+
+   /* Media player source text */
+   .media-player--source {
+      color: rgba(255, 255, 255, 0.7);
+   }
+
+   /* Weather list alternating rows */
+   .weather-list table tr:nth-child(2n) {
+      background: rgba(30, 58, 95, 0.15);
+   }
+}
