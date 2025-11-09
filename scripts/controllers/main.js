@@ -399,6 +399,9 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    };
 
    $scope.groupStyles = function (group, page) {
+      if (!group || !page) {
+         return {};
+      }
       if (!group.styles) {
          const tileSize = page.tileSize || CONFIG.tileSize;
          const tileMargin = page.tileMargin || CONFIG.tileMargin;
@@ -1575,7 +1578,7 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    };
 
    $scope.getPopupClasses = function () {
-      if (!$scope.activePopup || !$scope.activePopup.layout.classes) {
+      if (!$scope.activePopup || !$scope.activePopup.layout || !$scope.activePopup.layout.classes) {
          return '';
       }
       return parseFieldValue($scope.activePopup.layout.classes, $scope.activePopup.item, $scope.activePopup.entity);
