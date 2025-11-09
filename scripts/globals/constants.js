@@ -497,3 +497,73 @@ export const TILE_DEFAULTS = {
       dateFormat: 'MMM d',
    },
 };
+
+/* ------------------------------------------------------------------ */
+/*                    POLISH WEATHER TRANSLATIONS                     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Weather icon mappings for Home Assistant weather states
+ * Maps HA weather conditions to Weather Underground icon classes
+ */
+export const WEATHER_ICONS_PL = {
+   'clear-day': 'clear',
+   'clear-night': 'nt-clear',
+   cloudy: 'nt-cloudy',
+   exceptional: 'unknown',
+   fog: 'fog',
+   hail: 'sleet',
+   lightning: 'chancestorms',
+   'lightning-rainy': 'tstorms',
+   'partly-cloudy-day': 'partlycloudy',
+   'partly-cloudy-night': 'nt-partlycloudy',
+   partlycloudy: 'partlycloudy',
+   pouring: 'rain',
+   rainy: 'rain',
+   snowy: 'snow',
+   'snowy-rainy': 'sleet',
+   sunny: 'sunny',
+   wind: 'unknown',
+   windy: 'unknown',
+   'windy-variant': 'unknown',
+};
+
+/**
+ * Polish weather state translations
+ * For use in weather tile descriptions
+ */
+export const WEATHER_STATES_PL = {
+   'clear-night': 'Pogodna noc',
+   cloudy: 'Zachmurzenie',
+   exceptional: 'Wyjątkowe warunki',
+   fog: 'Mgła',
+   hail: 'Grad',
+   lightning: 'Błyskawice',
+   'lightning-rainy': 'Błyskawice, deszcz',
+   partlycloudy: 'Cz. zachmurzenie',
+   pouring: 'Ulewa',
+   rainy: 'Deszcz',
+   snowy: 'Śnieg',
+   'snowy-rainy': 'Śnieg, deszcz',
+   sunny: 'Słonecznie',
+   windy: 'Wietrznie',
+   'windy-variant': 'Wietrznie',
+};
+
+/**
+ * Get Polish translation for weather state
+ * @param {string} state - Weather state ID
+ * @returns {string} Polish translation or original state
+ */
+export function getPolishWeatherState (state) {
+   return WEATHER_STATES_PL[state] || state;
+}
+
+/**
+ * Get weather icon for state
+ * @param {string} state - Weather state ID
+ * @returns {string} Weather icon class
+ */
+export function getWeatherIcon (state) {
+   return WEATHER_ICONS_PL[state] || 'unknown';
+}

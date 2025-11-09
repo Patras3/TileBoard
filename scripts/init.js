@@ -7,6 +7,9 @@ import 'angular-moment';
 import 'angular-dynamic-locale';
 import './vendors/color-picker';
 import { App } from './app';
+import ErrorLogger from './models/errorLogger';
+import NotificationManager from './models/notificationManager';
+import LocationDetector from './models/locationDetector';
 
 // Initializes angular app manually. This is triggered from the onload event of the config.js script.
 // @ts-ignore
@@ -25,6 +28,26 @@ window.initApp = function () {
 
       if (!window.CONFIG) {
          return;
+      }
+
+      // Initialize services with config
+      if (window.CONFIG.features) {
+         if (window.CONFIG.features.errorLogging) {
+            ErrorLogger.init(window.CONFIG.features.errorLogging);
+         }
+
+         if (window.CONFIG.features.notifications) {
+            NotificationManager.init(window.CONFIG.features.notifications);
+         }
+
+         if (window.CONFIG.features.locationDetection) {
+            LocationDetector.init(window.CONFIG.features.locationDetection);
+         }
+      }
+
+      // Initialize LocationDetector even if no config (for backward compatibility)
+      if (!window.CONFIG.features || !window.CONFIG.features.locationDetection) {
+         LocationDetector.init();
       }
 
       ApiProvider.setInitOptions({

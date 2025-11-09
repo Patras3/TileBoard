@@ -9,6 +9,7 @@ import ngMax from './directives/ngMax';
 import ngMin from './directives/ngMin';
 import onScroll from './directives/onScroll';
 import tile from './directives/tile';
+import './directives/powerIndicator';
 
 App.directive('camera', camera);
 App.directive('cameraStream', cameraStream);
