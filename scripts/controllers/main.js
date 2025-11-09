@@ -427,7 +427,12 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    $scope.groupStyles = function (group, page) {
       console.log('[groupStyles] called with group:', group, 'page:', page);
       if (!group || !page) {
-         console.log('[groupStyles] returning EMPTY_STYLES');
+         console.log('[groupStyles] returning EMPTY_STYLES (no group/page)');
+         return EMPTY_STYLES;
+      }
+      // Prevent mutating EMPTY_LAYOUT - this would cause digest loops
+      if (group === EMPTY_LAYOUT) {
+         console.log('[groupStyles] returning EMPTY_STYLES (is EMPTY_LAYOUT, preventing mutation)');
          return EMPTY_STYLES;
       }
       if (!group.styles) {
@@ -1591,8 +1596,18 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
          clearTimeout($scope.popupTimeout);
          $scope.popupTimeout = null;
       }
-      const finalLayout = layout || item.popup;
-      console.log('[openPopup] finalLayout:', finalLayout, 'item.popup:', item.popup);
+
+      // Determine final layout:
+      // 1. Use provided layout parameter
+      // 2. Use item.popup if available
+      // 3. If item.type is 'popup', the item itself IS the layout
+      let finalLayout = layout || item.popup;
+      if (!finalLayout && item.type === TYPES.POPUP) {
+         finalLayout = item;
+         console.log('[openPopup] Using item itself as layout (type=popup)');
+      }
+
+      console.log('[openPopup] finalLayout:', finalLayout, 'item.popup:', item.popup, 'item.type:', item.type);
       $scope.activePopup = {
          item: item,
          entity: entity,
