@@ -106,7 +106,7 @@ var CONFIG = {
       maxAnimationPower: 6000,
    },
 
-   customTheme: CUSTOM_THEMES.HOMEKIT,
+   customTheme: CUSTOM_THEMES.NAVY_CYAN,
    transition: TRANSITIONS.ANIMATED, // ANIMATED or SIMPLE (better perfomance)
    entitySize: ENTITY_SIZES.SMALL, // SMALL, BIG are available
    tileSize: getURLParameter('tileSize') || 140,

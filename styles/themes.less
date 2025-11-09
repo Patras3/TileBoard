@@ -2786,4 +2786,211 @@
    .weather-list table tr:nth-child(2n) {
       background: rgba(30, 58, 95, 0.15);
    }
+
+   /* ========================================
+      CUSTOM ENHANCEMENTS
+      ======================================== */
+
+   /* Hide left menu completely */
+   .pages-menu.-left {
+      display: none !important;
+   }
+
+   .page-align {
+      margin-left: 0 !important;
+   }
+
+   /* Rounded corners for cameras and iframes */
+   camera > div {
+      border-radius: 8px;
+   }
+
+   .item-iframe iframe {
+      border-radius: 8px;
+   }
+
+   div.item-background.ng-scope {
+      border-radius: 8px;
+   }
+
+   /* Clickable indicators with modern colors */
+   div.group > div > div.-off:not(.-camera) > div.item-clickable {
+      background: #ef4444 !important; /* Modern red */
+      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
+   }
+
+   div.group > div > div:not(.-off):not(.-camera) > div.item-clickable {
+      background: #10b981 !important; /* Modern green */
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.5);
+   }
+
+   /* Glow effects for special states */
+   .glow-red {
+      -webkit-box-shadow: 0px 0px 16px 8px rgba(239, 68, 68, 0.9) !important;
+      -moz-box-shadow: 0px 0px 16px 8px rgba(239, 68, 68, 0.9) !important;
+      box-shadow: 0px 0px 16px 8px rgba(239, 68, 68, 0.9) !important;
+   }
+
+   .glow-green {
+      -webkit-box-shadow: 0px 0px 16px 8px rgba(16, 185, 129, 0.9) !important;
+      -moz-box-shadow: 0px 0px 16px 8px rgba(16, 185, 129, 0.9) !important;
+      box-shadow: 0px 0px 16px 8px rgba(16, 185, 129, 0.9) !important;
+   }
+
+   .glow-yellow {
+      -webkit-box-shadow: 0px 0px 16px 8px rgba(234, 179, 8, 0.9) !important;
+      -moz-box-shadow: 0px 0px 16px 8px rgba(234, 179, 8, 0.9) !important;
+      box-shadow: 0px 0px 16px 8px rgba(234, 179, 8, 0.9) !important;
+   }
+
+   .glow-orange {
+      -webkit-box-shadow: 0px 0px 16px 8px rgba(249, 115, 22, 0.9) !important;
+      -moz-box-shadow: 0px 0px 16px 8px rgba(249, 115, 22, 0.9) !important;
+      box-shadow: 0px 0px 16px 8px rgba(249, 115, 22, 0.9) !important;
+   }
+
+   .glow-cyan {
+      -webkit-box-shadow: 0px 0px 16px 8px rgba(34, 211, 238, 0.9) !important;
+      -moz-box-shadow: 0px 0px 16px 8px rgba(34, 211, 238, 0.9) !important;
+      box-shadow: 0px 0px 16px 8px rgba(34, 211, 238, 0.9) !important;
+   }
+
+   /* Pulsing animation */
+   .pulsing {
+      animation: navy-cyan-pulse 1.5s ease-in-out infinite;
+   }
+
+   @keyframes navy-cyan-pulse {
+      0%, 100% {
+         transform: scale(1);
+         opacity: 1;
+      }
+      50% {
+         transform: scale(1.05);
+         opacity: 0.9;
+      }
+   }
+
+   /* Custom progress bar for TileBoard cards */
+   .tileboard-card-progress-container {
+      width: 96%;
+      background-color: rgba(30, 58, 95, 0.4);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      margin-left: 2%;
+      margin-top: 3%;
+      border: 1px solid rgba(34, 211, 238, 0.3);
+   }
+
+   .tileboard-card-progress-bar {
+      height: 30px;
+      background: linear-gradient(90deg, rgba(34, 211, 238, 0.8), rgba(59, 130, 246, 0.8));
+      border-radius: 10px 0 0 10px;
+      text-align: center;
+      line-height: 30px;
+      color: white;
+      font-weight: bold;
+      transition: width 0.4s ease;
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+   }
+
+   .tileboard-card-progress-text {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      top: 0;
+      left: 0;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+   }
+
+   .tileboard-card-progress-details {
+      margin-top: 0px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+   }
+
+   /* Notification overlays */
+   .notification-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 25, 41, 0.95);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+   }
+
+   .notification-container {
+      background: linear-gradient(135deg, #1e3a5f, #0a1929);
+      border: 2px solid rgba(34, 211, 238, 0.5);
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 80%;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+   }
+
+   .notification-title {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: rgba(34, 211, 238, 0.9);
+      font-weight: 600;
+   }
+
+   .notification-message {
+      font-size: 32px;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.4;
+   }
+
+   .close-button,
+   .close-button-left {
+      position: absolute;
+      font-size: 32px;
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 50%;
+      transition: all 0.3s ease;
+
+      &:hover {
+         background: rgba(239, 68, 68, 0.8);
+         color: white;
+      }
+   }
+
+   .close-button {
+      top: 20px;
+      right: 20px;
+   }
+
+   .close-button-left {
+      top: 20px;
+      left: 20px;
+   }
+
+   /* Header inline display fixes */
+   div.date.ng-binding.ng-isolate-scope {
+      display: inline !important;
+   }
+
+   div.header.ng-scope > div > div.header--right > div > div > div {
+      display: ruby !important;
+   }
+
+   body > div.page-container.ng-scope > div.header.ng-scope > div > div.header--right > div > div > div > div.header-weather--state.ng-scope {
+      display: ruby !important;
+   }
 }
