@@ -886,7 +886,14 @@
 
    .item {
       color: #2b3e50;
-      background: #ffffff !important;
+      background:
+         repeating-linear-gradient(
+            45deg,
+            #ffffff,
+            #ffffff 10px,
+            #f8f9fa 10px,
+            #f8f9fa 20px
+         ) !important;
       border: 2px solid #dee2e6;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
@@ -943,7 +950,14 @@
 
       // OFF State - Soft Gray
       &.-off, &.-disarmed, &.-arming, &.-loading {
-         background: #f8f9fa !important;
+         background:
+            repeating-linear-gradient(
+               45deg,
+               #f8f9fa,
+               #f8f9fa 10px,
+               #e9ecef 10px,
+               #e9ecef 20px
+            ) !important;
          border-color: #ced4da;
          color: #6c757d;
 
@@ -963,7 +977,14 @@
 
       // ON State - Nordic Blue-Green
       &.-on, &.-armed, &.-locked {
-         background: #ffffff !important;
+         background:
+            repeating-linear-gradient(
+               45deg,
+               #ffffff,
+               #ffffff 10px,
+               #f0f8f7 10px,
+               #f0f8f7 20px
+            ) !important;
          border-color: #4a9d8e;
          color: #2b3e50;
 
@@ -1128,7 +1149,12 @@
 
    .item {
       color: #3d3d33;
-      background: #fafaf7 !important;
+      background:
+         radial-gradient(circle at 20% 50%, transparent 0%, transparent 2%, #f0f0e8 2%, #f0f0e8 3%, transparent 3%),
+         radial-gradient(circle at 80% 80%, transparent 0%, transparent 2%, #f0f0e8 2%, #f0f0e8 3%, transparent 3%),
+         radial-gradient(circle at 40% 20%, transparent 0%, transparent 2%, #ededdf 2%, #ededdf 3%, transparent 3%),
+         #fafaf7 !important;
+      background-size: 30px 30px;
       border: 1.5px solid #d4d4c8;
       border-radius: 8px;
       box-shadow: 0 1px 3px rgba(93, 93, 73, 0.08),
@@ -1186,7 +1212,12 @@
 
       // OFF State - Warm Taupe
       &.-off, &.-disarmed, &.-arming, &.-loading {
-         background: #f0f0ea !important;
+         background:
+            radial-gradient(circle at 20% 50%, transparent 0%, transparent 2%, #e8e8dc 2%, #e8e8dc 3%, transparent 3%),
+            radial-gradient(circle at 80% 80%, transparent 0%, transparent 2%, #e8e8dc 2%, #e8e8dc 3%, transparent 3%),
+            radial-gradient(circle at 40% 20%, transparent 0%, transparent 2%, #e3e3d7 2%, #e3e3d7 3%, transparent 3%),
+            #f0f0ea !important;
+         background-size: 30px 30px;
          border-color: #d9d9cd;
          color: #7a7a6d;
 
@@ -1206,7 +1237,12 @@
 
       // ON State - Sage Green
       &.-on, &.-armed, &.-locked {
-         background: #fafaf7 !important;
+         background:
+            radial-gradient(circle at 20% 50%, transparent 0%, transparent 2%, #e8f5e6 2%, #e8f5e6 3%, transparent 3%),
+            radial-gradient(circle at 80% 80%, transparent 0%, transparent 2%, #e8f5e6 2%, #e8f5e6 3%, transparent 3%),
+            radial-gradient(circle at 40% 20%, transparent 0%, transparent 2%, #dff0dd 2%, #dff0dd 3%, transparent 3%),
+            #fafaf7 !important;
+         background-size: 30px 30px;
          border-color: #7a9b76;
          color: #3d3d33;
 
@@ -1374,7 +1410,11 @@
 
    .item {
       color: #1a1a1a;
-      background: #ffffff !important;
+      background:
+         linear-gradient(90deg, transparent 0px, transparent 19px, #f9f9f9 19px, #f9f9f9 20px),
+         linear-gradient(0deg, transparent 0px, transparent 19px, #f9f9f9 19px, #f9f9f9 20px),
+         #ffffff !important;
+      background-size: 20px 20px;
       border: 2px solid #e0e0e0;
       border-radius: 8px;
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -1436,7 +1476,11 @@
 
       // OFF State - Light Gray with Red Accent
       &.-off, &.-disarmed, &.-arming, &.-loading {
-         background: #fafafa !important;
+         background:
+            linear-gradient(90deg, transparent 0px, transparent 19px, #f5f5f5 19px, #f5f5f5 20px),
+            linear-gradient(0deg, transparent 0px, transparent 19px, #f5f5f5 19px, #f5f5f5 20px),
+            #fafafa !important;
+         background-size: 20px 20px;
          border-color: #e85d75;
          border-width: 2px;
          color: #4d4d4d;
@@ -1459,7 +1503,11 @@
 
       // ON State - White with Green Accent
       &.-on, &.-armed, &.-locked {
-         background: #ffffff !important;
+         background:
+            linear-gradient(90deg, transparent 0px, transparent 19px, #f0fbf4 19px, #f0fbf4 20px),
+            linear-gradient(0deg, transparent 0px, transparent 19px, #f0fbf4 19px, #f0fbf4 20px),
+            #ffffff !important;
+         background-size: 20px 20px;
          border-color: #34c759;
          border-width: 2px;
          color: #1a1a1a;
@@ -1639,7 +1687,11 @@
 
    .item {
       color: #1e1e1e;
-      background: #ffffff !important;
+      background:
+         linear-gradient(90deg, #f8f8f8 0px, #f8f8f8 1px, transparent 1px, transparent 50px),
+         linear-gradient(0deg, #f8f8f8 0px, #f8f8f8 1px, transparent 1px, transparent 50px),
+         #ffffff !important;
+      background-size: 50px 50px;
       border: 0;
       border-radius: 0; // Sharp corners - Metro style
       box-shadow: none;
@@ -1698,7 +1750,11 @@
 
       // OFF State - Cool Gray with Blue Accent
       &.-off, &.-disarmed, &.-arming, &.-loading {
-         background: #e6e6e6 !important;
+         background:
+            linear-gradient(90deg, #dedede 0px, #dedede 1px, transparent 1px, transparent 50px),
+            linear-gradient(0deg, #dedede 0px, #dedede 1px, transparent 1px, transparent 50px),
+            #e6e6e6 !important;
+         background-size: 50px 50px;
          color: #5a5a5a;
 
          .item-state {
@@ -1720,7 +1776,11 @@
 
       // ON State - Metro Blue
       &.-on, &.-armed, &.-locked {
-         background: #0078d7 !important;
+         background:
+            linear-gradient(90deg, #0066ba 0px, #0066ba 1px, transparent 1px, transparent 50px),
+            linear-gradient(0deg, #0066ba 0px, #0066ba 1px, transparent 1px, transparent 50px),
+            #0078d7 !important;
+         background-size: 50px 50px;
          color: #ffffff;
 
          .item-title, .item-subtitle {
@@ -1904,7 +1964,12 @@
 
    .item {
       color: #2d2d2d;
-      background: rgba(255, 255, 255, 0.25) !important;
+      background:
+         radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.5) 0%, transparent 2px),
+         radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.4) 0%, transparent 2px),
+         radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.45) 0%, transparent 2px),
+         rgba(255, 255, 255, 0.25) !important;
+      background-size: 15px 15px, 20px 20px, 18px 18px, 100% 100%;
       backdrop-filter: blur(12px) saturate(180%);
       border: 1px solid rgba(255, 255, 255, 0.4);
       border-radius: 12px;
@@ -1913,7 +1978,12 @@
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
       &:hover {
-         background: rgba(255, 255, 255, 0.35) !important;
+         background:
+            radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.6) 0%, transparent 2px),
+            radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.5) 0%, transparent 2px),
+            radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.55) 0%, transparent 2px),
+            rgba(255, 255, 255, 0.35) !important;
+         background-size: 15px 15px, 20px 20px, 18px 18px, 100% 100%;
          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12),
                      inset 0 1px 1px rgba(255, 255, 255, 0.8);
          transform: translateY(-2px);
@@ -1972,7 +2042,12 @@
 
       // OFF State - Subtle Gray Glass
       &.-off, &.-disarmed, &.-arming, &.-loading {
-         background: rgba(230, 230, 230, 0.3) !important;
+         background:
+            radial-gradient(circle at 30% 40%, rgba(230, 230, 230, 0.5) 0%, transparent 2px),
+            radial-gradient(circle at 70% 60%, rgba(220, 220, 220, 0.4) 0%, transparent 2px),
+            radial-gradient(circle at 50% 80%, rgba(225, 225, 225, 0.45) 0%, transparent 2px),
+            rgba(230, 230, 230, 0.3) !important;
+         background-size: 15px 15px, 20px 20px, 18px 18px, 100% 100%;
          backdrop-filter: blur(10px) saturate(150%);
          border-color: rgba(200, 200, 200, 0.4);
          color: #5d5d5d;
@@ -1994,7 +2069,12 @@
 
       // ON State - Vibrant Glass with Gradient
       &.-on, &.-armed, &.-locked {
-         background: rgba(255, 255, 255, 0.4) !important;
+         background:
+            radial-gradient(circle at 30% 40%, rgba(156, 215, 255, 0.4) 0%, transparent 2px),
+            radial-gradient(circle at 70% 60%, rgba(176, 225, 255, 0.35) 0%, transparent 2px),
+            radial-gradient(circle at 50% 80%, rgba(196, 235, 255, 0.38) 0%, transparent 2px),
+            rgba(255, 255, 255, 0.4) !important;
+         background-size: 15px 15px, 20px 20px, 18px 18px, 100% 100%;
          backdrop-filter: blur(14px) saturate(200%);
          border-color: rgba(96, 175, 255, 0.5);
          color: #2d2d2d;
@@ -2187,7 +2267,14 @@
 
    .item {
       color: #4a4a4a;
-      background: #ffffff !important;
+      background:
+         radial-gradient(circle at 20% 30%, #ffd6f3 0%, #ffd6f3 6px, transparent 6px),
+         radial-gradient(circle at 60% 70%, #ffedaa 0%, #ffedaa 8px, transparent 8px),
+         radial-gradient(circle at 85% 40%, #d4f4ff 0%, #d4f4ff 7px, transparent 7px),
+         radial-gradient(circle at 40% 85%, #ffc2e8 0%, #ffc2e8 5px, transparent 5px),
+         radial-gradient(circle at 75% 15%, #fff5cc 0%, #fff5cc 6px, transparent 6px),
+         #ffffff !important;
+      background-size: 100px 100px;
       border: 3px solid #ff6b9d;
       border-radius: 16px; // Large rounded corners - retro style
       box-shadow: 4px 4px 0px rgba(255, 107, 157, 0.3);
@@ -2249,7 +2336,14 @@
 
       // OFF State - Purple Pastel
       &.-off, &.-disarmed, &.-arming, &.-loading {
-         background: #f8f0ff !important;
+         background:
+            radial-gradient(circle at 20% 30%, #dcc5ff 0%, #dcc5ff 6px, transparent 6px),
+            radial-gradient(circle at 60% 70%, #e9d5ff 0%, #e9d5ff 8px, transparent 8px),
+            radial-gradient(circle at 85% 40%, #c4b1f0 0%, #c4b1f0 7px, transparent 7px),
+            radial-gradient(circle at 40% 85%, #d5c7f5 0%, #d5c7f5 5px, transparent 5px),
+            radial-gradient(circle at 75% 15%, #ede4ff 0%, #ede4ff 6px, transparent 6px),
+            #f8f0ff !important;
+         background-size: 100px 100px;
          border-color: #b794f6;
          color: #6a6a6a;
          box-shadow: 4px 4px 0px rgba(183, 148, 246, 0.25);
@@ -2272,7 +2366,14 @@
 
       // ON State - Mint Green Pastel
       &.-on, &.-armed, &.-locked {
-         background: #f0fdf4 !important;
+         background:
+            radial-gradient(circle at 20% 30%, #bbf7d0 0%, #bbf7d0 6px, transparent 6px),
+            radial-gradient(circle at 60% 70%, #d1fae5 0%, #d1fae5 8px, transparent 8px),
+            radial-gradient(circle at 85% 40%, #a7f3d0 0%, #a7f3d0 7px, transparent 7px),
+            radial-gradient(circle at 40% 85%, #c6f6d5 0%, #c6f6d5 5px, transparent 5px),
+            radial-gradient(circle at 75% 15%, #dcfce7 0%, #dcfce7 6px, transparent 6px),
+            #f0fdf4 !important;
+         background-size: 100px 100px;
          border-color: #86efac;
          color: #4a4a4a;
          box-shadow: 4px 4px 0px rgba(134, 239, 172, 0.35);
