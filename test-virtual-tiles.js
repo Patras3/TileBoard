@@ -27,6 +27,9 @@ function warnUnknownItem (item) {
    console.warn(warning);
 }
 
+// Cached mock entity to prevent digest loops
+const MOCK_ENTITY = { state: false, attributes: {} };
+
 // Implementation of getItemEntity (EXACT COPY FROM main.js)
 function getItemEntity (item) {
    // Virtual tiles don't have real entities - return a mock or parent entity
@@ -35,8 +38,8 @@ function getItemEntity (item) {
       if (mockActivePopup && mockActivePopup.entity) {
          return mockActivePopup.entity;
       }
-      // For other virtual tiles or when no parent entity, return mock
-      return { state: false, attributes: {} };
+      // For other virtual tiles or when no parent entity, return cached mock
+      return MOCK_ENTITY;
    }
 
    if (typeof item.id === 'object') {
