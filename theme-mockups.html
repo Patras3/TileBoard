@@ -109,6 +109,7 @@
             gap: 20px;
             justify-content: center;
             margin-bottom: 50px;
+            padding-top: 35px;
         }
 
         .card {
@@ -130,17 +131,19 @@
 
         .card-label {
             position: absolute;
-            top: -22px;
+            top: -28px;
             left: 8px;
             background: rgba(0,0,0,0.9);
             backdrop-filter: blur(10px);
             color: white;
-            padding: 4px 10px;
+            padding: 6px 12px;
             border-radius: 6px;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
             letter-spacing: 0.5px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            z-index: 10;
+            white-space: nowrap;
         }
 
         .card-icon {
@@ -483,6 +486,154 @@
                 linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
         }
 
+        /* ========================================
+           MODAL STYLES
+           ======================================== */
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 680px;
+            width: 100%;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 300;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .modal-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: rotate(90deg);
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 140px);
+            gap: 5px;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-card {
+            width: 140px;
+            height: 140px;
+            border-radius: 12px;
+            padding: 12px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .modal-card .card-label {
+            display: none;
+        }
+
+        .modal-card-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+            z-index: 2;
+        }
+
+        .modal-card-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            z-index: 2;
+            line-height: 1.2;
+        }
+
+        .modal-card-state {
+            font-size: 11px;
+            opacity: 0.85;
+            z-index: 2;
+            margin-top: auto;
+        }
+
+        .modal-card-status {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4CAF50;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+            z-index: 2;
+        }
+
+        .modal-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 0.3s;
+            border-radius: 12px;
+        }
+
+        body.no-artifacts .modal-card::after {
+            opacity: 0 !important;
+        }
+
     </style>
 </head>
 <body>
@@ -751,13 +902,116 @@
 
     </div>
 
+    <!-- MODAL -->
+    <div class="modal" id="previewModal">
+        <div class="modal-content">
+            <div class="modal-close" id="modalClose">×</div>
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Preview: 4×4 Grid</h2>
+                <p class="modal-subtitle">Simulating how tiles look together in real life</p>
+            </div>
+            <div class="modal-grid" id="modalGrid">
+                <!-- Cards will be generated here -->
+            </div>
+        </div>
+    </div>
+
     <script>
         const toggle = document.getElementById('artifactToggle');
         const body = document.body;
+        const modal = document.getElementById('previewModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalGrid = document.getElementById('modalGrid');
+        const modalTitle = document.getElementById('modalTitle');
 
+        // Toggle artifacts
         toggle.addEventListener('click', function() {
             this.classList.toggle('active');
             body.classList.toggle('no-artifacts');
+        });
+
+        // Sample tile data for the 4x4 grid
+        const sampleTiles = [
+            { icon: '💡', title: 'Living Room', state: 'ON', hasStatus: true },
+            { icon: '💡', title: 'Kitchen', state: 'OFF', hasStatus: false },
+            { icon: '🌡️', title: 'Bedroom', state: '22°C', hasStatus: false },
+            { icon: '🚪', title: 'Front Door', state: 'Locked', hasStatus: true },
+            { icon: '💡', title: 'Bathroom', state: 'OFF', hasStatus: false },
+            { icon: '🎵', title: 'Speaker', state: 'Playing', hasStatus: true },
+            { icon: '☀️', title: 'Blinds', state: 'Open', hasStatus: false },
+            { icon: '🌡️', title: 'Office', state: '21°C', hasStatus: false },
+            { icon: '💡', title: 'Hallway', state: 'ON', hasStatus: true },
+            { icon: '🔒', title: 'Garage', state: 'Closed', hasStatus: true },
+            { icon: '💡', title: 'Garden', state: 'OFF', hasStatus: false },
+            { icon: '📺', title: 'TV Room', state: 'OFF', hasStatus: false },
+            { icon: '💡', title: 'Patio', state: 'ON', hasStatus: true },
+            { icon: '🌡️', title: 'Basement', state: '19°C', hasStatus: false },
+            { icon: '💨', title: 'Fan', state: 'Auto', hasStatus: true },
+            { icon: '💡', title: 'Attic', state: 'OFF', hasStatus: false }
+        ];
+
+        // Open modal with specific style
+        function openModal(styleClass, styleName) {
+            modalTitle.textContent = `Preview: ${styleName} - 4×4 Grid`;
+            modalGrid.innerHTML = '';
+
+            sampleTiles.forEach((tile, index) => {
+                const card = document.createElement('div');
+                card.className = `modal-card ${styleClass}`;
+                if (tile.hasStatus) {
+                    card.classList.add('on');
+                }
+
+                card.innerHTML = `
+                    <div class="modal-card-icon">${tile.icon}</div>
+                    <div class="modal-card-title">${tile.title}</div>
+                    <div class="modal-card-state">${tile.state}</div>
+                    ${tile.hasStatus ? '<div class="modal-card-status"></div>' : ''}
+                `;
+
+                // Copy ::after pseudo-element styles
+                card.style.cssText = '';
+
+                modalGrid.appendChild(card);
+            });
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Add click listeners to all cards
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Get all classes of the clicked card
+                const classes = Array.from(this.classList);
+                const styleClass = classes.find(c => c.startsWith('style-'));
+
+                if (styleClass) {
+                    const label = this.querySelector('.card-label');
+                    const styleName = label ? label.textContent : styleClass;
+                    openModal(styleClass, styleName);
+                }
+            });
+        });
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
         });
     </script>
 </body>
