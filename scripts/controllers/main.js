@@ -43,6 +43,7 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    // Cached empty objects to prevent infinite digest loops
    const EMPTY_STYLES = {};
    const EMPTY_LAYOUT = { items: [] };
+   const MOCK_ENTITY = { state: false, attributes: {} };
 
    // WeakMap to cache flattened popup layouts without mutating originals
    const flattenedPopupCache = new WeakMap();
@@ -219,8 +220,8 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
          if ($scope.activePopup && $scope.activePopup.entity) {
             return $scope.activePopup.entity;
          }
-         // For other virtual tiles or when no parent entity, return mock
-         return { state: false, attributes: {} };
+         // For other virtual tiles or when no parent entity, return cached mock
+         return MOCK_ENTITY;
       }
 
       if (typeof item.id === 'object') {
