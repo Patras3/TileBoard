@@ -2993,4 +2993,267 @@
    body > div.page-container.ng-scope > div.header.ng-scope > div > div.header--right > div > div > div > div.header-weather--state.ng-scope {
       display: ruby !important;
    }
+
+   /* ========================================
+      COLORFUL VIBRANT ICONS
+      Bringing life to the interface!
+      ======================================== */
+
+   /* Base icon styling - add depth and glow */
+   .item-entity--icon {
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      transition: all 0.3s ease;
+   }
+
+   /* Light bulb icons - Warm amber/yellow */
+   .item.-light {
+      .item-entity--icon {
+         color: rgba(251, 191, 36, 0.7) !important;
+      }
+
+      &.-on .item-entity--icon {
+         color: #fbbf24 !important;
+         filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+         animation: light-pulse 2s ease-in-out infinite;
+      }
+   }
+
+   @keyframes light-pulse {
+      0%, 100% {
+         filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      }
+      50% {
+         filter: drop-shadow(0 0 16px rgba(251, 191, 36, 0.8)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      }
+   }
+
+   /* Switch icons - Electric blue */
+   .item.-switch {
+      .item-entity--icon {
+         color: rgba(59, 130, 246, 0.6) !important;
+      }
+
+      &.-on .item-entity--icon {
+         color: #3b82f6 !important;
+         filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6));
+      }
+   }
+
+   /* Fan icons - Cyan with rotation hint */
+   .item.-fan {
+      .item-entity--icon {
+         color: rgba(34, 211, 238, 0.6) !important;
+      }
+
+      &.-on .item-entity--icon {
+         color: #22d3ee !important;
+         filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.7));
+         animation: fan-spin 3s linear infinite;
+      }
+   }
+
+   @keyframes fan-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+   }
+
+   /* Climate/Thermostat - Orange/Red gradient */
+   .item.-climate {
+      .item-entity--icon {
+         color: rgba(249, 115, 22, 0.7) !important;
+      }
+
+      &.-on .item-entity--icon {
+         color: #f97316 !important;
+         filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.6));
+      }
+   }
+
+   /* Sensors - Purple/Violet */
+   .item.-sensor,
+   .item.-sensor_icon {
+      .item-entity--icon {
+         color: rgba(168, 85, 247, 0.7) !important;
+      }
+   }
+
+   /* Lock icons - Green (locked) / Red (unlocked) */
+   .item.-lock {
+      &.-locked .item-entity--icon {
+         color: #10b981 !important;
+         filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.6));
+      }
+
+      &.-unlocked .item-entity--icon {
+         color: #ef4444 !important;
+         filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6));
+         animation: unlock-shake 0.5s ease-in-out;
+      }
+   }
+
+   @keyframes unlock-shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+   }
+
+   /* Camera - Bright cyan */
+   .item.-camera,
+   .item.-camera_thumbnail {
+      .item-entity--icon {
+         color: #06b6d4 !important;
+         filter: drop-shadow(0 0 6px rgba(6, 182, 212, 0.5));
+      }
+   }
+
+   /* Vacuum - Teal */
+   .item.-vacuum {
+      .item-entity--icon {
+         color: rgba(20, 184, 166, 0.6) !important;
+      }
+
+      &.-on .item-entity--icon {
+         color: #14b8a6 !important;
+         filter: drop-shadow(0 0 8px rgba(20, 184, 166, 0.6));
+         animation: vacuum-move 2s ease-in-out infinite;
+      }
+   }
+
+   @keyframes vacuum-move {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(3px); }
+   }
+
+   /* Scene - Pink/Rose */
+   .item.-scene {
+      .item-entity--icon {
+         color: #ec4899 !important;
+         filter: drop-shadow(0 0 6px rgba(236, 72, 153, 0.5));
+      }
+   }
+
+   /* Script/Automation - Lime green */
+   .item.-script,
+   .item.-automation {
+      .item-entity--icon {
+         color: #84cc16 !important;
+         filter: drop-shadow(0 0 6px rgba(132, 204, 22, 0.5));
+      }
+   }
+
+   /* Cover/Blinds - Slate */
+   .item.-cover,
+   .item.-cover_toggle {
+      .item-entity--icon {
+         color: rgba(148, 163, 184, 0.7) !important;
+      }
+
+      &.-on .item-entity--icon {
+         color: #94a3b8 !important;
+         filter: drop-shadow(0 0 6px rgba(148, 163, 184, 0.5));
+      }
+   }
+
+   /* Media Player - Vibrant magenta */
+   .item.-media_player {
+      .item-entity--icon {
+         color: rgba(217, 70, 239, 0.6) !important;
+      }
+
+      &.-on .item-entity--icon {
+         color: #d946ef !important;
+         filter: drop-shadow(0 0 10px rgba(217, 70, 239, 0.6));
+         animation: media-pulse 1.5s ease-in-out infinite;
+      }
+   }
+
+   @keyframes media-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+   }
+
+   /* Input Boolean - Cyan */
+   .item.-input_boolean {
+      .item-entity--icon {
+         color: rgba(34, 211, 238, 0.6) !important;
+      }
+
+      &.-on .item-entity--icon {
+         color: #22d3ee !important;
+         filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.6));
+      }
+   }
+
+   /* Alarm - Red when triggered */
+   .item.-alarm {
+      &.-armed .item-entity--icon {
+         color: #f59e0b !important;
+         filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.6));
+      }
+
+      &.-triggered .item-entity--icon {
+         color: #ef4444 !important;
+         filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.8));
+         animation: alarm-flash 0.5s ease-in-out infinite;
+      }
+   }
+
+   @keyframes alarm-flash {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+   }
+
+   /* Weather icons - Sky blue */
+   .item.-weather {
+      .item-entity--icon,
+      .wu {
+         color: #38bdf8 !important;
+         filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.4));
+      }
+   }
+
+   /* Device Tracker - Emerald green */
+   .item.-device_tracker {
+      .item-entity--icon {
+         color: #10b981 !important;
+         filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.5));
+      }
+   }
+
+   /* Door Entry - Amber */
+   .item.-door_entry {
+      .item-entity--icon {
+         color: #f59e0b !important;
+         filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5));
+      }
+   }
+
+   /* Custom/Popup - Default cyan accent */
+   .item.-custom,
+   .item.-popup {
+      .item-entity--icon {
+         color: rgba(34, 211, 238, 0.8) !important;
+      }
+   }
+
+   /* Enhance state values with color */
+   .item-entity--value {
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      font-weight: 600;
+   }
+
+   /* Add subtle glow to titles on hover */
+   .item:hover .item-title {
+      text-shadow: 0 0 8px rgba(34, 211, 238, 0.4);
+      transition: text-shadow 0.3s ease;
+   }
+
+   /* Weather icon size and positioning */
+   .header-weather--icon {
+      filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.4));
+
+      i {
+         color: #38bdf8 !important;
+      }
+   }
 }
