@@ -440,7 +440,18 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
          const tileMargin = page.tileMargin || CONFIG.tileMargin;
 
          if (!('width' in group) || !('height' in group)) {
-            const sizes = calcGroupSizes(group);
+            let sizes;
+            // Popup items have 2D array structure, handle differently
+            if (group.type === TYPES.POPUP && Array.isArray(group.items) && group.items.length > 0 && Array.isArray(group.items[0])) {
+               console.log('[groupStyles] Calculating popup sizes from 2D array');
+               // For popup items: items = [[item, item], [item]]
+               const maxWidth = Math.max(...group.items.map(row => row.length));
+               const maxHeight = group.items.length;
+               sizes = { width: maxWidth, height: maxHeight };
+               console.log('[groupStyles] Popup sizes:', sizes);
+            } else {
+               sizes = calcGroupSizes(group);
+            }
 
             if (!group.width) {
                group.width = sizes.width;
