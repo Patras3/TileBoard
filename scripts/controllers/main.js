@@ -40,8 +40,9 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    $scope.FEATURES = FEATURES;
    $scope.HEADER_ITEMS = HEADER_ITEMS;
 
-   // Cached empty object to prevent infinite digest loops
+   // Cached empty objects to prevent infinite digest loops
    const EMPTY_STYLES = {};
+   const EMPTY_LAYOUT = { items: [] };
 
    $scope.activeSelect = null;
    $scope.screensaverShown = false;
@@ -61,6 +62,28 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    $scope.activeAlarm = null;
 
    $scope.supportsFeature = supportsFeature;
+
+   // Debug: Watch for digest loops around popup
+   let digestCounter = 0;
+   let lastPopupState = null;
+   $scope.$watch(function () {
+      digestCounter++;
+      if ($scope.activePopup) {
+         const currentState = {
+            hasPopup: !!$scope.activePopup,
+            hasLayout: !!($scope.activePopup && $scope.activePopup.layout),
+            layoutItems: $scope.activePopup && $scope.activePopup.layout && $scope.activePopup.layout.items ? $scope.activePopup.layout.items.length : 0,
+         };
+         if (digestCounter > 15) {
+            console.error('[DIGEST DEBUG] Too many digest cycles!', digestCounter, 'currentState:', currentState, 'lastState:', lastPopupState);
+         } else {
+            console.log('[DIGEST DEBUG] Digest cycle', digestCounter, 'popup state:', currentState);
+         }
+         lastPopupState = currentState;
+      } else if (digestCounter > 1) {
+         digestCounter = 0; // Reset when no popup
+      }
+   });
 
    let showedPages = [];
 
@@ -402,7 +425,9 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    };
 
    $scope.groupStyles = function (group, page) {
+      console.log('[groupStyles] called with group:', group, 'page:', page);
       if (!group || !page) {
+         console.log('[groupStyles] returning EMPTY_STYLES');
          return EMPTY_STYLES;
       }
       if (!group.styles) {
@@ -1559,17 +1584,21 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    };
 
    $scope.openPopup = function (item, entity, layout) {
+      console.log('[openPopup] called with item:', item, 'entity:', entity, 'layout:', layout);
       item = mergeTileDefaults(item);
 
       if ($scope.popupTimeout) {
          clearTimeout($scope.popupTimeout);
          $scope.popupTimeout = null;
       }
+      const finalLayout = layout || item.popup;
+      console.log('[openPopup] finalLayout:', finalLayout, 'item.popup:', item.popup);
       $scope.activePopup = {
          item: item,
          entity: entity,
-         layout: layout || item.popup,
+         layout: finalLayout,
       };
+      console.log('[openPopup] activePopup set:', $scope.activePopup);
    };
 
    $scope.closePopup = function () {
@@ -1585,6 +1614,12 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
          return '';
       }
       return parseFieldValue($scope.activePopup.layout.classes, $scope.activePopup.item, $scope.activePopup.entity);
+   };
+
+   $scope.getPopupLayout = function () {
+      const result = ($scope.activePopup && $scope.activePopup.layout) || EMPTY_LAYOUT;
+      console.log('[getPopupLayout] called, activePopup:', $scope.activePopup, 'layout:', result, 'is EMPTY_LAYOUT:', result === EMPTY_LAYOUT);
+      return result;
    };
 
    $scope.isPopupActive = function (page) {
