@@ -1651,7 +1651,16 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
          // Cache the flattened layout to prevent recreating on every digest
          if (!layout._flattenedLayout) {
             console.log('[getPopupLayout] Flattening 2D array for popup');
-            const flatItems = layout.items.flat();
+            const flatItems = [];
+            // Flatten and add position properties based on row/column
+            layout.items.forEach((row, rowIndex) => {
+               row.forEach((item, colIndex) => {
+                  if (!item.position) {
+                     item.position = [colIndex, rowIndex];
+                  }
+                  flatItems.push(item);
+               });
+            });
             layout._flattenedLayout = Object.assign({}, layout, { items: flatItems });
             console.log('[getPopupLayout] Flattened items:', flatItems.length, 'from', layout.items.length, 'rows');
          }
