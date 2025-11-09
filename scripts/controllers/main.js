@@ -1684,6 +1684,10 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
          // IMPORTANT: Don't mutate original items - create copies when needed
          layout.items.forEach((row, rowIndex) => {
             row.forEach((item, colIndex) => {
+               // Skip null/undefined items (used as placeholders for layout)
+               if (!item) {
+                  return;
+               }
                // If item already has position, use as-is to avoid creating new object
                if (item.position) {
                   flatItems.push(item);

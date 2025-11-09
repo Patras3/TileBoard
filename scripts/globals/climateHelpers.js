@@ -291,15 +291,16 @@ export function createHONClimatePopup (config) {
             id: id + '_popup',
             title,
             items: [
-               // Row 1: Mode buttons
+               // Row 1: All 4 mode buttons
                [
                   createModeButton('off', 'mdi-power-off', 'Wyłącz'),
                   createModeButton('cool', 'mdi-snowflake', 'Chłodzenie'),
                   createModeButton('heat', 'mdi-fire', 'Grzanie'),
-               ],
-               // Row 2: UV mode + temperature controls
-               [
                   createModeButton('uv', 'mdi-circle-outline', 'UV + Chłodzenie'),
+               ],
+               // Row 2: Temperature controls (centered with empty placeholders)
+               [
+                  null, // Empty placeholder for centering
                   {
                      type: window.TYPES.CUSTOM,
                      id: id + '_temp_controls',
@@ -319,6 +320,7 @@ export function createHONClimatePopup (config) {
                         `;
                      },
                   },
+                  null, // Empty placeholder for centering
                ],
             ],
          };
