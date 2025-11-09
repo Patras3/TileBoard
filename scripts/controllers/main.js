@@ -1351,7 +1351,20 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
 
    function initializeClimateOptions (item, entity) {
       if (typeof item.climateOptions === 'undefined') {
+         // Check if entity and attributes exist
+         if (!entity || !entity.attributes) {
+            item.climateOptions = {};
+            return;
+         }
+
          const options = item.useHvacMode ? entity.attributes.hvac_modes : entity.attributes.preset_modes;
+
+         // Check if options exist and is an array
+         if (!options || !Array.isArray(options)) {
+            item.climateOptions = {};
+            return;
+         }
+
          const resolvedOption = {};
          for (const option of options) {
             if (item.states !== null && typeof item.states === 'object') {
