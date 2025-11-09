@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TileBoard Card Designs - 140px Square Format</title>
+    <title>TileBoard Card Designs - Color Variations</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #434343 0%, #000000 100%);
+            background: linear-gradient(135deg, #2c3e50 0%, #000000 100%);
             padding: 40px 20px;
             color: white;
         }
@@ -114,7 +114,7 @@
         }
 
         .card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-4px) scale(1.02);
         }
 
         .card-label {
@@ -165,7 +165,6 @@
             z-index: 2;
         }
 
-        /* Artifact Layer - Initially visible */
         .card::after {
             content: '';
             position: absolute;
@@ -184,206 +183,251 @@
         }
 
         /* ========================================
-           STYLE 1: Rich Gradient + Fine Mesh
+           STYLE 4 VARIATIONS: Dark + Hexagon Pattern
            ======================================== */
-        .style-1 {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            box-shadow:
-                0 8px 24px rgba(0, 0, 0, 0.15),
-                0 1px 6px rgba(0, 0, 0, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
 
-        .style-1::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
-            border-radius: 12px;
-            pointer-events: none;
-        }
-
-        .style-1::after {
-            background-image:
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 3px),
-                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 3px);
-            background-size: 3px 3px;
-        }
-
-        .style-1.on {
-            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
-        }
-
-        /* ========================================
-           STYLE 2: Metallic + Carbon Fiber
-           ======================================== */
-        .style-2 {
-            background: linear-gradient(135deg, #e0e0e0 0%, #8e9eab 100%);
-            box-shadow:
-                0 10px 30px rgba(0, 0, 0, 0.2),
-                inset 0 -2px 6px rgba(0, 0, 0, 0.1),
-                inset 0 2px 3px rgba(255, 255, 255, 0.5);
-            position: relative;
-        }
-
-        .style-2::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 100%);
-            border-radius: 12px 12px 0 0;
-            pointer-events: none;
-        }
-
-        .style-2::after {
-            background-image:
-                linear-gradient(45deg, transparent 40%, rgba(0,0,0,0.04) 40%, rgba(0,0,0,0.04) 60%, transparent 60%),
-                linear-gradient(-45deg, transparent 40%, rgba(0,0,0,0.04) 40%, rgba(0,0,0,0.04) 60%, transparent 60%);
-            background-size: 4px 4px;
-        }
-
-        .style-2.on {
-            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
-        }
-
-        /* ========================================
-           STYLE 3: Vibrant + Diagonal Waves
-           ======================================== */
-        .style-3 {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            box-shadow:
-                0 12px 32px rgba(102, 126, 234, 0.4),
-                0 2px 6px rgba(102, 126, 234, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-        }
-
-        .style-3::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 40%;
-            background: linear-gradient(0deg, rgba(0,0,0,0.15) 0%, transparent 100%);
-            border-radius: 0 0 12px 12px;
-        }
-
-        .style-3::after {
-            background-image:
-                repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(255,255,255,0.03) 8px, rgba(255,255,255,0.03) 10px),
-                repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(0,0,0,0.03) 8px, rgba(0,0,0,0.03) 10px);
-        }
-
-        .style-3.on {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 50%, #a8ff78 100%);
-        }
-
-        /* ========================================
-           STYLE 4: Dark Glow + Hexagon Pattern
-           ======================================== */
-        .style-4 {
+        /* 4A: Original Dark (Charcoal to Black) */
+        .style-4a {
             background:
                 radial-gradient(circle at 20% 50%, rgba(255,255,255,0.4) 0%, transparent 50%),
                 linear-gradient(135deg, #434343 0%, #000000 100%);
-            box-shadow:
-                0 8px 32px rgba(0, 0, 0, 0.5),
-                inset 0 1px 2px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
         }
-
-        .style-4::after {
-            background-image:
-                radial-gradient(circle at 50% 50%, transparent 30%, rgba(255,255,255,0.02) 30%, rgba(255,255,255,0.02) 35%, transparent 35%);
+        .style-4a::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(255,255,255,0.02) 30%, rgba(255,255,255,0.02) 35%, transparent 35%);
             background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
+        }
+        .style-4a.on {
+            background: radial-gradient(circle at 20% 50%, rgba(76,175,80,0.5) 0%, transparent 50%), linear-gradient(135deg, #1a5928 0%, #0d2818 100%);
         }
 
-        .style-4.on {
+        /* 4B: Dark Blue */
+        .style-4b {
             background:
-                radial-gradient(circle at 20% 50%, rgba(76,175,80,0.5) 0%, transparent 50%),
-                linear-gradient(135deg, #1a5928 0%, #0d2818 100%);
+                radial-gradient(circle at 20% 50%, rgba(100,149,237,0.4) 0%, transparent 50%),
+                linear-gradient(135deg, #1e3a5f 0%, #0a1929 100%);
+            box-shadow: 0 8px 32px rgba(30, 58, 95, 0.5), inset 0 1px 2px rgba(100, 149, 237, 0.1);
+            border: 1px solid rgba(100, 149, 237, 0.2);
+            color: white;
+        }
+        .style-4b::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(100,149,237,0.03) 30%, rgba(100,149,237,0.03) 35%, transparent 35%);
+            background-size: 20px 20px;
+        }
+        .style-4b.on {
+            background: radial-gradient(circle at 20% 50%, rgba(59,130,246,0.6) 0%, transparent 50%), linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        }
+
+        /* 4C: Dark Purple */
+        .style-4c {
+            background:
+                radial-gradient(circle at 20% 50%, rgba(147,112,219,0.4) 0%, transparent 50%),
+                linear-gradient(135deg, #3d2b56 0%, #1a0f2e 100%);
+            box-shadow: 0 8px 32px rgba(61, 43, 86, 0.5), inset 0 1px 2px rgba(147, 112, 219, 0.1);
+            border: 1px solid rgba(147, 112, 219, 0.2);
+            color: white;
+        }
+        .style-4c::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(147,112,219,0.03) 30%, rgba(147,112,219,0.03) 35%, transparent 35%);
+            background-size: 20px 20px;
+        }
+        .style-4c.on {
+            background: radial-gradient(circle at 20% 50%, rgba(168,85,247,0.6) 0%, transparent 50%), linear-gradient(135deg, #6b21a8 0%, #581c87 100%);
+        }
+
+        /* 4D: Dark Teal */
+        .style-4d {
+            background:
+                radial-gradient(circle at 20% 50%, rgba(64,224,208,0.3) 0%, transparent 50%),
+                linear-gradient(135deg, #1a4d4d 0%, #0d2626 100%);
+            box-shadow: 0 8px 32px rgba(26, 77, 77, 0.5), inset 0 1px 2px rgba(64, 224, 208, 0.1);
+            border: 1px solid rgba(64, 224, 208, 0.2);
+            color: white;
+        }
+        .style-4d::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(64,224,208,0.03) 30%, rgba(64,224,208,0.03) 35%, transparent 35%);
+            background-size: 20px 20px;
+        }
+        .style-4d.on {
+            background: radial-gradient(circle at 20% 50%, rgba(20,184,166,0.6) 0%, transparent 50%), linear-gradient(135deg, #115e59 0%, #134e4a 100%);
+        }
+
+        /* 4E: Dark Burgundy */
+        .style-4e {
+            background:
+                radial-gradient(circle at 20% 50%, rgba(220,38,38,0.3) 0%, transparent 50%),
+                linear-gradient(135deg, #4a1616 0%, #1f0a0a 100%);
+            box-shadow: 0 8px 32px rgba(74, 22, 22, 0.5), inset 0 1px 2px rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            color: white;
+        }
+        .style-4e::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(220,38,38,0.03) 30%, rgba(220,38,38,0.03) 35%, transparent 35%);
+            background-size: 20px 20px;
+        }
+        .style-4e.on {
+            background: radial-gradient(circle at 20% 50%, rgba(239,68,68,0.6) 0%, transparent 50%), linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
         }
 
         /* ========================================
-           STYLE 5: Glossy Pearl + Noise Texture
+           STYLE 6 VARIATIONS: Aurora + Geometric Grid
            ======================================== */
-        .style-5 {
-            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
-            box-shadow:
-                0 8px 24px rgba(0, 0, 0, 0.15),
-                0 1px 6px rgba(0, 0, 0, 0.08),
-                inset 0 2px 0 rgba(255, 255, 255, 0.9),
-                inset 0 -2px 6px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            position: relative;
-        }
 
-        .style-5::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 60%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 100%);
-            border-radius: 12px;
-        }
-
-        .style-5::after {
-            background-image:
-                radial-gradient(circle at 20% 30%, rgba(0,0,0,0.015) 0%, transparent 1px),
-                radial-gradient(circle at 60% 70%, rgba(0,0,0,0.015) 0%, transparent 1px),
-                radial-gradient(circle at 40% 50%, rgba(0,0,0,0.02) 0%, transparent 1px);
-            background-size: 8px 8px, 12px 12px, 6px 6px;
-            background-position: 0 0, 4px 4px, 2px 2px;
-        }
-
-        .style-5.on {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-        }
-
-        /* ========================================
-           STYLE 6: Aurora + Geometric Lines
-           ======================================== */
-        .style-6 {
+        /* 6A: Original Aurora (Pink to Yellow) */
+        .style-6a {
             background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            box-shadow:
-                0 10px 30px rgba(250, 112, 154, 0.4),
-                0 2px 6px rgba(250, 112, 154, 0.2);
+            box-shadow: 0 10px 30px rgba(250, 112, 154, 0.4), 0 2px 6px rgba(250, 112, 154, 0.2);
             border: 2px solid rgba(255, 255, 255, 0.4);
             color: white;
-            position: relative;
         }
-
-        .style-6::before {
+        .style-6a::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%, rgba(0,0,0,0.1) 100%);
             border-radius: 12px;
+            pointer-events: none;
         }
-
-        .style-6::after {
+        .style-6a::after {
             background-image:
                 linear-gradient(0deg, transparent 48%, rgba(255,255,255,0.05) 48%, rgba(255,255,255,0.05) 52%, transparent 52%),
                 linear-gradient(90deg, transparent 48%, rgba(255,255,255,0.05) 48%, rgba(255,255,255,0.05) 52%, transparent 52%);
             background-size: 15px 15px;
         }
-
-        .style-6.on {
+        .style-6a.on {
             background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        /* 6B: Pastel Blue Dream */
+        .style-6b {
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            box-shadow: 0 10px 30px rgba(161, 196, 253, 0.4), 0 2px 6px rgba(161, 196, 253, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            color: #2c3e50;
+        }
+        .style-6b::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(161,196,253,0.1) 100%);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+        .style-6b::after {
+            background-image:
+                linear-gradient(0deg, transparent 48%, rgba(255,255,255,0.08) 48%, rgba(255,255,255,0.08) 52%, transparent 52%),
+                linear-gradient(90deg, transparent 48%, rgba(255,255,255,0.08) 48%, rgba(255,255,255,0.08) 52%, transparent 52%);
+            background-size: 15px 15px;
+        }
+        .style-6b.on {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        /* 6C: Pastel Purple Lavender */
+        .style-6c {
+            background: linear-gradient(135deg, #d4a5f7 0%, #f5d7ff 100%);
+            box-shadow: 0 10px 30px rgba(212, 165, 247, 0.4), 0 2px 6px rgba(212, 165, 247, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            color: #4a1a5f;
+        }
+        .style-6c::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(212,165,247,0.1) 100%);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+        .style-6c::after {
+            background-image:
+                linear-gradient(0deg, transparent 48%, rgba(255,255,255,0.08) 48%, rgba(255,255,255,0.08) 52%, transparent 52%),
+                linear-gradient(90deg, transparent 48%, rgba(255,255,255,0.08) 48%, rgba(255,255,255,0.08) 52%, transparent 52%);
+            background-size: 15px 15px;
+        }
+        .style-6c.on {
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            color: white;
+        }
+
+        /* 6D: Pastel Mint Green */
+        .style-6d {
+            background: linear-gradient(135deg, #a8edea 0%, #d5f5e3 100%);
+            box-shadow: 0 10px 30px rgba(168, 237, 234, 0.4), 0 2px 6px rgba(168, 237, 234, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            color: #1a4d3f;
+        }
+        .style-6d::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(168,237,234,0.1) 100%);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+        .style-6d::after {
+            background-image:
+                linear-gradient(0deg, transparent 48%, rgba(255,255,255,0.08) 48%, rgba(255,255,255,0.08) 52%, transparent 52%),
+                linear-gradient(90deg, transparent 48%, rgba(255,255,255,0.08) 48%, rgba(255,255,255,0.08) 52%, transparent 52%);
+            background-size: 15px 15px;
+        }
+        .style-6d.on {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        /* 6E: Peach Cream */
+        .style-6e {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            box-shadow: 0 10px 30px rgba(252, 182, 159, 0.4), 0 2px 6px rgba(252, 182, 159, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            color: #6b3410;
+        }
+        .style-6e::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(252,182,159,0.1) 100%);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+        .style-6e::after {
+            background-image:
+                linear-gradient(0deg, transparent 48%, rgba(255,255,255,0.08) 48%, rgba(255,255,255,0.08) 52%, transparent 52%),
+                linear-gradient(90deg, transparent 48%, rgba(255,255,255,0.08) 48%, rgba(255,255,255,0.08) 52%, transparent 52%);
+            background-size: 15px 15px;
+        }
+        .style-6e.on {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+        }
+
+        /* 6F: Cool Mint Cyan */
+        .style-6f {
+            background: linear-gradient(135deg, #b2fefa 0%, #0ed2f7 100%);
+            box-shadow: 0 10px 30px rgba(14, 210, 247, 0.4), 0 2px 6px rgba(14, 210, 247, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            color: #0c4a6e;
+        }
+        .style-6f::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(14,210,247,0.1) 100%);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+        .style-6f::after {
+            background-image:
+                linear-gradient(0deg, transparent 48%, rgba(255,255,255,0.08) 48%, rgba(255,255,255,0.08) 52%, transparent 52%),
+                linear-gradient(90deg, transparent 48%, rgba(255,255,255,0.08) 48%, rgba(255,255,255,0.08) 52%, transparent 52%);
+            background-size: 15px 15px;
+        }
+        .style-6f.on {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
         }
 
         .section-header {
@@ -393,15 +437,24 @@
 
         .section-title {
             color: white;
-            font-size: 28px;
-            font-weight: 500;
+            font-size: 32px;
+            font-weight: 400;
             margin-bottom: 10px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .section-subtitle {
             color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .variant-title {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+            font-weight: 500;
+            margin: 40px 0 20px 0;
+            text-align: center;
         }
 
         .style-info {
@@ -409,7 +462,8 @@
             backdrop-filter: blur(10px);
             padding: 15px;
             border-radius: 12px;
-            margin-top: 20px;
+            margin: 20px auto;
+            max-width: 800px;
             border: 1px solid rgba(255, 255, 255, 0.15);
             text-align: center;
         }
@@ -431,7 +485,7 @@
             background: rgba(76, 175, 80, 0.2);
             backdrop-filter: blur(10px);
             color: white;
-            padding: 25px;
+            padding: 30px;
             border-radius: 16px;
             margin-top: 60px;
             text-align: center;
@@ -439,14 +493,14 @@
         }
 
         .final-note h2 {
-            margin-bottom: 12px;
-            font-size: 24px;
+            margin-bottom: 15px;
+            font-size: 28px;
             font-weight: 400;
         }
 
         .final-note p {
             opacity: 0.95;
-            font-size: 15px;
+            font-size: 16px;
             line-height: 1.6;
         }
     </style>
@@ -454,7 +508,7 @@
 <body>
     <div class="container">
         <h1>TileBoard Card Designs</h1>
-        <p class="subtitle">140×140px Square Format with Rich Gradients & Background Artifacts</p>
+        <p class="subtitle">140×140px Cards - Dark & Pastel Color Variations</p>
 
         <div class="controls">
             <div class="toggle-container">
@@ -465,36 +519,320 @@
                 <span class="toggle-label" id="status-text">ON</span>
             </div>
             <div style="margin-top: 12px; font-size: 13px; opacity: 0.8;">
-                Toggle to see cards with/without subtle background patterns
+                Hexagon pattern (Dark themes) • Geometric grid (Pastel themes)
             </div>
         </div>
 
+        <!-- DARK VARIATIONS -->
         <div class="section-header">
-            <h2 class="section-title">Style 1: Rich Gradient + Fine Mesh</h2>
-            <p class="section-subtitle">Soft blue-gray gradient with subtle grid texture</p>
+            <h2 class="section-title">🌙 Dark Themes with Hexagon Pattern</h2>
+            <p class="section-subtitle">Premium dark gradients with radial glow highlights</p>
         </div>
+
+        <h3 class="variant-title">4A: Original Dark (Charcoal → Black)</h3>
         <div class="cards-grid">
-            <div class="card style-1">
+            <div class="card style-4a">
                 <div class="card-label">OFF</div>
-                <div class="card-icon">💡</div>
-                <div class="card-title">Living Room</div>
+                <div class="card-icon">💻</div>
+                <div class="card-title">PC</div>
+                <div class="card-state">Sleep</div>
+            </div>
+            <div class="card style-4a on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">💻</div>
+                <div class="card-title">PC</div>
+                <div class="card-state">Active</div>
+                <div class="card-status"></div>
+            </div>
+            <div class="card style-4a">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">🌙</div>
+                <div class="card-title">Night Mode</div>
+                <div class="card-state">Day</div>
+            </div>
+            <div class="card style-4a on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">🌙</div>
+                <div class="card-title">Night Mode</div>
+                <div class="card-state">Active</div>
+                <div class="card-status"></div>
+            </div>
+        </div>
+
+        <h3 class="variant-title">4B: Dark Blue (Navy → Midnight)</h3>
+        <div class="cards-grid">
+            <div class="card style-4b">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">📺</div>
+                <div class="card-title">TV</div>
                 <div class="card-state">OFF</div>
                 <div class="card-status" style="background: #9e9e9e;"></div>
             </div>
-            <div class="card style-1 on">
+            <div class="card style-4b on">
                 <div class="card-label">ON</div>
-                <div class="card-icon">💡</div>
-                <div class="card-title">Living Room</div>
-                <div class="card-state">ON - 75%</div>
+                <div class="card-icon">📺</div>
+                <div class="card-title">TV</div>
+                <div class="card-state">Netflix</div>
                 <div class="card-status"></div>
             </div>
-            <div class="card style-1">
+            <div class="card style-4b">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">🎵</div>
+                <div class="card-title">Speakers</div>
+                <div class="card-state">Stopped</div>
+            </div>
+            <div class="card style-4b on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">🎶</div>
+                <div class="card-title">Speakers</div>
+                <div class="card-state">Playing</div>
+                <div class="card-status"></div>
+            </div>
+        </div>
+
+        <h3 class="variant-title">4C: Dark Purple (Plum → Deep Purple)</h3>
+        <div class="cards-grid">
+            <div class="card style-4c">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">🎮</div>
+                <div class="card-title">Gaming</div>
+                <div class="card-state">Sleep</div>
+            </div>
+            <div class="card style-4c on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">🎮</div>
+                <div class="card-title">Gaming</div>
+                <div class="card-state">Active</div>
+                <div class="card-status"></div>
+            </div>
+            <div class="card style-4c">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">RGB Lights</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-4c on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">RGB Lights</div>
+                <div class="card-state">Party</div>
+                <div class="card-status"></div>
+            </div>
+        </div>
+
+        <h3 class="variant-title">4D: Dark Teal (Teal → Deep Cyan)</h3>
+        <div class="cards-grid">
+            <div class="card style-4d">
                 <div class="card-label">OFF</div>
                 <div class="card-icon">🌡️</div>
-                <div class="card-title">Kitchen</div>
-                <div class="card-state">22°C</div>
+                <div class="card-title">Pool</div>
+                <div class="card-state">18°C</div>
             </div>
-            <div class="card style-1 on">
+            <div class="card style-4d on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">🏊</div>
+                <div class="card-title">Pool</div>
+                <div class="card-state">26°C</div>
+                <div class="card-status"></div>
+            </div>
+            <div class="card style-4d">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">🚿</div>
+                <div class="card-title">Spa</div>
+                <div class="card-state">Cold</div>
+            </div>
+            <div class="card style-4d on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">♨️</div>
+                <div class="card-title">Spa</div>
+                <div class="card-state">38°C</div>
+                <div class="card-status"></div>
+            </div>
+        </div>
+
+        <h3 class="variant-title">4E: Dark Burgundy (Burgundy → Wine)</h3>
+        <div class="cards-grid">
+            <div class="card style-4e">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">🚨</div>
+                <div class="card-title">Security</div>
+                <div class="card-state">Disarmed</div>
+            </div>
+            <div class="card style-4e on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">🚨</div>
+                <div class="card-title">Security</div>
+                <div class="card-state">ARMED</div>
+                <div class="card-status" style="background: #dc2626;"></div>
+            </div>
+            <div class="card style-4e">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">🔥</div>
+                <div class="card-title">Fireplace</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-4e on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">🔥</div>
+                <div class="card-title">Fireplace</div>
+                <div class="card-state">Heating</div>
+                <div class="card-status"></div>
+            </div>
+        </div>
+
+        <div class="style-info">
+            <h3>Pattern: Subtle Hexagonal Grid</h3>
+            <p>Professional tech-inspired hexagons add premium feel to dark gradients. Perfect for media rooms and tech devices.</p>
+        </div>
+
+        <!-- PASTEL VARIATIONS -->
+        <div class="section-header" style="margin-top: 80px;">
+            <h2 class="section-title">🌸 Pastel Themes with Geometric Grid</h2>
+            <p class="section-subtitle">Soft, modern gradients with elegant crosshair pattern</p>
+        </div>
+
+        <h3 class="variant-title">6A: Original Aurora (Pink → Yellow)</h3>
+        <div class="cards-grid">
+            <div class="card style-6a">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">⚡</div>
+                <div class="card-title">Power</div>
+                <div class="card-state">1.2 kW</div>
+            </div>
+            <div class="card style-6a on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">⚡</div>
+                <div class="card-title">Power</div>
+                <div class="card-state">3.8 kW</div>
+                <div class="card-status"></div>
+            </div>
+            <div class="card style-6a">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Kitchen</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-6a on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Kitchen</div>
+                <div class="card-state">100%</div>
+                <div class="card-status"></div>
+            </div>
+        </div>
+
+        <h3 class="variant-title">6B: Pastel Blue Dream</h3>
+        <div class="cards-grid">
+            <div class="card style-6b">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">🌡️</div>
+                <div class="card-title">Bedroom</div>
+                <div class="card-state">21°C</div>
+            </div>
+            <div class="card style-6b on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">❄️</div>
+                <div class="card-title">Bedroom</div>
+                <div class="card-state">Cooling</div>
+                <div class="card-status"></div>
+            </div>
+            <div class="card style-6b">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Bathroom</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-6b on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Bathroom</div>
+                <div class="card-state">ON - 60%</div>
+                <div class="card-status"></div>
+            </div>
+        </div>
+
+        <h3 class="variant-title">6C: Pastel Purple Lavender</h3>
+        <div class="cards-grid">
+            <div class="card style-6c">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">🛏️</div>
+                <div class="card-title">Sleep Mode</div>
+                <div class="card-state">Inactive</div>
+            </div>
+            <div class="card style-6c on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">😴</div>
+                <div class="card-title">Sleep Mode</div>
+                <div class="card-state">Active</div>
+                <div class="card-status"></div>
+            </div>
+            <div class="card style-6c">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">🎭</div>
+                <div class="card-title">Mood Light</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-6c on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">🎨</div>
+                <div class="card-title">Mood Light</div>
+                <div class="card-state">Relax</div>
+                <div class="card-status"></div>
+            </div>
+        </div>
+
+        <h3 class="variant-title">6D: Pastel Mint Green</h3>
+        <div class="cards-grid">
+            <div class="card style-6d">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">🌱</div>
+                <div class="card-title">Garden</div>
+                <div class="card-state">Dry</div>
+            </div>
+            <div class="card style-6d on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">💧</div>
+                <div class="card-title">Garden</div>
+                <div class="card-state">Watering</div>
+                <div class="card-status"></div>
+            </div>
+            <div class="card style-6d">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">🍃</div>
+                <div class="card-title">Fresh Air</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-6d on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">🌬️</div>
+                <div class="card-title">Fresh Air</div>
+                <div class="card-state">Active</div>
+                <div class="card-status"></div>
+            </div>
+        </div>
+
+        <h3 class="variant-title">6E: Peach Cream</h3>
+        <div class="cards-grid">
+            <div class="card style-6e">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">☕</div>
+                <div class="card-title">Coffee</div>
+                <div class="card-state">Ready</div>
+            </div>
+            <div class="card style-6e on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">☕</div>
+                <div class="card-title">Coffee</div>
+                <div class="card-state">Brewing</div>
+                <div class="card-status"></div>
+            </div>
+            <div class="card style-6e">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">🔥</div>
+                <div class="card-title">Heating</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-6e on">
                 <div class="card-label">ON</div>
                 <div class="card-icon">🔥</div>
                 <div class="card-title">Heating</div>
@@ -502,202 +840,47 @@
                 <div class="card-status"></div>
             </div>
         </div>
-        <div class="style-info">
-            <h3>Artifact: Fine 3×3px mesh grid</h3>
-            <p>Creates subtle structure without being distracting. Perfect for professional look.</p>
-        </div>
 
-        <div class="section-header">
-            <h2 class="section-title">Style 2: Metallic + Carbon Fiber</h2>
-            <p class="section-subtitle">Silver metallic with diagonal carbon fiber texture</p>
-        </div>
+        <h3 class="variant-title">6F: Cool Mint Cyan</h3>
         <div class="cards-grid">
-            <div class="card style-2">
+            <div class="card style-6f">
                 <div class="card-label">OFF</div>
-                <div class="card-icon">🔒</div>
-                <div class="card-title">Front Door</div>
-                <div class="card-state">LOCKED</div>
-            </div>
-            <div class="card style-2 on">
-                <div class="card-label">ON</div>
-                <div class="card-icon">🔓</div>
-                <div class="card-title">Front Door</div>
-                <div class="card-state">UNLOCKED</div>
-                <div class="card-status"></div>
-            </div>
-            <div class="card style-2">
-                <div class="card-label">OFF</div>
-                <div class="card-icon">🚪</div>
-                <div class="card-title">Garage</div>
-                <div class="card-state">CLOSED</div>
-            </div>
-            <div class="card style-2 on">
-                <div class="card-label">ON</div>
-                <div class="card-icon">🚗</div>
-                <div class="card-title">Garage</div>
-                <div class="card-state">OPENING</div>
-                <div class="card-status"></div>
-            </div>
-        </div>
-        <div class="style-info">
-            <h3>Artifact: 45° diagonal carbon fiber pattern</h3>
-            <p>Gives premium metallic feel. Subtle weave adds depth to metallic gradient.</p>
-        </div>
-
-        <div class="section-header">
-            <h2 class="section-title">Style 3: Vibrant + Diagonal Waves</h2>
-            <p class="section-subtitle">Purple-pink gradient with crosshatch wave pattern</p>
-        </div>
-        <div class="cards-grid">
-            <div class="card style-3">
-                <div class="card-label">OFF</div>
-                <div class="card-icon">🎵</div>
-                <div class="card-title">Speakers</div>
-                <div class="card-state">Stopped</div>
-            </div>
-            <div class="card style-3 on">
-                <div class="card-label">ON</div>
-                <div class="card-icon">🎶</div>
-                <div class="card-title">Speakers</div>
-                <div class="card-state">Playing</div>
-                <div class="card-status"></div>
-            </div>
-            <div class="card style-3">
-                <div class="card-label">OFF</div>
-                <div class="card-icon">📺</div>
-                <div class="card-title">TV</div>
+                <div class="card-icon">❄️</div>
+                <div class="card-title">AC</div>
                 <div class="card-state">OFF</div>
-                <div class="card-status" style="background: #9e9e9e;"></div>
             </div>
-            <div class="card style-3 on">
+            <div class="card style-6f on">
                 <div class="card-label">ON</div>
-                <div class="card-icon">📺</div>
-                <div class="card-title">TV</div>
-                <div class="card-state">Netflix</div>
+                <div class="card-icon">❄️</div>
+                <div class="card-title">AC</div>
+                <div class="card-state">19°C</div>
                 <div class="card-status"></div>
             </div>
-        </div>
-        <div class="style-info">
-            <h3>Artifact: Diagonal crosshatch waves (45° & -45°)</h3>
-            <p>Modern wave pattern adds movement to vibrant colors. Bold yet professional.</p>
+            <div class="card style-6f">
+                <div class="card-label">OFF</div>
+                <div class="card-icon">🌊</div>
+                <div class="card-title">Fountain</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-6f on">
+                <div class="card-label">ON</div>
+                <div class="card-icon">💦</div>
+                <div class="card-title">Fountain</div>
+                <div class="card-state">Running</div>
+                <div class="card-status"></div>
+            </div>
         </div>
 
-        <div class="section-header">
-            <h2 class="section-title">Style 4: Dark Glow + Hexagon Pattern</h2>
-            <p class="section-subtitle">Dark mode with radial glow and hexagonal grid</p>
-        </div>
-        <div class="cards-grid">
-            <div class="card style-4">
-                <div class="card-label">OFF</div>
-                <div class="card-icon">💻</div>
-                <div class="card-title">PC</div>
-                <div class="card-state">Sleep</div>
-            </div>
-            <div class="card style-4 on">
-                <div class="card-label">ON</div>
-                <div class="card-icon">💻</div>
-                <div class="card-title">PC</div>
-                <div class="card-state">Active</div>
-                <div class="card-status"></div>
-            </div>
-            <div class="card style-4">
-                <div class="card-label">OFF</div>
-                <div class="card-icon">🌙</div>
-                <div class="card-title">Night Mode</div>
-                <div class="card-state">Day</div>
-            </div>
-            <div class="card style-4 on">
-                <div class="card-label">ON</div>
-                <div class="card-icon">🌙</div>
-                <div class="card-title">Night Mode</div>
-                <div class="card-state">Active</div>
-                <div class="card-status"></div>
-            </div>
-        </div>
         <div class="style-info">
-            <h3>Artifact: Subtle hexagonal grid pattern</h3>
-            <p>Tech-inspired hexagons for premium dark mode. Perfect for media/tech devices.</p>
-        </div>
-
-        <div class="section-header">
-            <h2 class="section-title">Style 5: Glossy Pearl + Noise Texture</h2>
-            <p class="section-subtitle">Cream-beige gradient with organic noise</p>
-        </div>
-        <div class="cards-grid">
-            <div class="card style-5">
-                <div class="card-label">OFF</div>
-                <div class="card-icon">☕</div>
-                <div class="card-title">Coffee</div>
-                <div class="card-state">Ready</div>
-            </div>
-            <div class="card style-5 on">
-                <div class="card-label">ON</div>
-                <div class="card-icon">☕</div>
-                <div class="card-title">Coffee</div>
-                <div class="card-state">Brewing</div>
-                <div class="card-status"></div>
-            </div>
-            <div class="card style-5">
-                <div class="card-label">OFF</div>
-                <div class="card-icon">🌡️</div>
-                <div class="card-title">Bedroom</div>
-                <div class="card-state">21°C</div>
-            </div>
-            <div class="card style-5 on">
-                <div class="card-label">ON</div>
-                <div class="card-icon">🔥</div>
-                <div class="card-title">Bedroom</div>
-                <div class="card-state">Warming</div>
-                <div class="card-status"></div>
-            </div>
-        </div>
-        <div class="style-info">
-            <h3>Artifact: Scattered noise dots (multiple sizes)</h3>
-            <p>Natural paper-like texture. Warm and inviting for home automation.</p>
-        </div>
-
-        <div class="section-header">
-            <h2 class="section-title">Style 6: Aurora + Geometric Grid</h2>
-            <p class="section-subtitle">Pink-yellow gradient with crosshair grid</p>
-        </div>
-        <div class="cards-grid">
-            <div class="card style-6">
-                <div class="card-label">OFF</div>
-                <div class="card-icon">⚡</div>
-                <div class="card-title">Power</div>
-                <div class="card-state">1.2 kW</div>
-            </div>
-            <div class="card style-6 on">
-                <div class="card-label">ON</div>
-                <div class="card-icon">⚡</div>
-                <div class="card-title">Power</div>
-                <div class="card-state">3.8 kW</div>
-                <div class="card-status"></div>
-            </div>
-            <div class="card style-6">
-                <div class="card-label">OFF</div>
-                <div class="card-icon">🌡️</div>
-                <div class="card-title">Pool</div>
-                <div class="card-state">18°C</div>
-            </div>
-            <div class="card style-6 on">
-                <div class="card-label">ON</div>
-                <div class="card-icon">🏊</div>
-                <div class="card-title">Pool</div>
-                <div class="card-state">26°C</div>
-                <div class="card-status"></div>
-            </div>
-        </div>
-        <div class="style-info">
-            <h3>Artifact: Geometric crosshair grid (15×15px)</h3>
-            <p>Modern geometric structure. Bold colors balanced with subtle grid.</p>
+            <h3>Pattern: Geometric Crosshair Grid (15×15px)</h3>
+            <p>Elegant grid pattern adds modern structure to soft pastels. Perfect for living spaces and ambient controls.</p>
         </div>
 
         <div class="final-note">
-            <h2>✨ Choose Your Preferred Design</h2>
-            <p><strong>All cards shown at actual 140×140px size</strong></p>
-            <p style="margin-top: 12px;">Rich gradients + Subtle background artifacts = Professional 3D depth</p>
-            <p style="margin-top: 12px; opacity: 0.9;">Toggle artifacts ON/OFF above to compare. Tell me which style (1-6) you prefer!</p>
+            <h2>✨ Choose Your Color Variation</h2>
+            <p><strong>Dark Themes (4A-4E):</strong> 5 variations with hexagon pattern</p>
+            <p style="margin-top: 8px;"><strong>Pastel Themes (6A-6F):</strong> 6 variations with geometric grid</p>
+            <p style="margin-top: 20px; opacity: 0.9;">Toggle artifacts ON/OFF to compare. Tell me which color(s) you prefer!</p>
         </div>
     </div>
 
