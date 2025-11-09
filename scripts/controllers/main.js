@@ -213,6 +213,16 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
 
 
    $scope.getItemEntity = function (item) {
+      // Virtual tiles don't have real entities - return a mock or parent entity
+      if (item.state === false || item.virtual === true) {
+         // For popup virtual tiles, use the popup's parent entity
+         if ($scope.activePopup && $scope.activePopup.entity) {
+            return $scope.activePopup.entity;
+         }
+         // For other virtual tiles or when no parent entity, return mock
+         return { state: false, attributes: {} };
+      }
+
       if (typeof item.id === 'object') {
          return item.id;
       }

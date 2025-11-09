@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html ng-app="testApp">
+   <head>
+      <title>Climate Popup Virtual Tiles Test</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+      <style>
+         body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+         }
+         .test-container {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+         }
+         .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+         }
+         .test-pass {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+         }
+         .test-fail {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+         }
+         .test-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+         }
+         .test-details {
+            font-size: 14px;
+            color: #666;
+         }
+         h1 {
+            color: #333;
+         }
+         h2 {
+            color: #666;
+            margin-top: 30px;
+         }
+         .summary {
+            background: #e3f2fd;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            border-left: 4px solid #2196f3;
+         }
+         .warning-list {
+            background: #fff3e0;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+         }
+         .warning-item {
+            color: #f57c00;
+            padding: 5px 0;
+         }
+         button {
+            padding: 10px 20px;
+            margin: 10px 5px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+         }
+         button:hover {
+            background: #1976d2;
+         }
+      </style>
+   </head>
+   <body ng-controller="TestController">
+      <h1>Climate Popup Virtual Tiles - Unit Tests</h1>
+
+      <div class="summary">
+         <strong>Testing Goal:</strong> Verify that virtual tiles in climate popups don't trigger "Entity not found"
+         warnings and properly return the parent climate entity for state checking.
+      </div>
+
+      <button ng-click="runTests()">Run All Tests</button>
+      <button ng-click="clearWarnings()">Clear Warnings</button>
+
+      <div class="warning-list" ng-if="warnings.length > 0">
+         <strong>Warnings Captured ({{ warnings.length }}):</strong>
+         <div class="warning-item" ng-repeat="warning in warnings">⚠️ {{ warning }}</div>
+      </div>
+
+      <h2>Test Results</h2>
+      <div ng-repeat="test in testResults" class="test-result" ng-class="test.passed ? 'test-pass' : 'test-fail'">
+         <div class="test-name">{{ test.passed ? '✓' : '✗' }} {{ test.name }}</div>
+         <div class="test-details">{{ test.message }}</div>
+      </div>
+
+      <script>
+         angular.module("testApp", []).controller("TestController", function ($scope, $timeout) {
+            $scope.testResults = [];
+            $scope.warnings = [];
+            $scope.states = {
+               "climate.real_ac": {
+                  state: "cool",
+                  attributes: {
+                     temperature: 22,
+                     current_temperature: 24.5,
+                  },
+               },
+            };
+
+            // Mock activePopup for testing
+            $scope.activePopup = null;
+
+            // Capture warnings
+            const originalWarn = console.warn;
+            console.warn = function (...args) {
+               $scope.warnings.push(args.join(" "));
+               $scope.$apply();
+               originalWarn.apply(console, args);
+            };
+
+            // Mock warnUnknownItem function
+            function warnUnknownItem(item) {
+               console.warn(`Entity "${item.id}" not found`);
+            }
+
+            // Implementation of getItemEntity (COPY FROM MAIN.JS FOR TESTING)
+            $scope.getItemEntity = function (item) {
+               // Virtual tiles don't have real entities - return a mock or parent entity
+               if (item.state === false || item.virtual === true) {
+                  // For popup virtual tiles, use the popup's parent entity
+                  if ($scope.activePopup && $scope.activePopup.entity) {
+                     return $scope.activePopup.entity;
+                  }
+                  // For other virtual tiles or when no parent entity, return mock
+                  return { state: false, attributes: {} };
+               }
+
+               if (typeof item.id === "object") {
+                  return item.id;
+               }
+
+               if (!(item.id in $scope.states)) {
+                  warnUnknownItem(item);
+                  return null;
+               }
+
+               return $scope.states[item.id];
+            };
+
+            $scope.clearWarnings = function () {
+               $scope.warnings = [];
+            };
+
+            $scope.runTests = function () {
+               $scope.testResults = [];
+               $scope.warnings = [];
+
+               // Test 1: Virtual tile without popup context
+               test1_virtualTileWithoutPopup();
+
+               // Test 2: Virtual tile with popup context
+               test2_virtualTileWithPopup();
+
+               // Test 3: Regular tile lookup
+               test3_regularTileLookup();
+
+               // Test 4: Non-existent entity (should warn)
+               test4_nonExistentEntity();
+
+               // Test 5: Object ID (virtual)
+               test5_objectIdVirtual();
+
+               // Summary
+               const passed = $scope.testResults.filter((t) => t.passed).length;
+               const total = $scope.testResults.length;
+               console.log(`\n=== TEST SUMMARY ===`);
+               console.log(`Passed: ${passed}/${total}`);
+               console.log(`Failed: ${total - passed}/${total}`);
+            };
+
+            function addTestResult(name, passed, message) {
+               $scope.testResults.push({ name, passed, message });
+            }
+
+            function test1_virtualTileWithoutPopup() {
+               const virtualTile = {
+                  id: "climate.fake_mode_off",
+                  state: false,
+                  type: "script",
+               };
+
+               const warningsBeforeCount = $scope.warnings.length;
+               const entity = $scope.getItemEntity(virtualTile);
+               const warningsAfterCount = $scope.warnings.length;
+
+               const noNewWarnings = warningsAfterCount === warningsBeforeCount;
+               const returnsMockEntity = entity && entity.state === false && entity.attributes;
+
+               const passed = noNewWarnings && returnsMockEntity;
+               addTestResult(
+                  "Test 1: Virtual tile without popup (state: false)",
+                  passed,
+                  passed
+                     ? "Returns mock entity without warning"
+                     : `Expected mock entity without warnings, got: ${JSON.stringify(entity)}, warnings: ${
+                          warningsAfterCount - warningsBeforeCount
+                       }`
+               );
+            }
+
+            function test2_virtualTileWithPopup() {
+               // Set up popup context with parent entity
+               $scope.activePopup = {
+                  entity: $scope.states["climate.real_ac"],
+                  item: { type: "popup" },
+               };
+
+               const virtualTile = {
+                  id: "climate.fake_mode_cool",
+                  state: false,
+                  type: "script",
+               };
+
+               const warningsBeforeCount = $scope.warnings.length;
+               const entity = $scope.getItemEntity(virtualTile);
+               const warningsAfterCount = $scope.warnings.length;
+
+               const noNewWarnings = warningsAfterCount === warningsBeforeCount;
+               const returnsParentEntity = entity === $scope.states["climate.real_ac"];
+               const entityStateIsCool = entity && entity.state === "cool";
+
+               const passed = noNewWarnings && returnsParentEntity && entityStateIsCool;
+               addTestResult(
+                  "Test 2: Virtual tile with popup (returns parent entity)",
+                  passed,
+                  passed
+                     ? "Returns parent climate entity without warning"
+                     : `Expected parent entity, got: ${JSON.stringify(entity)}, state: ${entity?.state}`
+               );
+
+               // Clean up
+               $scope.activePopup = null;
+            }
+
+            function test3_regularTileLookup() {
+               const regularTile = {
+                  id: "climate.real_ac",
+                  type: "climate",
+               };
+
+               const warningsBeforeCount = $scope.warnings.length;
+               const entity = $scope.getItemEntity(regularTile);
+               const warningsAfterCount = $scope.warnings.length;
+
+               const noNewWarnings = warningsAfterCount === warningsBeforeCount;
+               const returnsCorrectEntity = entity === $scope.states["climate.real_ac"];
+               const entityStateIsCool = entity && entity.state === "cool";
+
+               const passed = noNewWarnings && returnsCorrectEntity && entityStateIsCool;
+               addTestResult(
+                  "Test 3: Regular tile lookup",
+                  passed,
+                  passed ? "Returns correct entity from states" : `Expected real entity, got: ${JSON.stringify(entity)}`
+               );
+            }
+
+            function test4_nonExistentEntity() {
+               const nonExistentTile = {
+                  id: "climate.does_not_exist",
+                  type: "climate",
+               };
+
+               const warningsBeforeCount = $scope.warnings.length;
+               const entity = $scope.getItemEntity(nonExistentTile);
+               const warningsAfterCount = $scope.warnings.length;
+
+               const hasWarning = warningsAfterCount > warningsBeforeCount;
+               const returnsNull = entity === null;
+
+               const passed = hasWarning && returnsNull;
+               addTestResult(
+                  "Test 4: Non-existent entity (should warn)",
+                  passed,
+                  passed
+                     ? "Correctly warns about missing entity"
+                     : `Expected warning and null, got: ${entity}, warnings: ${
+                          warningsAfterCount - warningsBeforeCount
+                       }`
+               );
+            }
+
+            function test5_objectIdVirtual() {
+               const virtualTileWithObjectId = {
+                  id: { state: "on", attributes: { test: true } },
+                  type: "custom",
+               };
+
+               const warningsBeforeCount = $scope.warnings.length;
+               const entity = $scope.getItemEntity(virtualTileWithObjectId);
+               const warningsAfterCount = $scope.warnings.length;
+
+               const noNewWarnings = warningsAfterCount === warningsBeforeCount;
+               const returnsObjectId = entity === virtualTileWithObjectId.id;
+
+               const passed = noNewWarnings && returnsObjectId;
+               addTestResult(
+                  "Test 5: Object ID (virtual tile)",
+                  passed,
+                  passed ? "Returns object ID without warning" : `Expected object ID, got: ${JSON.stringify(entity)}`
+               );
+            }
+
+            // Run tests on load
+            $timeout(function () {
+               $scope.runTests();
+            }, 100);
+         });
+      </script>
+   </body>
+</html>
