@@ -1656,10 +1656,6 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
          clearTimeout($scope.popupTimeout);
          $scope.popupTimeout = null;
       }
-      // Clear flattened popup cache to prevent stale layouts
-      if ($scope.activePopup && $scope.activePopup.layout) {
-         flattenedPopupCache.delete($scope.activePopup.layout);
-      }
       $scope.activePopup = null;
    };
 
@@ -1676,39 +1672,26 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
 
       // For popup-type items with 2D array structure, we need to flatten for the template
       if (layout.type === TYPES.POPUP && Array.isArray(layout.items) && layout.items.length > 0 && Array.isArray(layout.items[0])) {
-         // Check cache first (without mutating original layout)
-         if (flattenedPopupCache.has(layout)) {
-            console.log('[getPopupLayout] Using cached flattened layout');
-            return flattenedPopupCache.get(layout);
-         }
-
          console.log('[getPopupLayout] Flattening 2D array for popup');
          const flatItems = [];
          // Flatten and add position properties based on row/column
-         // IMPORTANT: Don't mutate original items - create copies when needed
+         // IMPORTANT: Always create new objects to prevent digest loops
          layout.items.forEach((row, rowIndex) => {
             row.forEach((item, colIndex) => {
                // Skip null/undefined items (used as placeholders for layout)
                if (!item) {
                   return;
                }
-               // If item already has position, use as-is to avoid creating new object
-               if (item.position) {
-                  flatItems.push(item);
-               } else {
-                  // Create new object with position to avoid mutating original
-                  const itemWithPosition = Object.assign({}, item, {
-                     position: [colIndex, rowIndex],
-                  });
-                  flatItems.push(itemWithPosition);
-               }
+               // Always create new object with position to avoid mutation issues
+               const itemWithPosition = Object.assign({}, item, {
+                  position: item.position || [colIndex, rowIndex],
+               });
+               flatItems.push(itemWithPosition);
             });
          });
          const flattenedLayout = Object.assign({}, layout, { items: flatItems });
          console.log('[getPopupLayout] Flattened items:', flatItems.length, 'from', layout.items.length, 'rows');
 
-         // Cache without mutating original
-         flattenedPopupCache.set(layout, flattenedLayout);
          return flattenedLayout;
       }
 
