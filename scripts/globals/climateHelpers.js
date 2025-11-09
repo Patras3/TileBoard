@@ -244,13 +244,15 @@ export function createHONClimatePopup (config) {
          id: id + '_mode_' + mode,
          state: false, // Virtual tile - no real entity
          customHtml: function (item, entity) {
-            const isActive = entity.state === mode ? 'active' : '';
-            return `
-               <div class="item-entity-container">
-                  <i class="mdi ${icon}" style="font-size: 48px;"></i>
-                  <div class="item-title ${isActive}">${label}</div>
-               </div>
-            `;
+            const isActive = (entity && entity.state === mode) ? 'active' : '';
+            const iconClass = icon;
+            const buttonLabel = label;
+            return (
+               '<div class="item-entity-container">' +
+               '<i class="mdi ' + iconClass + '" style="font-size: 48px;"></i>' +
+               '<div class="item-title ' + isActive + '">' + buttonLabel + '</div>' +
+               '</div>'
+            );
          },
          action: function (item, entity) {
             contextRef = this;
@@ -298,17 +300,18 @@ export function createHONClimatePopup (config) {
                   createModeButton('heat', 'mdi-fire', 'Grzanie'),
                   createModeButton('uv', 'mdi-circle-outline', 'UV + Chłodzenie'),
                ],
-               // Row 2: Temperature controls (centered with empty placeholders)
+               // Row 2: Temperature controls with width: 2 centered in 4-column grid
                [
-                  null, // Empty placeholder for centering
                   {
                      type: window.TYPES.CUSTOM,
                      id: id + '_temp_controls',
                      state: false, // Virtual tile - no real entity
+                     position: [1, 1], // Column 1 (0-indexed), Row 1
+                     width: 2, // Span 2 columns (middle 2 of 4)
                      customHtml: function () {
                         const temp = latestTemperature || '--';
                         return `
-                           <div style="display: flex; align-items: center; gap: 10px;">
+                           <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                               <button class="item-button" onclick="window.honTempMinus_${id.replace(/\./g, '_')}()">
                                  <i class="mdi mdi-minus"></i>
                               </button>
@@ -320,7 +323,6 @@ export function createHONClimatePopup (config) {
                         `;
                      },
                   },
-                  null, // Empty placeholder for centering
                ],
             ],
          };
