@@ -440,7 +440,18 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
          const tileMargin = page.tileMargin || CONFIG.tileMargin;
 
          if (!('width' in group) || !('height' in group)) {
-            const sizes = calcGroupSizes(group);
+            let sizes;
+            // Popup items have 2D array structure, handle differently
+            if (group.type === TYPES.POPUP && Array.isArray(group.items) && group.items.length > 0 && Array.isArray(group.items[0])) {
+               console.log('[groupStyles] Calculating popup sizes from 2D array');
+               // For popup items: items = [[item, item], [item]]
+               const maxWidth = Math.max(...group.items.map(row => row.length));
+               const maxHeight = group.items.length;
+               sizes = { width: maxWidth, height: maxHeight };
+               console.log('[groupStyles] Popup sizes:', sizes);
+            } else {
+               sizes = calcGroupSizes(group);
+            }
 
             if (!group.width) {
                group.width = sizes.width;
@@ -1632,9 +1643,31 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    };
 
    $scope.getPopupLayout = function () {
-      const result = ($scope.activePopup && $scope.activePopup.layout) || EMPTY_LAYOUT;
-      console.log('[getPopupLayout] called, activePopup:', $scope.activePopup, 'layout:', result, 'is EMPTY_LAYOUT:', result === EMPTY_LAYOUT);
-      return result;
+      const layout = ($scope.activePopup && $scope.activePopup.layout) || EMPTY_LAYOUT;
+      console.log('[getPopupLayout] called, activePopup:', $scope.activePopup, 'layout:', layout, 'is EMPTY_LAYOUT:', layout === EMPTY_LAYOUT);
+
+      // For popup-type items with 2D array structure, we need to flatten for the template
+      if (layout.type === TYPES.POPUP && Array.isArray(layout.items) && layout.items.length > 0 && Array.isArray(layout.items[0])) {
+         // Cache the flattened layout to prevent recreating on every digest
+         if (!layout._flattenedLayout) {
+            console.log('[getPopupLayout] Flattening 2D array for popup');
+            const flatItems = [];
+            // Flatten and add position properties based on row/column
+            layout.items.forEach((row, rowIndex) => {
+               row.forEach((item, colIndex) => {
+                  if (!item.position) {
+                     item.position = [colIndex, rowIndex];
+                  }
+                  flatItems.push(item);
+               });
+            });
+            layout._flattenedLayout = Object.assign({}, layout, { items: flatItems });
+            console.log('[getPopupLayout] Flattened items:', flatItems.length, 'from', layout.items.length, 'rows');
+         }
+         return layout._flattenedLayout;
+      }
+
+      return layout;
    };
 
    $scope.isPopupActive = function (page) {
