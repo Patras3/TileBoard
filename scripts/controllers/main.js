@@ -40,8 +40,9 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    $scope.FEATURES = FEATURES;
    $scope.HEADER_ITEMS = HEADER_ITEMS;
 
-   // Cached empty object to prevent infinite digest loops
+   // Cached empty objects to prevent infinite digest loops
    const EMPTY_STYLES = {};
+   const EMPTY_LAYOUT = { items: [] };
 
    $scope.activeSelect = null;
    $scope.screensaverShown = false;
@@ -1585,6 +1586,10 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
          return '';
       }
       return parseFieldValue($scope.activePopup.layout.classes, $scope.activePopup.item, $scope.activePopup.entity);
+   };
+
+   $scope.getPopupLayout = function () {
+      return ($scope.activePopup && $scope.activePopup.layout) || EMPTY_LAYOUT;
    };
 
    $scope.isPopupActive = function (page) {
