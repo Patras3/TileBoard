@@ -1,145 +1,172 @@
 <!DOCTYPE html>
 <html ng-app="testApp">
-<head>
-   <title>Digest Loop Test - Demonstrating the Fix</title>
-   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
-   <style>
-      body { font-family: Arial, sans-serif; padding: 20px; }
-      .section { margin: 20px 0; padding: 20px; border: 2px solid #ccc; }
-      .broken { border-color: #f44336; background: #ffebee; }
-      .fixed { border-color: #4caf50; background: #e8f5e9; }
-      h2 { margin-top: 0; }
-      .error { color: #f44336; font-weight: bold; }
-      .success { color: #4caf50; font-weight: bold; }
-      button { padding: 10px 20px; font-size: 16px; margin: 10px 5px; cursor: pointer; }
-      .info { background: #e3f2fd; padding: 10px; margin: 10px 0; border-left: 4px solid #2196f3; }
-      .digest-count { font-size: 18px; font-weight: bold; margin: 10px 0; }
-   </style>
-</head>
-<body>
-   <h1>Angular Digest Loop Test</h1>
+   <head>
+      <title>Digest Loop Test - Demonstrating the Fix</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+      <style>
+         body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+         }
+         .section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #ccc;
+         }
+         .broken {
+            border-color: #f44336;
+            background: #ffebee;
+         }
+         .fixed {
+            border-color: #4caf50;
+            background: #e8f5e9;
+         }
+         h2 {
+            margin-top: 0;
+         }
+         .error {
+            color: #f44336;
+            font-weight: bold;
+         }
+         .success {
+            color: #4caf50;
+            font-weight: bold;
+         }
+         button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px 5px;
+            cursor: pointer;
+         }
+         .info {
+            background: #e3f2fd;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #2196f3;
+         }
+         .digest-count {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+         }
+      </style>
+   </head>
+   <body>
+      <h1>Angular Digest Loop Test</h1>
 
-   <div class="info">
-      <strong>Problem:</strong> Creating new objects (<code>{}</code>) in Angular expressions causes infinite digest loops
-      because Angular sees each new object as a "change" even if it's empty.
-      <br><br>
-      <strong>Solution:</strong> Use a cached constant object that maintains the same reference.
-   </div>
-
-   <!-- BROKEN VERSION -->
-   <div class="section broken" ng-controller="BrokenController">
-      <h2>❌ BROKEN: Using inline <code>|| {}</code></h2>
-      <p>This creates a new empty object on every digest cycle, causing infinite loops.</p>
-
-      <button ng-click="showPopup()">Show Popup (Will cause infinite digest)</button>
-      <button ng-click="hidePopup()">Hide Popup</button>
-
-      <div class="digest-count">
-         Digest cycles: <span class="error">{{digestCount}}</span>
+      <div class="info">
+         <strong>Problem:</strong> Creating new objects (<code>{}</code>) in Angular expressions causes infinite digest
+         loops because Angular sees each new object as a "change" even if it's empty. <br /><br />
+         <strong>Solution:</strong> Use a cached constant object that maintains the same reference.
       </div>
 
-      <div ng-if="activePopup && (layout = activePopup.layout || {})" style="margin-top: 10px;">
-         <p class="error">⚠️ Popup is active! This will trigger infinite digest loop!</p>
-         <p>Layout items: {{layout.items ? layout.items.length : 0}}</p>
+      <!-- BROKEN VERSION -->
+      <div class="section broken" ng-controller="BrokenController">
+         <h2>❌ BROKEN: Using inline <code>|| {}</code></h2>
+         <p>This creates a new empty object on every digest cycle, causing infinite loops.</p>
+
+         <button ng-click="showPopup()">Show Popup (Will cause infinite digest)</button>
+         <button ng-click="hidePopup()">Hide Popup</button>
+
+         <div class="digest-count">Digest cycles: <span class="error">{{digestCount}}</span></div>
+
+         <div ng-if="activePopup && (layout = activePopup.layout || {})" style="margin-top: 10px">
+            <p class="error">⚠️ Popup is active! This will trigger infinite digest loop!</p>
+            <p>Layout items: {{layout.items ? layout.items.length : 0}}</p>
+         </div>
+
+         <p class="error" ng-if="digestCount > 10">💥 ERROR: Infinite digest detected! Over 10 digest cycles!</p>
       </div>
 
-      <p class="error" ng-if="digestCount > 10">
-         💥 ERROR: Infinite digest detected! Over 10 digest cycles!
-      </p>
-   </div>
+      <!-- FIXED VERSION -->
+      <div class="section fixed" ng-controller="FixedController">
+         <h2>✅ FIXED: Using cached empty object</h2>
+         <p>This returns the same empty object reference, preventing infinite loops.</p>
 
-   <!-- FIXED VERSION -->
-   <div class="section fixed" ng-controller="FixedController">
-      <h2>✅ FIXED: Using cached empty object</h2>
-      <p>This returns the same empty object reference, preventing infinite loops.</p>
+         <button ng-click="showPopup()">Show Popup (Safe)</button>
+         <button ng-click="hidePopup()">Hide Popup</button>
 
-      <button ng-click="showPopup()">Show Popup (Safe)</button>
-      <button ng-click="hidePopup()">Hide Popup</button>
+         <div class="digest-count">Digest cycles: <span class="success">{{digestCount}}</span></div>
 
-      <div class="digest-count">
-         Digest cycles: <span class="success">{{digestCount}}</span>
+         <div ng-if="activePopup" style="margin-top: 10px">
+            <p class="success">✓ Popup is active (using getPopupLayout())</p>
+            <p>Layout items: {{getPopupLayout().items.length}}</p>
+         </div>
+
+         <p class="success" ng-if="digestCount <= 10">✓ Digest cycle is stable! No infinite loop!</p>
       </div>
 
-      <div ng-if="activePopup" style="margin-top: 10px;">
-         <p class="success">✓ Popup is active (using getPopupLayout())</p>
-         <p>Layout items: {{getPopupLayout().items.length}}</p>
-      </div>
+      <script>
+         angular
+            .module("testApp", [])
 
-      <p class="success" ng-if="digestCount <= 10">
-         ✓ Digest cycle is stable! No infinite loop!
-      </p>
-   </div>
-
-   <script>
-      angular.module('testApp', [])
-
-         // BROKEN Controller - demonstrates the problem
-         .controller('BrokenController', function($scope, $rootScope) {
-            $scope.activePopup = null;
-            $scope.digestCount = 0;
-
-            // Count digest cycles
-            $rootScope.$watch(function() {
-               $scope.digestCount++;
-               if ($scope.digestCount > 15) {
-                  console.error('BROKEN: Infinite digest loop detected!');
-                  // Stop counting to prevent browser freeze
-                  return 'stop';
-               }
-            });
-
-            $scope.showPopup = function() {
-               $scope.digestCount = 0;
-               // Popup with no layout - this will trigger || {} in the template
-               $scope.activePopup = {
-                  item: { name: 'Test Item' },
-                  entity: {},
-                  // layout is undefined - will use || {} fallback
-               };
-            };
-
-            $scope.hidePopup = function() {
-               $scope.digestCount = 0;
+            // BROKEN Controller - demonstrates the problem
+            .controller("BrokenController", function ($scope, $rootScope) {
                $scope.activePopup = null;
-            };
-         })
-
-         // FIXED Controller - demonstrates the solution
-         .controller('FixedController', function($scope, $rootScope) {
-            // Cached empty layout - same reference always
-            const EMPTY_LAYOUT = { items: [] };
-
-            $scope.activePopup = null;
-            $scope.digestCount = 0;
-
-            // Count digest cycles
-            $rootScope.$watch(function() {
-               $scope.digestCount++;
-               if ($scope.digestCount > 15) {
-                  console.log('FIXED: Digest is stable at ' + $scope.digestCount);
-               }
-            });
-
-            // Helper function that returns cached empty layout
-            $scope.getPopupLayout = function() {
-               return ($scope.activePopup && $scope.activePopup.layout) || EMPTY_LAYOUT;
-            };
-
-            $scope.showPopup = function() {
                $scope.digestCount = 0;
-               // Popup with no layout - getPopupLayout() will return EMPTY_LAYOUT
-               $scope.activePopup = {
-                  item: { name: 'Test Item' },
-                  entity: {},
-                  // layout is undefined - will use EMPTY_LAYOUT from getPopupLayout()
+
+               // Count digest cycles
+               $rootScope.$watch(function () {
+                  $scope.digestCount++;
+                  if ($scope.digestCount > 15) {
+                     console.error("BROKEN: Infinite digest loop detected!");
+                     // Stop counting to prevent browser freeze
+                     return "stop";
+                  }
+               });
+
+               $scope.showPopup = function () {
+                  $scope.digestCount = 0;
+                  // Popup with no layout - this will trigger || {} in the template
+                  $scope.activePopup = {
+                     item: { name: "Test Item" },
+                     entity: {},
+                     // layout is undefined - will use || {} fallback
+                  };
                };
-            };
 
-            $scope.hidePopup = function() {
-               $scope.digestCount = 0;
+               $scope.hidePopup = function () {
+                  $scope.digestCount = 0;
+                  $scope.activePopup = null;
+               };
+            })
+
+            // FIXED Controller - demonstrates the solution
+            .controller("FixedController", function ($scope, $rootScope) {
+               // Cached empty layout - same reference always
+               const EMPTY_LAYOUT = { items: [] };
+
                $scope.activePopup = null;
-            };
-         });
-   </script>
-</body>
+               $scope.digestCount = 0;
+
+               // Count digest cycles
+               $rootScope.$watch(function () {
+                  $scope.digestCount++;
+                  if ($scope.digestCount > 15) {
+                     console.log("FIXED: Digest is stable at " + $scope.digestCount);
+                  }
+               });
+
+               // Helper function that returns cached empty layout
+               $scope.getPopupLayout = function () {
+                  return ($scope.activePopup && $scope.activePopup.layout) || EMPTY_LAYOUT;
+               };
+
+               $scope.showPopup = function () {
+                  $scope.digestCount = 0;
+                  // Popup with no layout - getPopupLayout() will return EMPTY_LAYOUT
+                  $scope.activePopup = {
+                     item: { name: "Test Item" },
+                     entity: {},
+                     // layout is undefined - will use EMPTY_LAYOUT from getPopupLayout()
+                  };
+               };
+
+               $scope.hidePopup = function () {
+                  $scope.digestCount = 0;
+                  $scope.activePopup = null;
+               };
+            });
+      </script>
+   </body>
 </html>
