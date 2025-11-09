@@ -307,6 +307,7 @@ export function createHONClimatePopup (config) {
                      type: window.TYPES.SCRIPT,
                      id: id + '_temp_minus',
                      state: false,
+                     position: [0, 1],
                      customHtml: function () {
                         return (
                            '<div class="item-entity-container">' +
@@ -324,6 +325,7 @@ export function createHONClimatePopup (config) {
                      type: window.TYPES.CUSTOM,
                      id: id + '_temp_display',
                      state: false,
+                     position: [1, 1],
                      width: 2,
                      customHtml: function () {
                         const temp = latestTemperature || '--';
@@ -339,6 +341,7 @@ export function createHONClimatePopup (config) {
                      type: window.TYPES.SCRIPT,
                      id: id + '_temp_plus',
                      state: false,
+                     position: [3, 1],
                      customHtml: function () {
                         return (
                            '<div class="item-entity-container">' +
