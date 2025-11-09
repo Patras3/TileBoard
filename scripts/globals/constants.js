@@ -26,6 +26,9 @@ export const CUSTOM_THEMES = {
    HOMEKIT: 'homekit',
    FRESH_AIR: 'fresh-air',
    WHITE_PAPER: 'white-paper',
+   NORDIC_LIGHT: 'nordic-light',
+   SAGE_MINIMAL: 'sage-minimal',
+   PAPER_CRISP: 'paper-crisp',
 };
 
 export const TYPES = {
