@@ -1643,9 +1643,22 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    };
 
    $scope.getPopupLayout = function () {
-      const result = ($scope.activePopup && $scope.activePopup.layout) || EMPTY_LAYOUT;
-      console.log('[getPopupLayout] called, activePopup:', $scope.activePopup, 'layout:', result, 'is EMPTY_LAYOUT:', result === EMPTY_LAYOUT);
-      return result;
+      const layout = ($scope.activePopup && $scope.activePopup.layout) || EMPTY_LAYOUT;
+      console.log('[getPopupLayout] called, activePopup:', $scope.activePopup, 'layout:', layout, 'is EMPTY_LAYOUT:', layout === EMPTY_LAYOUT);
+
+      // For popup-type items with 2D array structure, we need to flatten for the template
+      if (layout.type === TYPES.POPUP && Array.isArray(layout.items) && layout.items.length > 0 && Array.isArray(layout.items[0])) {
+         // Cache the flattened layout to prevent recreating on every digest
+         if (!layout._flattenedLayout) {
+            console.log('[getPopupLayout] Flattening 2D array for popup');
+            const flatItems = layout.items.flat();
+            layout._flattenedLayout = Object.assign({}, layout, { items: flatItems });
+            console.log('[getPopupLayout] Flattened items:', flatItems.length, 'from', layout.items.length, 'rows');
+         }
+         return layout._flattenedLayout;
+      }
+
+      return layout;
    };
 
    $scope.isPopupActive = function (page) {
