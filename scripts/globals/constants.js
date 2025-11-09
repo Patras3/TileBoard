@@ -79,6 +79,7 @@ export const HEADER_ITEMS = {
    DATETIME: 'datetime',
    WEATHER: 'weather',
    CUSTOM_HTML: 'custom_html',
+   CUSTOM_ENTITY: 'custom_entity',
 };
 
 export const SCREENSAVER_ITEMS = HEADER_ITEMS;

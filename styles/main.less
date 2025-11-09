@@ -368,6 +368,15 @@ body {
       float: left;
    }
 
+   &--center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+   }
+
    &--right {
       float: right;
    }
@@ -411,6 +420,39 @@ body {
       &--summary {
          margin-top: 0.1em;
          font-size: 1em;
+      }
+   }
+
+   &-custom-entity {
+      display: inline-flex;
+      align-items: center;
+      vertical-align: middle;
+      gap: 6px;
+
+      &.-text-left {
+         flex-direction: row;
+      }
+
+      &.-text-right {
+         flex-direction: row-reverse;
+      }
+
+      &--icon {
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+
+         .mdi {
+            font-size: 1.5em;
+            line-height: 1;
+         }
+      }
+
+      &--text {
+         display: inline-flex;
+         align-items: center;
+         font-size: 0.9em;
+         white-space: nowrap;
       }
    }
 }
