@@ -34,14 +34,24 @@
          <span ng-bind="_state"></span>
       </div>
    </div>
-   <div ng-if="item.type === HEADER_ITEMS.CUSTOM_ENTITY" class="header-custom-entity" ng-class="item.textPosition === 'left' ? '-text-left' : '-text-right'">
-      <div class="header-custom-entity--text" ng-if="item.textPosition === 'left' && (_text = getHeaderCustomEntityText(item))">
+   <div
+      ng-if="item.type === HEADER_ITEMS.CUSTOM_ENTITY"
+      class="header-custom-entity"
+      ng-class="item.textPosition === 'left' ? '-text-left' : '-text-right'"
+   >
+      <div
+         class="header-custom-entity--text"
+         ng-if="item.textPosition === 'left' && (_text = getHeaderCustomEntityText(item))"
+      >
          <span ng-bind="_text"></span>
       </div>
       <div class="header-custom-entity--icon" ng-if="(_icon = getHeaderCustomEntityIcon(item))">
          <span class="mdi" ng-class="_icon" ng-style="getHeaderCustomEntityIconStyles(item)"></span>
       </div>
-      <div class="header-custom-entity--text" ng-if="item.textPosition !== 'left' && (_text = getHeaderCustomEntityText(item))">
+      <div
+         class="header-custom-entity--text"
+         ng-if="item.textPosition !== 'left' && (_text = getHeaderCustomEntityText(item))"
+      >
          <span ng-bind="_text"></span>
       </div>
    </div>
