@@ -540,16 +540,21 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    };
 
    $scope.itemStyles = function (page, item, entity) {
-      const prevSize = item._prevTileSize || page.tileSize || CONFIG.tileSize;
-      const currentSize = page.tileSize || CONFIG.tileSize;
+      // For popup tiles, page might be undefined - use popup layout or CONFIG defaults
+      if (!page && $scope.activePopup && $scope.activePopup.layout) {
+         page = $scope.activePopup.layout;
+      }
+
+      const prevSize = item._prevTileSize || (page ? page.tileSize : null) || CONFIG.tileSize;
+      const currentSize = (page ? page.tileSize : null) || CONFIG.tileSize;
       const hasChanged = prevSize !== currentSize;
 
       if (!item.styles || hasChanged) {
          const width = item.width || 1;
          const height = item.height || 1;
          const pos = item.position;
-         const tileSize = page.tileSize || CONFIG.tileSize;
-         const tileMargin = page.tileMargin || CONFIG.tileMargin;
+         const tileSize = (page ? page.tileSize : null) || CONFIG.tileSize;
+         const tileMargin = (page ? page.tileMargin : null) || CONFIG.tileMargin;
 
          item._prevTileSize = tileSize;
 
