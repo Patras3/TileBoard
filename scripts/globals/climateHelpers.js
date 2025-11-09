@@ -242,6 +242,7 @@ export function createHONClimatePopup (config) {
       return {
          type: window.TYPES.SCRIPT,
          id: id + '_mode_' + mode,
+         state: false, // Virtual tile - no real entity
          icon,
          customHtml: function (item, entity) {
             const isActive = entity.state === mode ? 'active' : '';
@@ -297,6 +298,7 @@ export function createHONClimatePopup (config) {
                   {
                      type: window.TYPES.CUSTOM,
                      id: id + '_temp_controls',
+                     state: false, // Virtual tile - no real entity
                      customHtml: function () {
                         const temp = latestTemperature || '--';
                         return `

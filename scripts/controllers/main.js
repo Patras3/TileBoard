@@ -44,6 +44,9 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    const EMPTY_STYLES = {};
    const EMPTY_LAYOUT = { items: [] };
 
+   // WeakMap to cache flattened popup layouts without mutating originals
+   const flattenedPopupCache = new WeakMap();
+
    $scope.activeSelect = null;
    $scope.screensaverShown = false;
    $scope.ready = false;
@@ -1648,23 +1651,33 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
 
       // For popup-type items with 2D array structure, we need to flatten for the template
       if (layout.type === TYPES.POPUP && Array.isArray(layout.items) && layout.items.length > 0 && Array.isArray(layout.items[0])) {
-         // Cache the flattened layout to prevent recreating on every digest
-         if (!layout._flattenedLayout) {
-            console.log('[getPopupLayout] Flattening 2D array for popup');
-            const flatItems = [];
-            // Flatten and add position properties based on row/column
-            layout.items.forEach((row, rowIndex) => {
-               row.forEach((item, colIndex) => {
-                  if (!item.position) {
-                     item.position = [colIndex, rowIndex];
-                  }
-                  flatItems.push(item);
-               });
-            });
-            layout._flattenedLayout = Object.assign({}, layout, { items: flatItems });
-            console.log('[getPopupLayout] Flattened items:', flatItems.length, 'from', layout.items.length, 'rows');
+         // Check cache first (without mutating original layout)
+         if (flattenedPopupCache.has(layout)) {
+            console.log('[getPopupLayout] Using cached flattened layout');
+            return flattenedPopupCache.get(layout);
          }
-         return layout._flattenedLayout;
+
+         console.log('[getPopupLayout] Flattening 2D array for popup');
+         const flatItems = [];
+         // Flatten and add position properties based on row/column
+         layout.items.forEach((row, rowIndex) => {
+            row.forEach((item, colIndex) => {
+               if (!item.position) {
+                  item.position = [colIndex, rowIndex];
+               }
+               // Mark virtual tiles to prevent entity lookup
+               if (!item.state) {
+                  item.state = false;
+               }
+               flatItems.push(item);
+            });
+         });
+         const flattenedLayout = Object.assign({}, layout, { items: flatItems });
+         console.log('[getPopupLayout] Flattened items:', flatItems.length, 'from', layout.items.length, 'rows');
+
+         // Cache without mutating original
+         flattenedPopupCache.set(layout, flattenedLayout);
+         return flattenedLayout;
       }
 
       return layout;
