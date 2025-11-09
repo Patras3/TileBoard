@@ -775,6 +775,592 @@
         }
 
         /* ========================================
+           STYLE 5A VARIATIONS: Diagonal Light Streaks
+           Similar dark backgrounds but with diagonal light rays instead of glow
+           ======================================== */
+
+        /* 5A-1: Charcoal + Blue Streaks */
+        .style-5a-1 {
+            background: linear-gradient(135deg, #434343 0%, #000000 100%);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .style-5a-1::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(59,130,246,0.08) 40%,
+                rgba(59,130,246,0.15) 50%,
+                rgba(59,130,246,0.08) 60%,
+                transparent 70%
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+        .style-5a-1::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(59,130,246,0.02) 30%, rgba(59,130,246,0.02) 35%, transparent 35%);
+            background-size: 20px 20px;
+        }
+        .style-5a-1.on {
+            background: linear-gradient(135deg, #1a5928 0%, #0d2818 100%);
+            border-color: rgba(34,197,94,0.3);
+        }
+        .style-5a-1.on::before {
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(34,197,94,0.1) 40%,
+                rgba(34,197,94,0.2) 50%,
+                rgba(34,197,94,0.1) 60%,
+                transparent 70%
+            );
+        }
+
+        /* 5A-2: Navy + Purple Streaks */
+        .style-5a-2 {
+            background: linear-gradient(135deg, #1e3a5f 0%, #0a1929 100%);
+            box-shadow: 0 8px 32px rgba(30, 58, 95, 0.5), inset 0 1px 2px rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .style-5a-2::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(168,85,247,0.08) 40%,
+                rgba(168,85,247,0.15) 50%,
+                rgba(168,85,247,0.08) 60%,
+                transparent 70%
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+        .style-5a-2::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(168,85,247,0.02) 30%, rgba(168,85,247,0.02) 35%, transparent 35%);
+            background-size: 20px 20px;
+        }
+        .style-5a-2.on {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            border-color: rgba(59,130,246,0.3);
+        }
+        .style-5a-2.on::before {
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(59,130,246,0.1) 40%,
+                rgba(59,130,246,0.2) 50%,
+                rgba(59,130,246,0.1) 60%,
+                transparent 70%
+            );
+        }
+
+        /* 5A-3: Forest + Cyan Streaks */
+        .style-5a-3 {
+            background: linear-gradient(135deg, #1e3a1e 0%, #0a1a0a 100%);
+            box-shadow: 0 8px 32px rgba(30, 58, 30, 0.5), inset 0 1px 2px rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .style-5a-3::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(6,182,212,0.08) 40%,
+                rgba(6,182,212,0.15) 50%,
+                rgba(6,182,212,0.08) 60%,
+                transparent 70%
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+        .style-5a-3::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(6,182,212,0.02) 30%, rgba(6,182,212,0.02) 35%, transparent 35%);
+            background-size: 20px 20px;
+        }
+        .style-5a-3.on {
+            background: linear-gradient(135deg, #166534 0%, #14532d 100%);
+            border-color: rgba(34,197,94,0.3);
+        }
+        .style-5a-3.on::before {
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(34,197,94,0.1) 40%,
+                rgba(34,197,94,0.2) 50%,
+                rgba(34,197,94,0.1) 60%,
+                transparent 70%
+            );
+        }
+
+        /* ========================================
+           STYLE 5B VARIATIONS: Edge Highlight/Border Glow
+           Similar dark backgrounds but with glowing borders instead of center glow
+           ======================================== */
+
+        /* 5B-1: Charcoal + Cyan Border */
+        .style-5b-1 {
+            background: linear-gradient(135deg, #434343 0%, #000000 100%);
+            box-shadow:
+                0 0 20px rgba(6,182,212,0.4),
+                inset 0 0 20px rgba(6,182,212,0.1),
+                0 8px 32px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(6,182,212,0.5);
+            color: white;
+        }
+        .style-5b-1::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(6,182,212,0.02) 30%, rgba(6,182,212,0.02) 35%, transparent 35%);
+            background-size: 20px 20px;
+        }
+        .style-5b-1.on {
+            background: linear-gradient(135deg, #1a5928 0%, #0d2818 100%);
+            box-shadow:
+                0 0 25px rgba(34,197,94,0.6),
+                inset 0 0 25px rgba(34,197,94,0.15),
+                0 8px 32px rgba(34, 197, 94, 0.3);
+            border-color: rgba(34,197,94,0.7);
+        }
+
+        /* 5B-2: Purple + Pink Border */
+        .style-5b-2 {
+            background: linear-gradient(135deg, #3d2b56 0%, #1a0f2e 100%);
+            box-shadow:
+                0 0 20px rgba(236,72,153,0.4),
+                inset 0 0 20px rgba(236,72,153,0.1),
+                0 8px 32px rgba(61, 43, 86, 0.5);
+            border: 2px solid rgba(236,72,153,0.5);
+            color: white;
+        }
+        .style-5b-2::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(236,72,153,0.02) 30%, rgba(236,72,153,0.02) 35%, transparent 35%);
+            background-size: 20px 20px;
+        }
+        .style-5b-2.on {
+            background: linear-gradient(135deg, #6b21a8 0%, #581c87 100%);
+            box-shadow:
+                0 0 25px rgba(168,85,247,0.6),
+                inset 0 0 25px rgba(168,85,247,0.15),
+                0 8px 32px rgba(168, 85, 247, 0.3);
+            border-color: rgba(168,85,247,0.7);
+        }
+
+        /* 5B-3: Burgundy + Orange Border */
+        .style-5b-3 {
+            background: linear-gradient(135deg, #4a1616 0%, #1f0a0a 100%);
+            box-shadow:
+                0 0 20px rgba(249,115,22,0.4),
+                inset 0 0 20px rgba(249,115,22,0.1),
+                0 8px 32px rgba(74, 22, 22, 0.5);
+            border: 2px solid rgba(249,115,22,0.5);
+            color: white;
+        }
+        .style-5b-3::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(249,115,22,0.02) 30%, rgba(249,115,22,0.02) 35%, transparent 35%);
+            background-size: 20px 20px;
+        }
+        .style-5b-3.on {
+            background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
+            box-shadow:
+                0 0 25px rgba(239,68,68,0.6),
+                inset 0 0 25px rgba(239,68,68,0.15),
+                0 8px 32px rgba(239, 68, 68, 0.3);
+            border-color: rgba(239,68,68,0.7);
+        }
+
+        /* ========================================
+           STYLE 5C VARIATIONS: Scan Lines
+           Similar dark backgrounds but with horizontal scan line effects
+           ======================================== */
+
+        /* 5C-1: Charcoal + Blue Scan Lines */
+        .style-5c-1 {
+            background: linear-gradient(135deg, #434343 0%, #000000 100%);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: white;
+            position: relative;
+        }
+        .style-5c-1::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(59,130,246,0.05) 2px,
+                rgba(59,130,246,0.05) 4px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+        .style-5c-1::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(59,130,246,0.02) 30%, rgba(59,130,246,0.02) 35%, transparent 35%);
+            background-size: 20px 20px;
+        }
+        .style-5c-1.on {
+            background: linear-gradient(135deg, #1a5928 0%, #0d2818 100%);
+            border-color: rgba(34,197,94,0.3);
+        }
+        .style-5c-1.on::before {
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(34,197,94,0.08) 2px,
+                rgba(34,197,94,0.08) 4px
+            );
+        }
+
+        /* 5C-2: Teal + Cyan Scan Lines */
+        .style-5c-2 {
+            background: linear-gradient(135deg, #1a4d4d 0%, #0d2626 100%);
+            box-shadow: 0 8px 32px rgba(26, 77, 77, 0.5), inset 0 1px 2px rgba(34, 211, 238, 0.1);
+            border: 1px solid rgba(34, 211, 238, 0.2);
+            color: white;
+            position: relative;
+        }
+        .style-5c-2::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(34,211,238,0.05) 2px,
+                rgba(34,211,238,0.05) 4px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+        .style-5c-2::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(34,211,238,0.02) 30%, rgba(34,211,238,0.02) 35%, transparent 35%);
+            background-size: 20px 20px;
+        }
+        .style-5c-2.on {
+            background: linear-gradient(135deg, #115e59 0%, #134e4a 100%);
+            border-color: rgba(20,184,166,0.3);
+        }
+        .style-5c-2.on::before {
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(20,184,166,0.08) 2px,
+                rgba(20,184,166,0.08) 4px
+            );
+        }
+
+        /* 5C-3: Purple + Violet Scan Lines */
+        .style-5c-3 {
+            background: linear-gradient(135deg, #3d2b56 0%, #1a0f2e 100%);
+            box-shadow: 0 8px 32px rgba(61, 43, 86, 0.5), inset 0 1px 2px rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            color: white;
+            position: relative;
+        }
+        .style-5c-3::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(139,92,246,0.05) 2px,
+                rgba(139,92,246,0.05) 4px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+        .style-5c-3::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(139,92,246,0.02) 30%, rgba(139,92,246,0.02) 35%, transparent 35%);
+            background-size: 20px 20px;
+        }
+        .style-5c-3.on {
+            background: linear-gradient(135deg, #6b21a8 0%, #581c87 100%);
+            border-color: rgba(168,85,247,0.3);
+        }
+        .style-5c-3.on::before {
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(168,85,247,0.08) 2px,
+                rgba(168,85,247,0.08) 4px
+            );
+        }
+
+        /* ========================================
+           STYLE 5D VARIATIONS: Corner Accents
+           Similar dark backgrounds but with light accents in corners
+           ======================================== */
+
+        /* 5D-1: Charcoal + Blue Corners */
+        .style-5d-1 {
+            background: linear-gradient(135deg, #434343 0%, #000000 100%);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: white;
+            position: relative;
+        }
+        .style-5d-1::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 30px;
+            border-top: 3px solid rgba(59,130,246,0.6);
+            border-left: 3px solid rgba(59,130,246,0.6);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .style-5d-1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 30px;
+            height: 30px;
+            border-bottom: 3px solid rgba(59,130,246,0.6);
+            border-right: 3px solid rgba(59,130,246,0.6);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .style-5d-1.on {
+            background: linear-gradient(135deg, #1a5928 0%, #0d2818 100%);
+            border-color: rgba(34,197,94,0.3);
+        }
+        .style-5d-1.on::before {
+            border-color: rgba(34,197,94,0.8);
+        }
+        .style-5d-1.on::after {
+            border-color: rgba(34,197,94,0.8);
+        }
+
+        /* 5D-2: Navy + Cyan Corners */
+        .style-5d-2 {
+            background: linear-gradient(135deg, #1e3a5f 0%, #0a1929 100%);
+            box-shadow: 0 8px 32px rgba(30, 58, 95, 0.5);
+            border: 1px solid rgba(34, 211, 238, 0.2);
+            color: white;
+            position: relative;
+        }
+        .style-5d-2::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 30px;
+            border-top: 3px solid rgba(34,211,238,0.6);
+            border-left: 3px solid rgba(34,211,238,0.6);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .style-5d-2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 30px;
+            height: 30px;
+            border-bottom: 3px solid rgba(34,211,238,0.6);
+            border-right: 3px solid rgba(34,211,238,0.6);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .style-5d-2.on {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            border-color: rgba(59,130,246,0.3);
+        }
+        .style-5d-2.on::before {
+            border-color: rgba(59,130,246,0.8);
+        }
+        .style-5d-2.on::after {
+            border-color: rgba(59,130,246,0.8);
+        }
+
+        /* 5D-3: Burgundy + Rose Corners */
+        .style-5d-3 {
+            background: linear-gradient(135deg, #4a1616 0%, #1f0a0a 100%);
+            box-shadow: 0 8px 32px rgba(74, 22, 22, 0.5);
+            border: 1px solid rgba(244, 63, 94, 0.2);
+            color: white;
+            position: relative;
+        }
+        .style-5d-3::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 30px;
+            border-top: 3px solid rgba(244,63,94,0.6);
+            border-left: 3px solid rgba(244,63,94,0.6);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .style-5d-3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 30px;
+            height: 30px;
+            border-bottom: 3px solid rgba(244,63,94,0.6);
+            border-right: 3px solid rgba(244,63,94,0.6);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .style-5d-3.on {
+            background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
+            border-color: rgba(239,68,68,0.3);
+        }
+        .style-5d-3.on::before {
+            border-color: rgba(239,68,68,0.8);
+        }
+        .style-5d-3.on::after {
+            border-color: rgba(239,68,68,0.8);
+        }
+
+        /* ========================================
+           STYLE 5E VARIATIONS: Vignette Effect
+           Similar dark backgrounds but with darker edges and lighter center
+           ======================================== */
+
+        /* 5E-1: Charcoal + Blue Vignette */
+        .style-5e-1 {
+            background: linear-gradient(135deg, #434343 0%, #000000 100%);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 60px rgba(0,0,0,0.7);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: white;
+            position: relative;
+        }
+        .style-5e-1::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 70%;
+            height: 70%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .style-5e-1::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(59,130,246,0.02) 30%, rgba(59,130,246,0.02) 35%, transparent 35%);
+            background-size: 20px 20px;
+        }
+        .style-5e-1.on {
+            background: linear-gradient(135deg, #1a5928 0%, #0d2818 100%);
+            border-color: rgba(34,197,94,0.3);
+        }
+        .style-5e-1.on::before {
+            background: radial-gradient(circle, rgba(34,197,94,0.18) 0%, transparent 70%);
+        }
+
+        /* 5E-2: Forest + Emerald Vignette */
+        .style-5e-2 {
+            background: linear-gradient(135deg, #1e3a1e 0%, #0a1a0a 100%);
+            box-shadow: 0 8px 32px rgba(30, 58, 30, 0.5), inset 0 0 60px rgba(0,0,0,0.7);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: white;
+            position: relative;
+        }
+        .style-5e-2::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 70%;
+            height: 70%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .style-5e-2::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(16,185,129,0.02) 30%, rgba(16,185,129,0.02) 35%, transparent 35%);
+            background-size: 20px 20px;
+        }
+        .style-5e-2.on {
+            background: linear-gradient(135deg, #166534 0%, #14532d 100%);
+            border-color: rgba(34,197,94,0.3);
+        }
+        .style-5e-2.on::before {
+            background: radial-gradient(circle, rgba(34,197,94,0.18) 0%, transparent 70%);
+        }
+
+        /* 5E-3: Purple + Magenta Vignette */
+        .style-5e-3 {
+            background: linear-gradient(135deg, #3d2b56 0%, #1a0f2e 100%);
+            box-shadow: 0 8px 32px rgba(61, 43, 86, 0.5), inset 0 0 60px rgba(0,0,0,0.7);
+            border: 1px solid rgba(217, 70, 239, 0.2);
+            color: white;
+            position: relative;
+        }
+        .style-5e-3::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 70%;
+            height: 70%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(217,70,239,0.12) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .style-5e-3::after {
+            background-image: radial-gradient(circle at 50% 50%, transparent 30%, rgba(217,70,239,0.02) 30%, rgba(217,70,239,0.02) 35%, transparent 35%);
+            background-size: 20px 20px;
+        }
+        .style-5e-3.on {
+            background: linear-gradient(135deg, #6b21a8 0%, #581c87 100%);
+            border-color: rgba(168,85,247,0.3);
+        }
+        .style-5e-3.on::before {
+            background: radial-gradient(circle, rgba(168,85,247,0.18) 0%, transparent 70%);
+        }
+
+        /* ========================================
            MODAL STYLES
            ======================================== */
 
@@ -926,8 +1512,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>TileBoard - Glow Variations</h1>
-        <p class="subtitle">Styles 4A, 4B, 4C, 4D, 4E, 4F - Dark Themes with Different Glow Colors and Positions</p>
+        <h1>TileBoard - Dark Theme Variations</h1>
+        <p class="subtitle">Styles 4A-4F (Glow Effects) & 5A-5E (Alternative Effects) - Professional Dark Themes</p>
 
         <div class="controls">
             <div class="toggle-container">
@@ -1443,6 +2029,256 @@
                 <div class="card-label">4F-4: Turquoise (Bottom-Left)</div>
                 <div class="card-icon">🚪</div>
                 <div class="card-title">Front Door</div>
+                <div class="card-state">ON</div>
+                <div class="card-status"></div>
+            </div>
+        </div>
+
+        <!-- STYLE 5A VARIATIONS -->
+        <h2 class="section-title">Style 5A: Diagonal Light Streaks</h2>
+
+        <div class="cards-grid">
+            <!-- 5A-1: Charcoal + Blue Streaks -->
+            <div class="card style-5a-1">
+                <div class="card-label">5A-1: Charcoal + Blue Streaks</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Living Room</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-5a-1 on">
+                <div class="card-label">5A-1: Charcoal + Blue Streaks</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Living Room</div>
+                <div class="card-state">ON</div>
+                <div class="card-status"></div>
+            </div>
+
+            <!-- 5A-2: Navy + Purple Streaks -->
+            <div class="card style-5a-2">
+                <div class="card-label">5A-2: Navy + Purple Streaks</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Kitchen</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-5a-2 on">
+                <div class="card-label">5A-2: Navy + Purple Streaks</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Kitchen</div>
+                <div class="card-state">ON</div>
+                <div class="card-status"></div>
+            </div>
+
+            <!-- 5A-3: Forest + Cyan Streaks -->
+            <div class="card style-5a-3">
+                <div class="card-label">5A-3: Forest + Cyan Streaks</div>
+                <div class="card-icon">🌡️</div>
+                <div class="card-title">Bedroom</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-5a-3 on">
+                <div class="card-label">5A-3: Forest + Cyan Streaks</div>
+                <div class="card-icon">🌡️</div>
+                <div class="card-title">Bedroom</div>
+                <div class="card-state">ON</div>
+                <div class="card-status"></div>
+            </div>
+        </div>
+
+        <!-- STYLE 5B VARIATIONS -->
+        <h2 class="section-title">Style 5B: Edge Highlight / Border Glow</h2>
+
+        <div class="cards-grid">
+            <!-- 5B-1: Charcoal + Cyan Border -->
+            <div class="card style-5b-1">
+                <div class="card-label">5B-1: Charcoal + Cyan Border</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Living Room</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-5b-1 on">
+                <div class="card-label">5B-1: Charcoal + Cyan Border</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Living Room</div>
+                <div class="card-state">ON</div>
+                <div class="card-status"></div>
+            </div>
+
+            <!-- 5B-2: Purple + Pink Border -->
+            <div class="card style-5b-2">
+                <div class="card-label">5B-2: Purple + Pink Border</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Kitchen</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-5b-2 on">
+                <div class="card-label">5B-2: Purple + Pink Border</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Kitchen</div>
+                <div class="card-state">ON</div>
+                <div class="card-status"></div>
+            </div>
+
+            <!-- 5B-3: Burgundy + Orange Border -->
+            <div class="card style-5b-3">
+                <div class="card-label">5B-3: Burgundy + Orange Border</div>
+                <div class="card-icon">🌡️</div>
+                <div class="card-title">Bedroom</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-5b-3 on">
+                <div class="card-label">5B-3: Burgundy + Orange Border</div>
+                <div class="card-icon">🌡️</div>
+                <div class="card-title">Bedroom</div>
+                <div class="card-state">ON</div>
+                <div class="card-status"></div>
+            </div>
+        </div>
+
+        <!-- STYLE 5C VARIATIONS -->
+        <h2 class="section-title">Style 5C: Scan Lines</h2>
+
+        <div class="cards-grid">
+            <!-- 5C-1: Charcoal + Blue Scan Lines -->
+            <div class="card style-5c-1">
+                <div class="card-label">5C-1: Charcoal + Blue Scan Lines</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Living Room</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-5c-1 on">
+                <div class="card-label">5C-1: Charcoal + Blue Scan Lines</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Living Room</div>
+                <div class="card-state">ON</div>
+                <div class="card-status"></div>
+            </div>
+
+            <!-- 5C-2: Teal + Cyan Scan Lines -->
+            <div class="card style-5c-2">
+                <div class="card-label">5C-2: Teal + Cyan Scan Lines</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Kitchen</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-5c-2 on">
+                <div class="card-label">5C-2: Teal + Cyan Scan Lines</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Kitchen</div>
+                <div class="card-state">ON</div>
+                <div class="card-status"></div>
+            </div>
+
+            <!-- 5C-3: Purple + Violet Scan Lines -->
+            <div class="card style-5c-3">
+                <div class="card-label">5C-3: Purple + Violet Scan Lines</div>
+                <div class="card-icon">🌡️</div>
+                <div class="card-title">Bedroom</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-5c-3 on">
+                <div class="card-label">5C-3: Purple + Violet Scan Lines</div>
+                <div class="card-icon">🌡️</div>
+                <div class="card-title">Bedroom</div>
+                <div class="card-state">ON</div>
+                <div class="card-status"></div>
+            </div>
+        </div>
+
+        <!-- STYLE 5D VARIATIONS -->
+        <h2 class="section-title">Style 5D: Corner Accents</h2>
+
+        <div class="cards-grid">
+            <!-- 5D-1: Charcoal + Blue Corners -->
+            <div class="card style-5d-1">
+                <div class="card-label">5D-1: Charcoal + Blue Corners</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Living Room</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-5d-1 on">
+                <div class="card-label">5D-1: Charcoal + Blue Corners</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Living Room</div>
+                <div class="card-state">ON</div>
+                <div class="card-status"></div>
+            </div>
+
+            <!-- 5D-2: Navy + Cyan Corners -->
+            <div class="card style-5d-2">
+                <div class="card-label">5D-2: Navy + Cyan Corners</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Kitchen</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-5d-2 on">
+                <div class="card-label">5D-2: Navy + Cyan Corners</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Kitchen</div>
+                <div class="card-state">ON</div>
+                <div class="card-status"></div>
+            </div>
+
+            <!-- 5D-3: Burgundy + Rose Corners -->
+            <div class="card style-5d-3">
+                <div class="card-label">5D-3: Burgundy + Rose Corners</div>
+                <div class="card-icon">🌡️</div>
+                <div class="card-title">Bedroom</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-5d-3 on">
+                <div class="card-label">5D-3: Burgundy + Rose Corners</div>
+                <div class="card-icon">🌡️</div>
+                <div class="card-title">Bedroom</div>
+                <div class="card-state">ON</div>
+                <div class="card-status"></div>
+            </div>
+        </div>
+
+        <!-- STYLE 5E VARIATIONS -->
+        <h2 class="section-title">Style 5E: Vignette Effect</h2>
+
+        <div class="cards-grid">
+            <!-- 5E-1: Charcoal + Blue Vignette -->
+            <div class="card style-5e-1">
+                <div class="card-label">5E-1: Charcoal + Blue Vignette</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Living Room</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-5e-1 on">
+                <div class="card-label">5E-1: Charcoal + Blue Vignette</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Living Room</div>
+                <div class="card-state">ON</div>
+                <div class="card-status"></div>
+            </div>
+
+            <!-- 5E-2: Forest + Emerald Vignette -->
+            <div class="card style-5e-2">
+                <div class="card-label">5E-2: Forest + Emerald Vignette</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Kitchen</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-5e-2 on">
+                <div class="card-label">5E-2: Forest + Emerald Vignette</div>
+                <div class="card-icon">💡</div>
+                <div class="card-title">Kitchen</div>
+                <div class="card-state">ON</div>
+                <div class="card-status"></div>
+            </div>
+
+            <!-- 5E-3: Purple + Magenta Vignette -->
+            <div class="card style-5e-3">
+                <div class="card-label">5E-3: Purple + Magenta Vignette</div>
+                <div class="card-icon">🌡️</div>
+                <div class="card-title">Bedroom</div>
+                <div class="card-state">OFF</div>
+            </div>
+            <div class="card style-5e-3 on">
+                <div class="card-label">5E-3: Purple + Magenta Vignette</div>
+                <div class="card-icon">🌡️</div>
+                <div class="card-title">Bedroom</div>
                 <div class="card-state">ON</div>
                 <div class="card-status"></div>
             </div>
