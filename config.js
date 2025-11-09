@@ -106,9 +106,7 @@ var CONFIG = {
       maxAnimationPower: 6000,
    },
 
-   // customTheme: CUSTOM_THEMES.COMPACT, // CUSTOM_THEMES.TRANSPARENT, CUSTOM_THEMES.MATERIAL, CUSTOM_THEMES.MOBILE, CUSTOM_THEMES.COMPACT, CUSTOM_THEMES.HOMEKIT, CUSTOM_THEMES.WINPHONE, CUSTOM_THEMES.WIN95
-
-   customTheme: CUSTOM_THEMES.HOMEKIT, // CUSTOM_THEMES.TRANSPARENT, CUSTOM_THEMES.MATERIAL, CUSTOM_THEMES.MOBILE, CUSTOM_THEMES.COMPACT, CUSTOM_THEMES.HOMEKIT, CUSTOM_THEMES.WINPHONE, CUSTOM_THEMES.WIN95
+   customTheme: CUSTOM_THEMES.HOMEKIT,
    transition: TRANSITIONS.ANIMATED, // ANIMATED or SIMPLE (better perfomance)
    entitySize: ENTITY_SIZES.SMALL, // SMALL, BIG are available
    tileSize: getURLParameter('tileSize') || 140,
@@ -116,10 +114,8 @@ var CONFIG = {
    groupMarginCss: '8px 10px 0px',
    serverUrl: 'http://192.168.50.52:8123',
    wsUrl: 'ws://192.168.50.52:8123/api/websocket',
-   authToken: null, // optional long-lived token (CAUTION: only if TileBoard is not exposed to the internet)
-   // googleApiKey: "XXXXXXXXXX", // Required if you are using Google Maps for device tracker
-   // mapboxToken: "XXXXXXXXXX", // Required if you are using Mapbox for device tracker
-   debug: false, // Prints entities and state change info to the console.
+   authToken: null,
+   debug: false,
    pingConnection: true, // ping connection to prevent silent disconnections
    locale: 'pl', // locale for date and number formats - available locales: it, de, es, fr, pt, ru, nl, pl, en-gb, en-us (default). See readme on adding custom locales.
    // next fields are optional
@@ -198,10 +194,9 @@ var CONFIG = {
    ],
 
    timeFormat: 24,
-   menuPosition: MENU_POSITIONS.LEFT, // or BOTTOM
-   hideScrollbar: false, // horizontal scrollbar
-   // groupsAlign: GROUP_ALIGNS.HORIZONTALLY, // HORIZONTALLY, VERTICALLY, GRID
-   groupsAlign: GROUP_ALIGNS.GRID, // HORIZONTALLY, VERTICALLY, GRID
+   menuPosition: MENU_POSITIONS.LEFT,
+   hideScrollbar: false,
+   groupsAlign: GROUP_ALIGNS.GRID,
    onReady: function () {
       let newFontSize = getURLParameter('fontSize');
       if (newFontSize) {
@@ -235,7 +230,6 @@ var CONFIG = {
             icons: weatherIcons,
             states: weatherStates,
             fields: {
-               //     summary: '&sensor.czerpnia_temperatura.state pamietaj</br> smieci jutro!',
                temperature: '&sensor.temperature_zewnetrzna_pompa_ciepla.state',
                temperatureUnit: '°C (aktualnie)',
                windSpeed: '&sensor.openweathermap_wind_speed.state',
@@ -280,9 +274,8 @@ var CONFIG = {
    pages: [
       {
          title: 'Main page',
-         // bg: 'images/peakpx.jpg',
          bg: 'images/dark-polygonal-background.jpg',
-         icon: 'mdi-home-outline', // home icon
+         icon: 'mdi-home-outline',
          groups: [
             {
                title: 'Pogoda',
@@ -365,9 +358,7 @@ var CONFIG = {
                      icon: 'mdi-trash-can',
                      hidden: true,
                      hidden2: function () {
-                        // Get the sensor entity state
                         var sensorState = this.$scope.states['sensor.smieci_jutro'];
-                        //   debugger;
                         if (Array.isArray(sensorState.attributes.jutro['calendar.smieci'].events)) {
                            return sensorState.attributes.jutro['calendar.smieci'].events
                               .filter(function (event) {
@@ -429,7 +420,6 @@ var CONFIG = {
                         var tomorrow = new Date();
                         tomorrow.setDate(tomorrow.getDate() + 1);
 
-                        //  var message = calendarState.attributes.message.toLowerCase();
                         var message = events(this).replace('WIELKOGABARYTY', 'WLK. GAB').trim();
                         var color = 'grey';
                         if (message.includes('PAPIER')) {
@@ -444,10 +434,6 @@ var CONFIG = {
                            color = 'rgb(242 234 73)';
                         }
 
-                        // Define the CSS class for the pulsing effect
-
-                        // Define the tile's HTML content
-                        //                                return '<div class="item-entity">\n' + '  <span class="item-entity--icon mdi  mdi-washing-machine" ng-class="entityIcon(item, entity)"></span>' + '  </div><br/><div>' + timeString + '</div>';
                         var htmlContent = `
               <div class="item-entity pulsing">
                   <span class="item-entity--icon mdi  mdi-trash-can pulsing"  style=" color: ${color}; "></span> 
@@ -555,7 +541,6 @@ var CONFIG = {
                         }
 
                         const buttons = [
-                           // 'button.wlacz_obroty_na_off',
                            'button.wlacz_obroty_na_low',
                            'button.wlacz_obroty_na_medium',
                            'button.wlacz_obroty_na_high',
@@ -584,7 +569,6 @@ var CONFIG = {
                      position: [3, 3],
                      type: TYPES.AUTOMATION,
                      title: 'Cyrkulacja',
-                     //  subtitle: 'Uruchom',
                      subtitle: function () {
                         const state = this.$scope.states['water_heater.pompa_ciepla_io_13873843_2'].state;
                         switch (state) {
@@ -617,11 +601,9 @@ var CONFIG = {
                      },
 
                   },
-                  // Energia
 
                   {
                      position: [4, 0],
-                     // Energia - zuzycie dzisiaj
                      title: 'Zużycie',
                      value: function () {
                         const pobrana = window.roundToTwoDecimalPlaces(this.$scope.states['sensor.energia_pobrana_z_sieci_dzisiaj'].state);
@@ -639,7 +621,6 @@ var CONFIG = {
                   },
                   {
                      position: [4, 1],
-                     // Energia - na ogrzewanie dzisiaj
                      title: 'Ogrzewanie',
                      type: TYPES.SENSOR,
                      state: function () {
@@ -663,7 +644,6 @@ var CONFIG = {
                   },
                   {
                      position: [4, 2],
-                     // Energia - na ogrzewanie dzisiaj
                      title: function () {
                         return 'Teraz: +' + window.formatWatts(this.$scope.states['sensor.inverter_moc_czynna'].state, false, false) + '';
                      },
@@ -677,7 +657,6 @@ var CONFIG = {
                   },
                   {
                      position: [4, 3],
-                     // Energia - na ogrzewanie dzisiaj
                      title: 'Chwilowe zużycie',
                      customStyles: function (item, entity) {
                         const watts = entity.state;
@@ -696,7 +675,7 @@ var CONFIG = {
                      },
                      type: TYPES.SENSOR,
                      id: 'sensor.glowny_total_system_power',
-                     unit: 'kW', // assuming the unit is kWh, change if needed
+                     unit: 'kW',
                   },
 
                   window.createCoverTile({
@@ -770,7 +749,6 @@ var CONFIG = {
                      hideSource: false,
                      textSource: 'Źródło',
                      hideMuteButton: true,
-                     // state: false,
                      state: '@attributes.media_title',
                      subtitle: '@attributes.media_title',
                      bgSuffix: '@attributes.entity_picture',
@@ -783,9 +761,7 @@ var CONFIG = {
                      hideSource: false,
                      textSource: 'Źródło',
                      hideMuteButton: true,
-                     // state: false,
                      state: '@attributes.media_title',
-                     // subtitle: '@attributes.media_title',
                      bgSuffix: '@attributes.entity_picture',
                   },
                   {
@@ -796,9 +772,7 @@ var CONFIG = {
                      hideSource: false,
                      textSource: 'Źródło',
                      hideMuteButton: true,
-                     // state: false,
                      state: '@attributes.media_title',
-                     // subtitle: '@attributes.media_title',
                      bgSuffix: '@attributes.entity_picture',
                   },
                   {
@@ -807,7 +781,6 @@ var CONFIG = {
                      id: 'vacuum.l20_ultra',
                      title: 'Odkurzacz',
                      hidden: isUpstairsLocation(),
-                     //  subtitle: 'Livingroom',
                      icon: 'mdi-robot-vacuum-variant',
                      states: {
                         cleaning: 'Sprzątanie',
@@ -896,9 +869,6 @@ var CONFIG = {
                      hidden: isDownstairsLocation(),
                   }),
 
-
-                  // Tutajwklej
-                  // Kamery
                   window.createCameraTile({
                      id: 'camera.drzwi',
                      title: 'Drzwi',
@@ -995,10 +965,6 @@ var CONFIG = {
                         var endTime = this.states['sensor.x1c_end_time'].state;
                         endTime = endTime === 'unavailable' ? '' : endTime;
 
-                        //   if (this.states['sensor.x1c_end_time'].state === 'unavailable' || progress >= 100) {
-                        //       return 'Bezczynna...';
-                        //   }
-
                         return `
                <div class="tileboard-card-progress-container">
                   <div class="tileboard-card-progress-bar" style="width:${progress}%">
@@ -1015,20 +981,17 @@ var CONFIG = {
                         'sensor.x1c_remaining_time': '0',
                         'sensor.x1c_end_time': 'unavailable',
                      },
-                     // bg: 'rgba(0,0,0,0)',
                      customStyles: {
                         'text-align': 'center',
                         'line-height': '30px',
                      },
                   },
 
-                  // kalendarz
                   {
-                     position: [8, 0], // Adjust the tile position as needed
+                     position: [8, 0],
                      type: TYPES.CUSTOM,
                      width: 2,
                      height: 1,
-                     // You can use 'calendar.dom' or any string for the "id"—it's mostly for referencing in TileBoard
                      id: 'calendar.dom',
                      icon: 'mdi-calendar',
 
