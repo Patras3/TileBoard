@@ -332,11 +332,9 @@ export function createHONClimatePopup (config) {
                            : '--';
                         return temp + '°C';
                      },
-                     customStyles: function () {
-                        return {
-                           'font-size': '48px',
-                           'font-weight': 'bold',
-                        };
+                     customStyles: {
+                        'font-size': '48px',
+                        'font-weight': 'bold',
                      },
                   },
                   // Plus button
