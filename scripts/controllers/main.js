@@ -40,6 +40,9 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    $scope.FEATURES = FEATURES;
    $scope.HEADER_ITEMS = HEADER_ITEMS;
 
+   // Cached empty object to prevent infinite digest loops
+   const EMPTY_STYLES = {};
+
    $scope.activeSelect = null;
    $scope.screensaverShown = false;
    $scope.ready = false;
@@ -400,7 +403,7 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
 
    $scope.groupStyles = function (group, page) {
       if (!group || !page) {
-         return {};
+         return EMPTY_STYLES;
       }
       if (!group.styles) {
          const tileSize = page.tileSize || CONFIG.tileSize;
