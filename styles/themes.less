@@ -1424,3 +1424,641 @@
       border: 1px solid #e0e0e0;
    }
 }
+
+// ========================================================================
+// METRO LIGHT - Windows Metro Flat Design
+// ========================================================================
+.-theme-metro-light {
+   background: #f0f0f0;
+   color: #1e1e1e;
+   font-family: 'Roboto', 'Segoe UI', -apple-system, sans-serif;
+
+   .header {
+      color: #1e1e1e;
+      font-weight: 300;
+
+      clock {
+         margin-bottom: 5px;
+         font-weight: 500;
+      }
+   }
+
+   .group-title {
+      color: #2c2c2c;
+      opacity: 1;
+      font-weight: 300;
+      font-size: 16px;
+      letter-spacing: 1px;
+      text-transform: lowercase;
+   }
+
+   .pages-menu {
+      &--item {
+         color: #5a5a5a;
+         opacity: 0.8;
+
+         &.-active {
+            opacity: 1;
+            color: #0078d7;
+            background: rgba(0, 120, 215, 0.1);
+         }
+      }
+   }
+
+   .item {
+      color: #1e1e1e;
+      background: #ffffff !important;
+      border: 0;
+      border-radius: 0; // Sharp corners - Metro style
+      box-shadow: none;
+      transition: all 0.15s ease;
+
+      &:hover {
+         transform: scale(1.02);
+         box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.3);
+      }
+
+      &-title {
+         font-weight: 300;
+         font-size: 14px;
+         padding-left: 10px;
+         color: #1e1e1e;
+         letter-spacing: 0.3px;
+      }
+
+      &-subtitle {
+         font-size: 11px;
+         padding-left: 10px;
+         color: #737373;
+         bottom: 22px;
+         font-weight: 300;
+      }
+
+      &-state {
+         background: transparent;
+         color: #1e1e1e;
+         padding: 4px 8px;
+         border-radius: 0;
+         font-size: 12px;
+         font-weight: 600;
+      }
+
+      &-entity {
+         &--icon {
+            color: #5a5a5a;
+         }
+
+         &-sliders {
+            background: #f5f5f5;
+            border-radius: 0;
+         }
+      }
+
+      &-clickable {
+         border: 0 !important;
+         height: 4px !important;
+         width: 40px !important;
+         left: 0 !important;
+         top: 0 !important;
+         border-radius: 0 !important;
+         background: #0078d7;
+      }
+
+      // OFF State - Cool Gray with Blue Accent
+      &.-off, &.-disarmed, &.-arming, &.-loading {
+         background: #e6e6e6 !important;
+         color: #5a5a5a;
+
+         .item-state {
+            color: #737373;
+         }
+
+         .item-entity--icon {
+            color: #999999;
+         }
+
+         .item-clickable {
+            background: #737373;
+            width: 4px;
+            height: 4px;
+            left: 10px;
+            top: 10px;
+         }
+      }
+
+      // ON State - Metro Blue
+      &.-on, &.-armed, &.-locked {
+         background: #0078d7 !important;
+         color: #ffffff;
+
+         .item-title, .item-subtitle {
+            color: #ffffff;
+         }
+
+         .item-state {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+         }
+
+         .item-entity--icon {
+            color: #ffffff;
+         }
+
+         .item-clickable {
+            background: #ffffff;
+         }
+      }
+
+      &.-device_tracker, &.-camera, &.-camera_thumbnail {
+         background: #2c2c2c !important;
+
+         .item-title, .item-state {
+            color: #ffffff;
+         }
+      }
+   }
+
+   input[type=range]::-webkit-slider-runnable-track {
+      background: #d0d0d0;
+      border-radius: 0;
+      box-shadow: none;
+      border: 0;
+   }
+
+   input[type=range]::-moz-range-track {
+      background: #d0d0d0;
+      border-radius: 0;
+      box-shadow: none;
+      border: 0;
+   }
+
+   input[type=range]::-webkit-slider-thumb {
+      background: #0078d7;
+      border-radius: 0;
+      border: 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      width: 16px;
+      height: 24px;
+   }
+
+   input[type=range]::-moz-range-thumb {
+      background: #0078d7;
+      border-radius: 0;
+      border: 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      width: 16px;
+      height: 24px;
+   }
+
+   .item-select {
+      background: #ffffff;
+      border: 2px solid #d0d0d0;
+      border-radius: 0;
+
+      &--option {
+         color: #1e1e1e;
+
+         &:active, &.-active {
+            background: #0078d7;
+            color: #ffffff;
+         }
+      }
+   }
+}
+
+// ========================================================================
+// GLASS LIGHT - Glassmorphism Design
+// ========================================================================
+.-theme-glass-light {
+   background: linear-gradient(135deg, #e0f7fa 0%, #f3e5f5 50%, #fff3e0 100%);
+   color: #2d2d2d;
+   font-family: 'Roboto', 'Segoe UI', -apple-system, sans-serif;
+
+   .header {
+      color: #2d2d2d;
+      font-weight: 300;
+      backdrop-filter: blur(10px);
+
+      clock {
+         margin-bottom: 5px;
+         font-weight: 400;
+      }
+   }
+
+   .group-title {
+      color: #3d3d3d;
+      opacity: 1;
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+   }
+
+   .pages-menu {
+      &--item {
+         color: #5d5d5d;
+         opacity: 0.7;
+
+         &.-active {
+            opacity: 1;
+            color: #2d2d2d;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+         }
+      }
+   }
+
+   .item {
+      color: #2d2d2d;
+      background: rgba(255, 255, 255, 0.25) !important;
+      backdrop-filter: blur(12px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08),
+                  inset 0 1px 1px rgba(255, 255, 255, 0.6);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+      &:hover {
+         background: rgba(255, 255, 255, 0.35) !important;
+         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12),
+                     inset 0 1px 1px rgba(255, 255, 255, 0.8);
+         transform: translateY(-2px);
+      }
+
+      &-title {
+         font-weight: 500;
+         font-size: 13px;
+         padding-left: 10px;
+         color: #2d2d2d;
+         text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+      }
+
+      &-subtitle {
+         font-size: 11px;
+         padding-left: 10px;
+         color: #5d5d5d;
+         bottom: 21px;
+      }
+
+      &-state {
+         background: rgba(255, 255, 255, 0.3);
+         backdrop-filter: blur(8px);
+         color: #3d3d3d;
+         padding: 3px 7px;
+         border-radius: 8px;
+         font-size: 11px;
+         font-weight: 500;
+         border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      &-entity {
+         &--icon {
+            color: #4d4d4d;
+         }
+
+         &-sliders {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+         }
+      }
+
+      &-clickable {
+         border: 0 !important;
+         height: 10px !important;
+         width: 10px !important;
+         left: 10px !important;
+         top: 10px !important;
+         border-radius: 50% !important;
+         background: rgba(255, 255, 255, 0.6);
+         backdrop-filter: blur(4px);
+         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+      }
+
+      // OFF State - Subtle Gray Glass
+      &.-off, &.-disarmed, &.-arming, &.-loading {
+         background: rgba(230, 230, 230, 0.3) !important;
+         backdrop-filter: blur(10px) saturate(150%);
+         border-color: rgba(200, 200, 200, 0.4);
+         color: #5d5d5d;
+
+         .item-state {
+            background: rgba(200, 200, 200, 0.25);
+            color: #6d6d6d;
+            border-color: rgba(200, 200, 200, 0.3);
+         }
+
+         .item-entity--icon {
+            color: #999999;
+         }
+
+         .item-clickable {
+            background: rgba(150, 150, 150, 0.5);
+         }
+      }
+
+      // ON State - Vibrant Glass with Gradient
+      &.-on, &.-armed, &.-locked {
+         background: rgba(255, 255, 255, 0.4) !important;
+         backdrop-filter: blur(14px) saturate(200%);
+         border-color: rgba(96, 175, 255, 0.5);
+         color: #2d2d2d;
+         box-shadow: 0 4px 20px rgba(96, 175, 255, 0.15),
+                     inset 0 1px 2px rgba(255, 255, 255, 0.8);
+
+         .item-state {
+            background: rgba(96, 175, 255, 0.2);
+            color: #2563eb;
+            border-color: rgba(96, 175, 255, 0.4);
+         }
+
+         .item-entity--icon {
+            color: #3b82f6;
+         }
+
+         .item-clickable {
+            background: #60afff;
+            box-shadow: 0 0 0 4px rgba(96, 175, 255, 0.25);
+         }
+      }
+
+      &.-device_tracker, &.-camera, &.-camera_thumbnail {
+         background: rgba(45, 45, 45, 0.7) !important;
+         backdrop-filter: blur(12px);
+         border-color: rgba(100, 100, 100, 0.5);
+
+         .item-title, .item-state {
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+         }
+      }
+   }
+
+   input[type=range]::-webkit-slider-runnable-track {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(8px);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+   }
+
+   input[type=range]::-moz-range-track {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(8px);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+   }
+
+   input[type=range]::-webkit-slider-thumb {
+      background: linear-gradient(135deg, #60afff, #3b82f6);
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
+      width: 20px;
+      height: 20px;
+   }
+
+   input[type=range]::-moz-range-thumb {
+      background: linear-gradient(135deg, #60afff, #3b82f6);
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
+      width: 20px;
+      height: 20px;
+   }
+
+   .item-select {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 12px;
+
+      &--option {
+         color: #2d2d2d;
+
+         &:active, &.-active {
+            background: rgba(96, 175, 255, 0.3);
+            color: #1e3a8a;
+         }
+      }
+   }
+}
+
+// ========================================================================
+// RETRO PASTEL - 80s/90s Inspired Playful Design
+// ========================================================================
+.-theme-retro-pastel {
+   background: linear-gradient(135deg, #ffd6f3 0%, #fffacd 50%, #d4f4ff 100%);
+   color: #4a4a4a;
+   font-family: 'Roboto', 'Comic Sans MS', -apple-system, sans-serif;
+
+   .header {
+      color: #4a4a4a;
+      font-weight: 400;
+
+      clock {
+         margin-bottom: 5px;
+         font-weight: 600;
+      }
+   }
+
+   .group-title {
+      color: #5a5a5a;
+      opacity: 1;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.8);
+   }
+
+   .pages-menu {
+      &--item {
+         color: #7a7a7a;
+         opacity: 0.75;
+
+         &.-active {
+            opacity: 1;
+            color: #ff6b9d;
+            background: rgba(255, 107, 157, 0.15);
+            border-radius: 16px;
+         }
+      }
+   }
+
+   .item {
+      color: #4a4a4a;
+      background: #ffffff !important;
+      border: 3px solid #ff6b9d;
+      border-radius: 16px; // Large rounded corners - retro style
+      box-shadow: 4px 4px 0px rgba(255, 107, 157, 0.3);
+      transition: all 0.2s ease;
+
+      &:hover {
+         transform: translate(-2px, -2px);
+         box-shadow: 6px 6px 0px rgba(255, 107, 157, 0.4);
+      }
+
+      &-title {
+         font-weight: 700;
+         font-size: 13px;
+         padding-left: 10px;
+         color: #4a4a4a;
+         letter-spacing: 0.5px;
+      }
+
+      &-subtitle {
+         font-size: 11px;
+         padding-left: 10px;
+         color: #7a7a7a;
+         bottom: 21px;
+         font-weight: 500;
+      }
+
+      &-state {
+         background: #ffe4f2;
+         color: #d63384;
+         padding: 3px 8px;
+         border-radius: 10px;
+         font-size: 11px;
+         font-weight: 700;
+         border: 2px solid #ff6b9d;
+      }
+
+      &-entity {
+         &--icon {
+            color: #6a6a6a;
+         }
+
+         &-sliders {
+            background: #fff5fa;
+            border-radius: 16px;
+            border: 2px solid #ffb3d9;
+         }
+      }
+
+      &-clickable {
+         border: 0 !important;
+         height: 12px !important;
+         width: 12px !important;
+         left: 10px !important;
+         top: 10px !important;
+         border-radius: 50% !important;
+         background: #ff6b9d;
+         box-shadow: 2px 2px 0px rgba(214, 51, 132, 0.4);
+      }
+
+      // OFF State - Purple Pastel
+      &.-off, &.-disarmed, &.-arming, &.-loading {
+         background: #f8f0ff !important;
+         border-color: #b794f6;
+         color: #6a6a6a;
+         box-shadow: 4px 4px 0px rgba(183, 148, 246, 0.25);
+
+         .item-state {
+            background: #e9d5ff;
+            color: #7c3aed;
+            border-color: #b794f6;
+         }
+
+         .item-entity--icon {
+            color: #a78bfa;
+         }
+
+         .item-clickable {
+            background: #b794f6;
+            box-shadow: 2px 2px 0px rgba(124, 58, 237, 0.3);
+         }
+      }
+
+      // ON State - Mint Green Pastel
+      &.-on, &.-armed, &.-locked {
+         background: #f0fdf4 !important;
+         border-color: #86efac;
+         color: #4a4a4a;
+         box-shadow: 4px 4px 0px rgba(134, 239, 172, 0.35);
+
+         .item-state {
+            background: #d1fae5;
+            color: #059669;
+            border-color: #86efac;
+         }
+
+         .item-entity--icon {
+            color: #10b981;
+         }
+
+         .item-clickable {
+            background: #86efac;
+            box-shadow: 2px 2px 0px rgba(5, 150, 105, 0.4);
+         }
+      }
+
+      &.-device_tracker, &.-camera, &.-camera_thumbnail {
+         background: #4a4a4a !important;
+         border-color: #ff6b9d;
+
+         .item-title, .item-state {
+            color: #ffffff;
+         }
+      }
+   }
+
+   input[type=range]::-webkit-slider-runnable-track {
+      background: linear-gradient(90deg, #ffd6f3, #fffacd, #d4f4ff);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      border: 2px solid #ff6b9d;
+   }
+
+   input[type=range]::-moz-range-track {
+      background: linear-gradient(90deg, #ffd6f3, #fffacd, #d4f4ff);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      border: 2px solid #ff6b9d;
+   }
+
+   input[type=range]::-webkit-slider-thumb {
+      background: linear-gradient(135deg, #ff6b9d, #ff85b3);
+      border-radius: 50%;
+      border: 3px solid #ffffff;
+      box-shadow: 2px 2px 0px rgba(214, 51, 132, 0.5);
+      width: 22px;
+      height: 22px;
+   }
+
+   input[type=range]::-moz-range-thumb {
+      background: linear-gradient(135deg, #ff6b9d, #ff85b3);
+      border-radius: 50%;
+      border: 3px solid #ffffff;
+      box-shadow: 2px 2px 0px rgba(214, 51, 132, 0.5);
+      width: 22px;
+      height: 22px;
+   }
+
+   .item-select {
+      background: #ffffff;
+      border: 3px solid #ff6b9d;
+      border-radius: 16px;
+      box-shadow: 3px 3px 0px rgba(255, 107, 157, 0.25);
+
+      &--option {
+         color: #4a4a4a;
+         font-weight: 600;
+
+         &:active, &.-active {
+            background: #ffe4f2;
+            color: #d63384;
+         }
+      }
+   }
+
+   .noty {
+      border: 3px solid #ff6b9d;
+      border-radius: 16px;
+      box-shadow: 4px 4px 0px rgba(255, 107, 157, 0.3);
+   }
+}

@@ -29,6 +29,9 @@ export const CUSTOM_THEMES = {
    NORDIC_LIGHT: 'nordic-light',
    SAGE_MINIMAL: 'sage-minimal',
    PAPER_CRISP: 'paper-crisp',
+   METRO_LIGHT: 'metro-light',
+   GLASS_LIGHT: 'glass-light',
+   RETRO_PASTEL: 'retro-pastel',
 };
 
 export const TYPES = {
