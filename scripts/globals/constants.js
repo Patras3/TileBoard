@@ -26,6 +26,12 @@ export const CUSTOM_THEMES = {
    HOMEKIT: 'homekit',
    FRESH_AIR: 'fresh-air',
    WHITE_PAPER: 'white-paper',
+   NORDIC_LIGHT: 'nordic-light',
+   SAGE_MINIMAL: 'sage-minimal',
+   PAPER_CRISP: 'paper-crisp',
+   METRO_LIGHT: 'metro-light',
+   GLASS_LIGHT: 'glass-light',
+   RETRO_PASTEL: 'retro-pastel',
 };
 
 export const TYPES = {
