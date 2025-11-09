@@ -275,6 +275,7 @@ export function createHONClimatePopup (config) {
          return getClimateIcon(this.$scope, entity, floorHeatingId);
       },
       unit: 'C',
+      useHvacMode: true,
       action: function (item, entity) {
          contextRef = this;
          latestMode = entity.state;
