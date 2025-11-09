@@ -1656,6 +1656,10 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
          clearTimeout($scope.popupTimeout);
          $scope.popupTimeout = null;
       }
+      // Clear flattened popup cache to prevent stale layouts
+      if ($scope.activePopup && $scope.activePopup.layout) {
+         flattenedPopupCache.delete($scope.activePopup.layout);
+      }
       $scope.activePopup = null;
    };
 

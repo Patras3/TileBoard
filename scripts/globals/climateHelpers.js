@@ -322,18 +322,21 @@ export function createHONClimatePopup (config) {
                   },
                   // Temperature display (width: 2)
                   {
-                     type: window.TYPES.CUSTOM,
-                     id: id + '_temp_display',
-                     state: false,
+                     type: window.TYPES.SENSOR,
+                     id: id,
                      position: [1, 1],
                      width: 2,
-                     customHtml: function () {
-                        const temp = latestTemperature || '--';
-                        return (
-                           '<div class="item-entity-container">' +
-                           '<div style="font-size: 48px; font-weight: bold;">' + temp + '°C</div>' +
-                           '</div>'
-                        );
+                     state: function (item, entity) {
+                        const temp = entity && entity.attributes && entity.attributes.temperature
+                           ? entity.attributes.temperature
+                           : '--';
+                        return temp + '°C';
+                     },
+                     customStyles: function () {
+                        return {
+                           'font-size': '48px',
+                           'font-weight': 'bold',
+                        };
                      },
                   },
                   // Plus button
