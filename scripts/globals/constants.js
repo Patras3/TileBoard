@@ -32,6 +32,7 @@ export const CUSTOM_THEMES = {
    METRO_LIGHT: 'metro-light',
    GLASS_LIGHT: 'glass-light',
    RETRO_PASTEL: 'retro-pastel',
+   NAVY_CYAN: 'navy-cyan',
 };
 
 export const TYPES = {
