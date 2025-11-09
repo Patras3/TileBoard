@@ -1672,25 +1672,35 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
 
       // For popup-type items with 2D array structure, we need to flatten for the template
       if (layout.type === TYPES.POPUP && Array.isArray(layout.items) && layout.items.length > 0 && Array.isArray(layout.items[0])) {
+         // Check if we already flattened this layout (cache entire result)
+         if (layout._flattenedLayout) {
+            console.log('[getPopupLayout] Using cached flattened layout with', layout._flattenedLayout.items.length, 'items');
+            return layout._flattenedLayout;
+         }
+
          console.log('[getPopupLayout] Flattening 2D array for popup');
          const flatItems = [];
          // Flatten and add position properties based on row/column
-         // IMPORTANT: Always create new objects to prevent digest loops
          layout.items.forEach((row, rowIndex) => {
             row.forEach((item, colIndex) => {
                // Skip null/undefined items (used as placeholders for layout)
                if (!item) {
                   return;
                }
-               // Always create new object with position to avoid mutation issues
+               // Use explicit position if provided, otherwise calculate from row/col
+               const finalPosition = item.position || [colIndex, rowIndex];
+               // Create item with position (shallow copy to prevent mutation)
                const itemWithPosition = Object.assign({}, item, {
-                  position: item.position || [colIndex, rowIndex],
+                  position: finalPosition,
                });
                flatItems.push(itemWithPosition);
             });
          });
-         const flattenedLayout = Object.assign({}, layout, { items: flatItems });
-         console.log('[getPopupLayout] Flattened items:', flatItems.length, 'from', layout.items.length, 'rows');
+
+         // Cache the entire flattened layout for stable reference
+         const flattenedLayout = { type: layout.type, items: flatItems, id: layout.id, title: layout.title };
+         layout._flattenedLayout = flattenedLayout;
+         console.log('[getPopupLayout] Flattened and cached', flatItems.length, 'items from', layout.items.length, 'rows');
 
          return flattenedLayout;
       }
