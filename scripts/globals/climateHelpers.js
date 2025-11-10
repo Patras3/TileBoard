@@ -290,29 +290,32 @@ export function createHONClimatePopup (config) {
             type: window.TYPES.POPUP,
             id: id + '_popup',
             title,
+            width: 4,  // Force 4-column layout
+            height: 2,
             items: [
                // Row 1: Mode buttons
                [
                   createModeButton('off', 'mdi-power-off', 'Wyłącz'),
                   createModeButton('cool', 'mdi-snowflake', 'Chłodzenie'),
                   createModeButton('heat', 'mdi-fire', 'Grzanie'),
+                  createModeButton('uv', 'mdi-shimmer', 'UV'),
                ],
-               // Row 2: UV mode + temperature controls
+               // Row 2: Temperature controls (spans full width)
                [
-                  createModeButton('uv', 'mdi-circle-outline', 'UV + Chłodzenie'),
                   {
                      type: window.TYPES.CUSTOM,
                      id: id + '_temp_controls',
+                     width: 4,  // Span full width
                      state: false, // Virtual tile - no real entity
                      customHtml: function () {
                         const temp = latestTemperature || '--';
                         return `
-                           <div style="display: flex; align-items: center; gap: 10px;">
-                              <button class="item-button" onclick="window.honTempMinus_${id.replace(/\./g, '_')}()">
+                           <div style="display: flex; align-items: center; justify-content: center; gap: 20px;">
+                              <button class="item-button" onclick="window.honTempMinus_${id.replace(/\./g, '_')}()" style="font-size: 32px;">
                                  <i class="mdi mdi-minus"></i>
                               </button>
-                              <span style="font-size: 24px; font-weight: bold;">${temp}°C</span>
-                              <button class="item-button" onclick="window.honTempPlus_${id.replace(/\./g, '_')}()">
+                              <span style="font-size: 36px; font-weight: bold; min-width: 100px; text-align: center;">${temp}°C</span>
+                              <button class="item-button" onclick="window.honTempPlus_${id.replace(/\./g, '_')}()" style="font-size: 32px;">
                                  <i class="mdi mdi-plus"></i>
                               </button>
                            </div>
