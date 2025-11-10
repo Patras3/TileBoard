@@ -244,7 +244,9 @@ export function createHONClimatePopup (config) {
          id: id + '_mode_' + mode,
          state: false, // Virtual tile - no real entity
          customHtml: function (item, entity) {
-            const isActive = entity.state === mode ? 'active' : '';
+            // Virtual tiles get the parent climate entity from popup context
+            const currentMode = entity && entity.state ? entity.state : null;
+            const isActive = currentMode === mode ? 'active' : '';
             return `
                <div class="item-entity-container">
                   <i class="mdi ${icon}" style="font-size: 48px;"></i>
@@ -254,7 +256,9 @@ export function createHONClimatePopup (config) {
          },
          action: function (item, entity) {
             contextRef = this;
-            latestTemperature = entity.attributes.temperature || minTemp;
+            if (entity && entity.attributes) {
+               latestTemperature = entity.attributes.temperature || minTemp;
+            }
             updateMode(mode);
          },
       };
@@ -321,17 +325,20 @@ export function createHONClimatePopup (config) {
                   },
                   // Temperature display tile (width: 2)
                   {
-                     type: window.TYPES.CUSTOM,
+                     type: window.TYPES.SENSOR,
                      id: id + '_temp_display',
                      width: 2,
-                     state: false,
-                     customHtml: function () {
-                        const temp = latestTemperature || '--';
-                        return `
-                           <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
-                              <span style="font-size: 48px; font-weight: bold;">${temp}°C</span>
-                           </div>
-                        `;
+                     title: '',
+                     state: function (item, entity) {
+                        // Use entity's target temperature attribute
+                        return (entity && entity.attributes && entity.attributes.temperature) || '--';
+                     },
+                     unit: '°C',
+                     customStyles: function () {
+                        return {
+                           'font-size': '48px',
+                           'font-weight': 'bold',
+                        };
                      },
                   },
                   // Plus button tile
