@@ -244,9 +244,7 @@ export function createHONClimatePopup (config) {
          id: id + '_mode_' + mode,
          state: false, // Virtual tile - no real entity
          customHtml: function (item, entity) {
-            // Virtual tiles get the parent climate entity from popup context
-            const currentMode = entity && entity.state ? entity.state : null;
-            const isActive = currentMode === mode ? 'active' : '';
+            const isActive = entity.state === mode ? 'active' : '';
             return `
                <div class="item-entity-container">
                   <i class="mdi ${icon}" style="font-size: 48px;"></i>
@@ -256,9 +254,7 @@ export function createHONClimatePopup (config) {
          },
          action: function (item, entity) {
             contextRef = this;
-            if (entity && entity.attributes) {
-               latestTemperature = entity.attributes.temperature || minTemp;
-            }
+            latestTemperature = entity.attributes.temperature || minTemp;
             updateMode(mode);
          },
       };
@@ -325,20 +321,19 @@ export function createHONClimatePopup (config) {
                   },
                   // Temperature display tile (width: 2)
                   {
-                     type: window.TYPES.SENSOR,
+                     type: window.TYPES.SCRIPT,
                      id: id + '_temp_display',
                      width: 2,
+                     state: false,
                      title: '',
-                     state: function (item, entity) {
-                        // Use entity's target temperature attribute
-                        return (entity && entity.attributes && entity.attributes.temperature) || '--';
-                     },
-                     unit: '°C',
-                     customStyles: function () {
-                        return {
-                           'font-size': '48px',
-                           'font-weight': 'bold',
-                        };
+                     // Use customHtml with entity parameter for reactive updates
+                     customHtml: function (item, entity) {
+                        const temp = entity && entity.attributes && entity.attributes.temperature ? entity.attributes.temperature : '--';
+                        return `
+                           <div style="display: flex; align-items: center; justify-content: center; height: 100%; flex-direction: column;">
+                              <span style="font-size: 48px; font-weight: bold; line-height: 1;">${temp}°C</span>
+                           </div>
+                        `;
                      },
                   },
                   // Plus button tile
