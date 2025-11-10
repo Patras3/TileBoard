@@ -244,13 +244,15 @@ export function createHONClimatePopup (config) {
          id: id + '_mode_' + mode,
          state: false, // Virtual tile - no real entity
          customHtml: function (item, entity) {
-            const isActive = entity.state === mode ? 'active' : '';
-            return `
-               <div class="item-entity-container">
-                  <i class="mdi ${icon}" style="font-size: 48px;"></i>
-                  <div class="item-title ${isActive}">${label}</div>
-               </div>
-            `;
+            const isActive = (entity && entity.state === mode) ? 'active' : '';
+            const iconClass = icon;
+            const buttonLabel = label;
+            return (
+               '<div class="item-entity-container">' +
+               '<i class="mdi ' + iconClass + '" style="font-size: 48px;"></i>' +
+               '<div class="item-title ' + isActive + '">' + buttonLabel + '</div>' +
+               '</div>'
+            );
          },
          action: function (item, entity) {
             contextRef = this;
@@ -291,47 +293,70 @@ export function createHONClimatePopup (config) {
             id: id + '_popup',
             title,
             items: [
-               // Row 1: Mode buttons
+               // Row 1: All 4 mode buttons
                [
-                  createModeButton('off', 'mdi-power-off', 'Wyłącz'),
+                  createModeButton('off', 'mdi-power', 'Wyłącz'),
                   createModeButton('cool', 'mdi-snowflake', 'Chłodzenie'),
                   createModeButton('heat', 'mdi-fire', 'Grzanie'),
+                  createModeButton('uv', 'mdi-sun-wireless', 'UV + Chłodzenie'),
                ],
-               // Row 2: UV mode + temperature controls
+               // Row 2: Temperature controls as separate tiles
                [
-                  createModeButton('uv', 'mdi-circle-outline', 'UV + Chłodzenie'),
+                  // Minus button
                   {
-                     type: window.TYPES.CUSTOM,
-                     id: id + '_temp_controls',
-                     state: false, // Virtual tile - no real entity
+                     type: window.TYPES.SCRIPT,
+                     id: id + '_temp_minus',
+                     state: false,
+                     position: [0, 1],
                      customHtml: function () {
-                        const temp = latestTemperature || '--';
-                        return `
-                           <div style="display: flex; align-items: center; gap: 10px;">
-                              <button class="item-button" onclick="window.honTempMinus_${id.replace(/\./g, '_')}()">
-                                 <i class="mdi mdi-minus"></i>
-                              </button>
-                              <span style="font-size: 24px; font-weight: bold;">${temp}°C</span>
-                              <button class="item-button" onclick="window.honTempPlus_${id.replace(/\./g, '_')}()">
-                                 <i class="mdi mdi-plus"></i>
-                              </button>
-                           </div>
-                        `;
+                        return (
+                           '<div class="item-entity-container">' +
+                           '<i class="mdi mdi-minus" style="font-size: 48px;"></i>' +
+                           '</div>'
+                        );
+                     },
+                     action: function (item, entity) {
+                        const newTemp = Math.max(minTemp, latestTemperature - 1);
+                        updateTemperature(newTemp);
+                     },
+                  },
+                  // Temperature display (width: 2)
+                  {
+                     type: window.TYPES.SENSOR,
+                     id: id,
+                     position: [1, 1],
+                     width: 2,
+                     state: function (item, entity) {
+                        const temp = entity && entity.attributes && entity.attributes.temperature
+                           ? entity.attributes.temperature
+                           : '--';
+                        return temp + '°C';
+                     },
+                     customStyles: {
+                        'font-size': '48px',
+                        'font-weight': 'bold',
+                     },
+                  },
+                  // Plus button
+                  {
+                     type: window.TYPES.SCRIPT,
+                     id: id + '_temp_plus',
+                     state: false,
+                     position: [3, 1],
+                     customHtml: function () {
+                        return (
+                           '<div class="item-entity-container">' +
+                           '<i class="mdi mdi-plus" style="font-size: 48px;"></i>' +
+                           '</div>'
+                        );
+                     },
+                     action: function (item, entity) {
+                        const newTemp = Math.min(maxTemp, latestTemperature + 1);
+                        updateTemperature(newTemp);
                      },
                   },
                ],
             ],
-         };
-
-         // Register global temperature control functions
-         const safeId = id.replace(/\./g, '_');
-         window['honTempMinus_' + safeId] = () => {
-            const newTemp = Math.max(minTemp, latestTemperature - 1);
-            updateTemperature(newTemp);
-         };
-         window['honTempPlus_' + safeId] = () => {
-            const newTemp = Math.min(maxTemp, latestTemperature + 1);
-            updateTemperature(newTemp);
          };
 
          // Pass the climate entity so virtual tiles can access it
