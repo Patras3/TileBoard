@@ -464,10 +464,15 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
             if (group.type === TYPES.POPUP && Array.isArray(group.items) && group.items.length > 0 && Array.isArray(group.items[0])) {
                console.log('[groupStyles] Calculating popup sizes from 2D array');
                // For popup items: items = [[item, item], [item]]
-               const maxWidth = Math.max(...group.items.map(row => row.length));
-               const maxHeight = group.items.length;
-               sizes = { width: maxWidth, height: maxHeight };
-               console.log('[groupStyles] Popup sizes:', sizes);
+               // Cache the sizes to avoid recalculating and creating new arrays
+               if (!group._cachedSizes) {
+                  const maxWidth = Math.max(...group.items.map(row => row.length));
+                  const maxHeight = group.items.length;
+                  group._cachedSizes = { width: maxWidth, height: maxHeight };
+                  console.log('[groupStyles] Cached popup sizes:', group._cachedSizes);
+               }
+               sizes = group._cachedSizes;
+               console.log('[groupStyles] Using popup sizes:', sizes);
             } else {
                sizes = calcGroupSizes(group);
             }
@@ -1697,10 +1702,29 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
             });
          });
 
+         // Calculate sizes from 2D structure and pre-compute styles
+         const maxWidth = Math.max(...layout.items.map(row => row.length));
+         const maxHeight = layout.items.length;
+         const tileSize = CONFIG.tileSize;
+         const tileMargin = CONFIG.tileMargin;
+
+         const precomputedStyles = {
+            width: tileSize * maxWidth + tileMargin * (maxWidth - 1) + 'px',
+            height: tileSize * maxHeight + tileMargin * (maxHeight - 1) + 'px',
+         };
+
          // Cache the entire flattened layout for stable reference
-         const flattenedLayout = { type: layout.type, items: flatItems, id: layout.id, title: layout.title };
+         const flattenedLayout = {
+            type: layout.type,
+            items: flatItems,
+            id: layout.id,
+            title: layout.title,
+            width: maxWidth,
+            height: maxHeight,
+            styles: precomputedStyles,
+         };
          layout._flattenedLayout = flattenedLayout;
-         console.log('[getPopupLayout] Flattened and cached', flatItems.length, 'items from', layout.items.length, 'rows');
+         console.log('[getPopupLayout] Flattened and cached', flatItems.length, 'items from', layout.items.length, 'rows, styles:', precomputedStyles);
 
          return flattenedLayout;
       }
