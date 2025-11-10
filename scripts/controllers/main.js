@@ -72,11 +72,14 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
 
    $scope.supportsFeature = supportsFeature;
 
-   // Debug: Track what causes digest loops
+   // Debug: Track digest cycles with and without popup
    let digestCounter = 0;
+   let digestStartTime = Date.now();
    let lastDigestState = null;
+
    $scope.$watch(function () {
       digestCounter++;
+      const elapsed = Date.now() - digestStartTime;
 
       if ($scope.activePopup) {
          const currentState = {
@@ -94,19 +97,23 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
             if (currentState.cachedItemsCount !== lastDigestState.cachedItemsCount) changes.push('cachedItemsCount');
             if (currentState.cachedStylesObj !== lastDigestState.cachedStylesObj) changes.push('cachedStylesObj');
 
-            if (changes.length > 0 || digestCounter > 15) {
-               console.warn('[DIGEST] Cycle', digestCounter, 'changes:', changes, 'state:', currentState);
+            if (changes.length > 0) {
+               console.error('[DIGEST WITH POPUP] Cycle', digestCounter, 'MUTATIONS:', changes, 'state:', currentState);
+            } else if (digestCounter === 16) {
+               console.log('[DIGEST WITH POPUP]', digestCounter, 'cycles in', elapsed + 'ms', '- NO MUTATIONS (likely HA entity updates)');
             }
          }
 
-         if (digestCounter > 15) {
-            console.error('[DIGEST] Too many cycles!', digestCounter);
-         }
-
          lastDigestState = currentState;
-      } else if (digestCounter > 1) {
-         digestCounter = 0; // Reset when no popup
-         lastDigestState = null;
+      } else {
+         // Track digest WITHOUT popup to see if it's normal HA behavior
+         if (digestCounter === 1) {
+            digestStartTime = Date.now();
+         } else if (digestCounter === 16) {
+            console.log('[DIGEST WITHOUT POPUP]', digestCounter, 'cycles in', elapsed + 'ms', '- Normal HA updates');
+         } else if (digestCounter > 20) {
+            digestCounter = 0; // Reset after 20
+         }
       }
    });
 
