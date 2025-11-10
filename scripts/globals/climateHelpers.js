@@ -314,8 +314,10 @@ export function createHONClimatePopup (config) {
                            </div>
                         `;
                      },
-                     action: function () {
-                        const newTemp = Math.max(minTemp, latestTemperature - 1);
+                     action: function (item, entity) {
+                        const currentTemp = entity && entity.attributes && entity.attributes.temperature ? entity.attributes.temperature : minTemp;
+                        const newTemp = Math.max(minTemp, currentTemp - 1);
+                        latestTemperature = newTemp;
                         updateTemperature(newTemp);
                      },
                   },
@@ -348,8 +350,10 @@ export function createHONClimatePopup (config) {
                            </div>
                         `;
                      },
-                     action: function () {
-                        const newTemp = Math.min(maxTemp, latestTemperature + 1);
+                     action: function (item, entity) {
+                        const currentTemp = entity && entity.attributes && entity.attributes.temperature ? entity.attributes.temperature : minTemp;
+                        const newTemp = Math.min(maxTemp, currentTemp + 1);
+                        latestTemperature = newTemp;
                         updateTemperature(newTemp);
                      },
                   },
