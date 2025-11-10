@@ -47,6 +47,8 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
 
    // WeakMap to cache flattened popup layouts without mutating originals
    const flattenedPopupCache = new WeakMap();
+   // WeakMap to cache popup styles to prevent digest loops
+   const popupStylesCache = new WeakMap();
 
    $scope.activeSelect = null;
    $scope.screensaverShown = false;
@@ -454,6 +456,14 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
          console.log('[groupStyles] returning EMPTY_STYLES (is EMPTY_LAYOUT, preventing mutation)');
          return EMPTY_STYLES;
       }
+      // Prevent digest loops for popups - use cached styles
+      if (group.type === TYPES.POPUP) {
+         if (popupStylesCache.has(group)) {
+            console.log('[groupStyles] returning cached popup styles (preventing digest loop)');
+            return popupStylesCache.get(group);
+         }
+         console.log('[groupStyles] calculating popup styles for first time');
+      }
       if (!group.styles) {
          const tileSize = page.tileSize || CONFIG.tileSize;
          const tileMargin = page.tileMargin || CONFIG.tileMargin;
@@ -491,6 +501,13 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
             styles.margin = group.groupMarginCss;
          } else if (CONFIG.groupMarginCss) {
             styles.margin = CONFIG.groupMarginCss;
+         }
+
+         // For popups, cache styles separately to prevent digest loops
+         if (group.type === TYPES.POPUP) {
+            popupStylesCache.set(group, styles);
+            console.log('[groupStyles] cached popup styles');
+            return styles;
          }
 
          group.styles = styles;
