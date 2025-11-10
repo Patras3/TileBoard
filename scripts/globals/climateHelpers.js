@@ -290,48 +290,75 @@ export function createHONClimatePopup (config) {
             type: window.TYPES.POPUP,
             id: id + '_popup',
             title,
+            width: 4,  // Force 4-column layout
+            height: 2,
             items: [
                // Row 1: Mode buttons
                [
                   createModeButton('off', 'mdi-power-off', 'Wyłącz'),
                   createModeButton('cool', 'mdi-snowflake', 'Chłodzenie'),
                   createModeButton('heat', 'mdi-fire', 'Grzanie'),
+                  createModeButton('uv', 'mdi-shimmer', 'UV'),
                ],
-               // Row 2: UV mode + temperature controls
+               // Row 2: Temperature controls as separate tiles
                [
-                  createModeButton('uv', 'mdi-circle-outline', 'UV + Chłodzenie'),
+                  // Minus button tile
                   {
-                     type: window.TYPES.CUSTOM,
-                     id: id + '_temp_controls',
-                     state: false, // Virtual tile - no real entity
+                     type: window.TYPES.SCRIPT,
+                     id: id + '_temp_minus',
+                     state: false,
                      customHtml: function () {
-                        const temp = latestTemperature || '--';
                         return `
-                           <div style="display: flex; align-items: center; gap: 10px;">
-                              <button class="item-button" onclick="window.honTempMinus_${id.replace(/\./g, '_')}()">
-                                 <i class="mdi mdi-minus"></i>
-                              </button>
-                              <span style="font-size: 24px; font-weight: bold;">${temp}°C</span>
-                              <button class="item-button" onclick="window.honTempPlus_${id.replace(/\./g, '_')}()">
-                                 <i class="mdi mdi-plus"></i>
-                              </button>
+                           <div class="item-entity-container">
+                              <i class="mdi mdi-minus" style="font-size: 48px;"></i>
+                           </div>
+                        `;
+                     },
+                     action: function (item, entity) {
+                        const currentTemp = entity && entity.attributes && entity.attributes.temperature ? entity.attributes.temperature : minTemp;
+                        const newTemp = Math.max(minTemp, currentTemp - 1);
+                        latestTemperature = newTemp;
+                        updateTemperature(newTemp);
+                     },
+                  },
+                  // Temperature display tile (width: 2)
+                  {
+                     type: window.TYPES.SCRIPT,
+                     id: id + '_temp_display',
+                     width: 2,
+                     state: false,
+                     title: '',
+                     // Use customHtml with entity parameter for reactive updates
+                     customHtml: function (item, entity) {
+                        const temp = entity && entity.attributes && entity.attributes.temperature ? entity.attributes.temperature : '--';
+                        return `
+                           <div style="display: flex; align-items: center; justify-content: center; height: 100%; flex-direction: column;">
+                              <span style="font-size: 48px; font-weight: bold; line-height: 1;">${temp}°C</span>
                            </div>
                         `;
                      },
                   },
+                  // Plus button tile
+                  {
+                     type: window.TYPES.SCRIPT,
+                     id: id + '_temp_plus',
+                     state: false,
+                     customHtml: function () {
+                        return `
+                           <div class="item-entity-container">
+                              <i class="mdi mdi-plus" style="font-size: 48px;"></i>
+                           </div>
+                        `;
+                     },
+                     action: function (item, entity) {
+                        const currentTemp = entity && entity.attributes && entity.attributes.temperature ? entity.attributes.temperature : minTemp;
+                        const newTemp = Math.min(maxTemp, currentTemp + 1);
+                        latestTemperature = newTemp;
+                        updateTemperature(newTemp);
+                     },
+                  },
                ],
             ],
-         };
-
-         // Register global temperature control functions
-         const safeId = id.replace(/\./g, '_');
-         window['honTempMinus_' + safeId] = () => {
-            const newTemp = Math.max(minTemp, latestTemperature - 1);
-            updateTemperature(newTemp);
-         };
-         window['honTempPlus_' + safeId] = () => {
-            const newTemp = Math.min(maxTemp, latestTemperature + 1);
-            updateTemperature(newTemp);
          };
 
          // Pass the climate entity so virtual tiles can access it

@@ -47,6 +47,8 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
 
    // WeakMap to cache flattened popup layouts without mutating originals
    const flattenedPopupCache = new WeakMap();
+   // WeakMap to cache popup styles to prevent digest loops
+   const popupStylesCache = new WeakMap();
 
    $scope.activeSelect = null;
    $scope.screensaverShown = false;
@@ -61,31 +63,57 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    $scope.activeCamera = null;
    $scope.activePopup = null;
    $scope.popupTimeout = null;
+   // Cached popup data to prevent digest loops
+   $scope.cachedPopupLayout = null;
+   $scope.cachedPopupStyles = null;
 
    $scope.alarmCode = null;
    $scope.activeAlarm = null;
 
    $scope.supportsFeature = supportsFeature;
 
-   // Debug: Watch for digest loops around popup
+   // Debug: Track digest cycles with and without popup
    let digestCounter = 0;
-   let lastPopupState = null;
+   let digestStartTime = Date.now();
+   let lastDigestState = null;
+
    $scope.$watch(function () {
       digestCounter++;
+      const elapsed = Date.now() - digestStartTime;
+
       if ($scope.activePopup) {
          const currentState = {
-            hasPopup: !!$scope.activePopup,
-            hasLayout: !!($scope.activePopup && $scope.activePopup.layout),
-            layoutItems: $scope.activePopup && $scope.activePopup.layout && $scope.activePopup.layout.items ? $scope.activePopup.layout.items.length : 0,
+            popupId: $scope.activePopup.layout ? $scope.activePopup.layout.id : null,
+            cachedLayoutId: $scope.cachedPopupLayout ? $scope.cachedPopupLayout.id : null,
+            cachedItemsCount: $scope.cachedPopupLayout ? $scope.cachedPopupLayout.items.length : 0,
+            cachedStylesObj: $scope.cachedPopupStyles,
          };
-         if (digestCounter > 15) {
-            console.error('[DIGEST DEBUG] Too many digest cycles!', digestCounter, 'currentState:', currentState, 'lastState:', lastPopupState);
-         } else {
-            console.log('[DIGEST DEBUG] Digest cycle', digestCounter, 'popup state:', currentState);
+
+         // Check what changed
+         if (lastDigestState && digestCounter > 2) {
+            const changes = [];
+            if (currentState.popupId !== lastDigestState.popupId) changes.push('popupId');
+            if (currentState.cachedLayoutId !== lastDigestState.cachedLayoutId) changes.push('cachedLayoutId');
+            if (currentState.cachedItemsCount !== lastDigestState.cachedItemsCount) changes.push('cachedItemsCount');
+            if (currentState.cachedStylesObj !== lastDigestState.cachedStylesObj) changes.push('cachedStylesObj');
+
+            if (changes.length > 0) {
+               console.error('[DIGEST WITH POPUP] Cycle', digestCounter, 'MUTATIONS:', changes, 'state:', currentState);
+            } else if (digestCounter === 16) {
+               console.log('[DIGEST WITH POPUP]', digestCounter, 'cycles in', elapsed + 'ms', '- NO MUTATIONS (likely HA entity updates)');
+            }
          }
-         lastPopupState = currentState;
-      } else if (digestCounter > 1) {
-         digestCounter = 0; // Reset when no popup
+
+         lastDigestState = currentState;
+      } else {
+         // Track digest WITHOUT popup to see if it's normal HA behavior
+         if (digestCounter === 1) {
+            digestStartTime = Date.now();
+         } else if (digestCounter === 16) {
+            console.log('[DIGEST WITHOUT POPUP]', digestCounter, 'cycles in', elapsed + 'ms', '- Normal HA updates');
+         } else if (digestCounter > 20) {
+            digestCounter = 0; // Reset after 20
+         }
       }
    });
 
@@ -444,15 +472,18 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    };
 
    $scope.groupStyles = function (group, page) {
-      console.log('[groupStyles] called with group:', group, 'page:', page);
       if (!group || !page) {
-         console.log('[groupStyles] returning EMPTY_STYLES (no group/page)');
          return EMPTY_STYLES;
       }
       // Prevent mutating EMPTY_LAYOUT - this would cause digest loops
       if (group === EMPTY_LAYOUT) {
-         console.log('[groupStyles] returning EMPTY_STYLES (is EMPTY_LAYOUT, preventing mutation)');
          return EMPTY_STYLES;
+      }
+      // Prevent digest loops for popups - use cached styles
+      if (group.type === TYPES.POPUP) {
+         if (popupStylesCache.has(group)) {
+            return popupStylesCache.get(group);
+         }
       }
       if (!group.styles) {
          const tileSize = page.tileSize || CONFIG.tileSize;
@@ -491,6 +522,12 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
             styles.margin = group.groupMarginCss;
          } else if (CONFIG.groupMarginCss) {
             styles.margin = CONFIG.groupMarginCss;
+         }
+
+         // For popups, cache styles separately to prevent digest loops
+         if (group.type === TYPES.POPUP) {
+            popupStylesCache.set(group, styles);
+            return styles;
          }
 
          group.styles = styles;
@@ -1624,7 +1661,6 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    };
 
    $scope.openPopup = function (item, entity, layout) {
-      console.log('[openPopup] called with item:', item, 'entity:', entity, 'layout:', layout);
       item = mergeTileDefaults(item);
 
       if ($scope.popupTimeout) {
@@ -1639,16 +1675,66 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
       let finalLayout = layout || item.popup;
       if (!finalLayout && item.type === TYPES.POPUP) {
          finalLayout = item;
-         console.log('[openPopup] Using item itself as layout (type=popup)');
       }
 
-      console.log('[openPopup] finalLayout:', finalLayout, 'item.popup:', item.popup, 'item.type:', item.type);
       $scope.activePopup = {
          item: item,
          entity: entity,
          layout: finalLayout,
       };
-      console.log('[openPopup] activePopup set:', $scope.activePopup);
+
+      // Pre-compute popup layout and styles to prevent digest loops
+      // This is done ONCE when popup opens, not in every digest cycle
+      if (finalLayout) {
+         // Flatten 2D array structure if needed
+         let flattenedLayout = finalLayout;
+         if (finalLayout.type === TYPES.POPUP && Array.isArray(finalLayout.items) && finalLayout.items.length > 0 && Array.isArray(finalLayout.items[0])) {
+            const flatItems = [];
+            finalLayout.items.forEach((row, rowIndex) => {
+               row.forEach((item, colIndex) => {
+                  if (item.position) {
+                     flatItems.push(item);
+                  } else {
+                     const itemWithPosition = Object.assign({}, item, {
+                        position: [colIndex, rowIndex],
+                     });
+                     flatItems.push(itemWithPosition);
+                  }
+               });
+            });
+            flattenedLayout = Object.assign({}, finalLayout, { items: flatItems });
+         }
+         $scope.cachedPopupLayout = flattenedLayout;
+
+         // Calculate popup styles ONCE
+         const tileSize = (finalLayout.tileSize || CONFIG.tileSize);
+         const tileMargin = (finalLayout.tileMargin || CONFIG.tileMargin);
+
+         // Calculate width and height
+         let width = flattenedLayout.width;
+         let height = flattenedLayout.height;
+
+         if (!width || !height) {
+            if (finalLayout.type === TYPES.POPUP && Array.isArray(finalLayout.items) && finalLayout.items.length > 0 && Array.isArray(finalLayout.items[0])) {
+               // For 2D array: use array dimensions
+               width = Math.max(...finalLayout.items.map(row => row.length));
+               height = finalLayout.items.length;
+            } else {
+               // For flat array: use calcGroupSizes
+               const sizes = calcGroupSizes(flattenedLayout);
+               width = sizes.width;
+               height = sizes.height;
+            }
+         }
+
+         $scope.cachedPopupStyles = {
+            width: tileSize * width + tileMargin * (width - 1) + 'px',
+            height: tileSize * height + tileMargin * (height - 1) + 'px',
+         };
+      } else {
+         $scope.cachedPopupLayout = null;
+         $scope.cachedPopupStyles = {};
+      }
    };
 
    $scope.closePopup = function () {
@@ -1657,6 +1743,9 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
          $scope.popupTimeout = null;
       }
       $scope.activePopup = null;
+      // Clear cached popup data
+      $scope.cachedPopupLayout = null;
+      $scope.cachedPopupStyles = null;
    };
 
    $scope.getPopupClasses = function () {
