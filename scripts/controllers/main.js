@@ -63,6 +63,9 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
    $scope.activeCamera = null;
    $scope.activePopup = null;
    $scope.popupTimeout = null;
+   // Cached popup data to prevent digest loops
+   $scope.cachedPopupLayout = null;
+   $scope.cachedPopupStyles = null;
 
    $scope.alarmCode = null;
    $scope.activeAlarm = null;
@@ -1666,6 +1669,63 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
          layout: finalLayout,
       };
       console.log('[openPopup] activePopup set:', $scope.activePopup);
+
+      // Pre-compute popup layout and styles to prevent digest loops
+      // This is done ONCE when popup opens, not in every digest cycle
+      if (finalLayout) {
+         // Flatten 2D array structure if needed
+         let flattenedLayout = finalLayout;
+         if (finalLayout.type === TYPES.POPUP && Array.isArray(finalLayout.items) && finalLayout.items.length > 0 && Array.isArray(finalLayout.items[0])) {
+            console.log('[openPopup] Flattening 2D array for popup');
+            const flatItems = [];
+            finalLayout.items.forEach((row, rowIndex) => {
+               row.forEach((item, colIndex) => {
+                  if (item.position) {
+                     flatItems.push(item);
+                  } else {
+                     const itemWithPosition = Object.assign({}, item, {
+                        position: [colIndex, rowIndex],
+                     });
+                     flatItems.push(itemWithPosition);
+                  }
+               });
+            });
+            flattenedLayout = Object.assign({}, finalLayout, { items: flatItems });
+            console.log('[openPopup] Flattened items:', flatItems.length);
+         }
+         $scope.cachedPopupLayout = flattenedLayout;
+
+         // Calculate popup styles ONCE
+         const tileSize = (finalLayout.tileSize || CONFIG.tileSize);
+         const tileMargin = (finalLayout.tileMargin || CONFIG.tileMargin);
+
+         // Calculate width and height
+         let width = flattenedLayout.width;
+         let height = flattenedLayout.height;
+
+         if (!width || !height) {
+            if (finalLayout.type === TYPES.POPUP && Array.isArray(finalLayout.items) && finalLayout.items.length > 0 && Array.isArray(finalLayout.items[0])) {
+               // For 2D array: use array dimensions
+               width = Math.max(...finalLayout.items.map(row => row.length));
+               height = finalLayout.items.length;
+            } else {
+               // For flat array: use calcGroupSizes
+               const sizes = calcGroupSizes(flattenedLayout);
+               width = sizes.width;
+               height = sizes.height;
+            }
+         }
+
+         $scope.cachedPopupStyles = {
+            width: tileSize * width + tileMargin * (width - 1) + 'px',
+            height: tileSize * height + tileMargin * (height - 1) + 'px',
+         };
+
+         console.log('[openPopup] Cached popup layout and styles:', $scope.cachedPopupLayout, $scope.cachedPopupStyles);
+      } else {
+         $scope.cachedPopupLayout = null;
+         $scope.cachedPopupStyles = {};
+      }
    };
 
    $scope.closePopup = function () {
@@ -1674,6 +1734,9 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
          $scope.popupTimeout = null;
       }
       $scope.activePopup = null;
+      // Clear cached popup data
+      $scope.cachedPopupLayout = null;
+      $scope.cachedPopupStyles = null;
    };
 
    $scope.getPopupClasses = function () {
