@@ -81,9 +81,11 @@ var CONFIG = {
       },
       notifications: {
          enabled: true,
-         defaultFullScreenDuration: 30000,  // 30 seconds (ms)
-         defaultCornerDuration: 20000,       // 20 seconds (ms)
+         defaultFullScreenDuration: 30,      // 30 seconds
+         defaultCornerDuration: 20,          // 20 seconds
          maxCornerNotifications: 3,
+         trackInHomeAssistant: true,         // Track notifications in HA input_text entities
+         entityPrefix: 'input_text.tileboard_',  // Prefix for HA entity names
       },
       locationDetection: {
          enabled: true,
