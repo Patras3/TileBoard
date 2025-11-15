@@ -897,6 +897,115 @@ App.controller('Main', function ($scope, $timeout, $location, Api, tmhDynamicLoc
       return item.icons[icon] || icon;
    };
 
+   /**
+    * Header Custom Entity Functions
+    */
+   $scope.getHeaderCustomEntityIcon = function (item) {
+      if (!item.id) {
+         return null;
+      }
+
+      const entity = $scope.states[item.id];
+      if (!entity) {
+         return null;
+      }
+
+      // Check if item should be hidden
+      if (typeof item.hidden === 'function') {
+         const isHidden = callFunction(item.hidden, [item, entity]);
+         if (isHidden) {
+            return null;
+         }
+      }
+
+      // Get icon from item.icon (can be function or string)
+      let icon = parseFieldValue(item.icon, item, entity);
+
+      // If icon is a function in icons map
+      if (typeof item.icons === 'function') {
+         icon = callFunction(item.icons, [icon, item, entity]);
+      }
+
+      // If icons is a map object
+      if (item.icons && typeof item.icons === 'object' && icon) {
+         icon = item.icons[icon] || icon;
+      }
+
+      return icon;
+   };
+
+   $scope.getHeaderCustomEntityText = function (item) {
+      if (!item.id) {
+         return null;
+      }
+
+      const entity = $scope.states[item.id];
+      if (!entity) {
+         return null;
+      }
+
+      // Check if item should be hidden
+      if (typeof item.hidden === 'function') {
+         const isHidden = callFunction(item.hidden, [item, entity]);
+         if (isHidden) {
+            return null;
+         }
+      }
+
+      // Get text from state or custom state function
+      if (item.state === false || item.state === null) {
+         return null;
+      }
+
+      let text = parseFieldValue(item.state, item, entity);
+
+      // Apply filter if provided
+      if (item.filter && typeof item.filter === 'function') {
+         text = callFunction(item.filter, [text, item, entity]);
+      }
+
+      return text;
+   };
+
+   $scope.getHeaderCustomEntityIconStyles = function (item) {
+      if (!item.id) {
+         return null;
+      }
+
+      const entity = $scope.states[item.id];
+      if (!entity) {
+         return null;
+      }
+
+      let styles = {};
+
+      // Apply custom size if provided
+      if (item.iconSize) {
+         const size = parseFieldValue(item.iconSize, item, entity);
+         if (size) {
+            styles.fontSize = size;
+         }
+      }
+
+      // Apply custom color if provided
+      if (item.iconColor) {
+         const color = parseFieldValue(item.iconColor, item, entity);
+         if (color) {
+            styles.color = color;
+         }
+      }
+
+      // Apply custom styles function if provided
+      if (typeof item.customStyles === 'function') {
+         const customStyles = callFunction(item.customStyles, [item, entity]);
+         if (customStyles) {
+            styles = Object.assign({}, styles, customStyles);
+         }
+      }
+
+      return Object.keys(styles).length > 0 ? styles : null;
+   };
+
    $scope.weatherListImageStyles = function (line, item, entity) {
       let iconImage = $scope.weatherListField('iconImage', line, item, entity);
 
